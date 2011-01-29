@@ -1,0 +1,164 @@
+/* Content
+ --------------------------------------------------------*/
+
+#Content {
+    background: #888;
+    background: -moz-linear-gradient(left,  #888,  #444);
+    background: -webkit-gradient(linear, left, rigt, from(#888), to(#444));
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
+    margin: 30px auto;
+    min-height: 400px;
+    overflow: hidden;
+    width: 800px;
+    }
+    #Content div:first-of-type {
+        margin: 10px;
+    }
+
+/* Login Form
+ --------------------------------------------------------*/
+
+#LoginForm {
+    background: #fff;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    margin: 100px auto;
+    overflow: hidden;
+    padding: 10px;
+    width: 400px;
+    }
+    #LoginForm p {
+        margin-bottom: 5px;
+    }
+    #LoginForm fieldset {
+        overflow: hidden;
+        }
+        #LoginForm input[type=text],
+        #LoginForm input[type=submit] {
+            font-size: 30px;
+        }
+        #LoginForm input[type=text] {
+            height: 30px;
+            padding: 4px 8px;
+            width: 245px;
+        }
+        #LoginForm input[type=submit] {
+            background: #222;
+            color: #fff;
+            border: none;
+            font-family: inherit;
+            font-weight: bold;
+            float: right;
+            height: 40px;
+            width: 130px;
+        }
+
+        .user-icon,
+        .user-name {
+            display: block;
+            float: left;
+            height: 48px;
+        }
+        .user-icon {
+            background-repeat: no-repeat;
+            margin: 0 10px 0 0;
+            width: 48px;
+        }
+        .user-name {
+            line-height: 48px;
+        }
+
+/* Backgrounds
+ --------------------------------------------------------*/
+
+#InfoBox,
+#Thumbnails,
+#TopBar {
+    background: rgba(0, 0, 0, .5);
+}
+
+/* InfoBox
+ --------------------------------------------------------*/
+
+#InfoBox {
+    position: absolute;
+    right: 20px;
+    top: 80px;
+}
+
+
+/* Thumbnails
+ --------------------------------------------------------*/
+
+.play {
+    background: #333 url(../images/icons/gui/play_12x16.png) no-repeat 50% 50%;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    display: block;
+    float: left;
+    height: 50px;
+    margin: 10px;
+    width: 50px;
+    }
+    .play:hover {
+        background-color: #222;
+    }
+
+#Thumbnails {
+    bottom: 0;
+    height: 70px;
+    left: 0;
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+    }
+    #Thumbnails ul {
+        margin: 10px;
+        overflow: hidden;
+        }
+        #Thumbnails li {
+            float: left;
+            margin: 0 10px 0 0;
+            }
+            #Thumbnails li a {
+                background-position: 50% 50%;
+                display: block;
+                height: 50px;
+                overflow: hidden;
+                width: 50px;
+            }
+
+/* Topbar
+ --------------------------------------------------------*/
+
+#TopBar {
+    height: 60px;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    }
+    #TopBar div {
+        margin: 15px 10px;
+    }
+
+/* Update Images
+ --------------------------------------------------------*/
+
+.new-image {
+    margin: 0 0 20px !important;
+    overflow: hidden;
+    }
+    .new-image img {
+        float: left;
+        padding: 0 20px 0 0;
+    }
+    .new-image fieldset {
+        width: 444px;
+    }

@@ -1,0 +1,59 @@
+/* Basic Styling
+ --------------------------------------------------------*/
+
+@font-face {
+    font-family: Code;
+    src: url('../fonts/CODE_Light.otf');
+}
+@font-face {
+    font-family: Delicious;
+    font-weight: bold;
+    src: url('../fonts/CODE_Bold.otf.otf');
+}
+
+body {
+    background: #222 url(../images/body-stripes.png) repeat;
+    color: #333;
+    font-family: Code, 'Helvetica Neue', Verdana, Helvetica, 'Liberation Sans', sans-serif;
+}
+
+/* Spacings
+ --------------------------------------------------------*/
+
+ol,
+p,
+ul {
+    margin-bottom: 20px;
+}
+
+/* Typography
+ --------------------------------------------------------*/
+
+
+/* Headlines
+ --------------------------------------------------------*/
+
+h1,
+h2,
+h3 {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+/* Sidebar
+ --------------------------------------------------------*/
+
+#SideBar {
+    background: #888;
+    box-shadow: 5px 0 5px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
+    min-height: 400px;
+    overflow: hidden;
+    width: 400px;
+    }
+    #SideBar div:first-of-type {
+        margin: 10px;
+    }

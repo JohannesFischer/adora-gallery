@@ -1,0 +1,54 @@
+#InlineContent {
+	display: none;
+}
+
+.infoBubble {
+	padding: 5px; /* shadow size */
+	position: absolute;
+	z-index: 100;
+	}
+	.infoBubble-Bubble {
+		background-color: #fff;
+		border: 1px solid #aaa;
+		border-radius: 4px;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+		-moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+		-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+		position: relative;
+		}	
+		.infoBubble-Bubble:before {
+			border: 11px solid transparent; /* tip height + border width*/
+			border-top-color: #aaa;
+			bottom: -22px; /* value = - border-top-width - border-bottom-width */
+			content:"\00a0";
+			display: block; /* reduce the damage in FF3.0 */
+			height: 0;
+			left: 50%;
+			margin-left: -21px;
+			position: absolute;
+			width: 0;
+		}
+		
+		/* creates the smaller  triangle */
+		.infoBubble-Bubble:after {
+			border: 10px solid transparent; /* tip height */
+			border-top-color: #fff;
+			bottom: -20px; /* value = - border-top-width - border-bottom-width */
+			content:"\00a0";
+			display:block; /* reduce the damage in FF3.0 */
+			height:0;
+			left: 50%;
+			margin-left: -20px;
+			position:absolute;
+			width:0;
+		}
+		.infoBubble-Content {
+			margin: 10px;
+			overflow: hidden;
+		}
+
+.loading {
+	background: url(../images/indicator.gif) no-repeat 50% 50%;
+}

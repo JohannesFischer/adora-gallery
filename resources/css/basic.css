@@ -1,0 +1,49 @@
+/* Basic Styling
+ --------------------------------------------------------*/
+
+@font-face {
+    font-family: Code;
+    src: url('../fonts/CODE_Light.otf');
+}
+@font-face {
+    font-family: Delicious;
+    font-weight: bold;
+    src: url('../fonts/CODE_Bold.otf.otf');
+}
+
+body {
+    background: #222 url(../images/body-stripes.png) repeat;
+    color: #666;
+    font-family: Code, 'Helvetica Neue', Verdana, Helvetica, 'Liberation Sans', sans-serif;
+    font-size: 28px;
+}
+
+strong {
+    font-weight: bold;
+}
+
+/* Forms
+ --------------------------------------------------------*/
+
+/* Spacings
+ --------------------------------------------------------*/
+
+ol,
+p,
+ul {
+    margin-bottom: 20px;
+}
+
+
+/* Headlines
+ --------------------------------------------------------*/
+
+h1,
+h2,
+h3 {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 36px;
+}
