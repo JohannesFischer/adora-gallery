@@ -6,17 +6,24 @@
     src: url('../fonts/CODE_Light.otf');
 }
 @font-face {
-    font-family: Delicious;
+    font-family: Code;
     font-weight: bold;
-    src: url('../fonts/CODE_Bold.otf.otf');
+    src: url('../fonts/CODE_Bold.otf');
 }
 
 body {
     background: #222 url(../images/body-stripes.png) repeat;
     color: #666;
-    font-family: Code, 'Helvetica Neue', Verdana, Helvetica, 'Liberation Sans', sans-serif;
-    font-size: 28px;
+    font: 16px/1 Code, 'Helvetica Neue', Verdana, Helvetica, 'Liberation Sans', sans-serif;
 }
+
+a {
+    color: #ccc;
+    text-decoration: none;
+    }
+    a:hover {
+        color: #eee;
+    }
 
 strong {
     font-weight: bold;

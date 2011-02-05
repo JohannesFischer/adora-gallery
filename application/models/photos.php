@@ -55,6 +55,17 @@
 			return $files;
         }
 
+		public function getInfo($src)
+		{
+			$this->db->from($this->photo_table);
+			$this->db->select('Title, Description, FileDateTime');
+			$this->db->where('Filename_Large', $src);
+
+			$query = $this->db->get();
+
+			return $query->num_rows() > 0 ? $query->row() : false;
+		}
+
         public function getLatest()
         {
 			$sql = "SELECT Created, Filename, Title, MAX(Created) AS Created_Max FROM ".$this->photo_table." HAVING MAX(Created) ORDER BY Filename ";

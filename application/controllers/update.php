@@ -1,12 +1,12 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Update extends Controller {
+class Update extends CI_Controller {
 
     public $data = array();
 
 	public function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
 
         $this->lang->load('basic', 'english');
         $this->load->library('content');

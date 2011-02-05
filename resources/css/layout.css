@@ -33,6 +33,7 @@
     width: 400px;
     }
     #LoginForm p {
+        font-size: 24px;
         margin-bottom: 5px;
     }
     #LoginForm fieldset {
@@ -40,7 +41,7 @@
         }
         #LoginForm input[type=text],
         #LoginForm input[type=submit] {
-            font-size: 30px;
+            font-size: 24px;
         }
         #LoginForm input[type=text] {
             height: 30px;
@@ -48,15 +49,20 @@
             width: 245px;
         }
         #LoginForm input[type=submit] {
-            background: #222;
+            background: #999;
             color: #fff;
             border: none;
             font-family: inherit;
             font-weight: bold;
             float: right;
             height: 40px;
+            padding-top: 5px;
             width: 130px;
-        }
+            }
+            #LoginForm input[type=submit]:hover {
+                cursor: pointer;
+                background: #222;
+            }
 
         .user-icon,
         .user-name {
@@ -70,17 +76,52 @@
             width: 48px;
         }
         .user-name {
+            font-size: 24px;
             line-height: 48px;
         }
 
-/* Backgrounds
+/* Shared Properties
  --------------------------------------------------------*/
 
+.Box,
 #InfoBox,
 #Thumbnails,
 #TopBar {
     background: rgba(0, 0, 0, .5);
 }
+
+.control {
+    background-color: rgba(50, 50, 50, .5);
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    }
+    .control:hover {
+        background-color: rgba(50, 50, 50, .75);
+    }
+
+/* Boxes
+ --------------------------------------------------------*/
+
+.Box {
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    position: absolute;
+    right: 10px;
+    top: 80px;
+    width: 300px;
+    }
+    .Box div {
+        margin: 10px;
+        position: relative;
+        }
+        .Box .close {
+            background: url(../images/icons/gui/x_14x14.png) no-repeat 50% 50%;
+            height: 20px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 20px;
+        }
 
 /* InfoBox
  --------------------------------------------------------*/
@@ -91,23 +132,19 @@
     top: 80px;
 }
 
-
 /* Thumbnails
  --------------------------------------------------------*/
 
 .play {
-    background: #333 url(../images/icons/gui/play_12x16.png) no-repeat 50% 50%;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
+    background-image: url(../images/icons/gui/play_12x16.png);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
     display: block;
     float: left;
     height: 50px;
     margin: 10px;
     width: 50px;
-    }
-    .play:hover {
-        background-color: #222;
-    }
+}
 
 #Thumbnails {
     bottom: 0;
@@ -144,9 +181,72 @@
     top: 0;
     width: 100%;
     }
-    #TopBar div {
-        margin: 15px 10px;
+    .Title,
+    .Controls,
+    .Navigation {
+        float: left;
+        margin: 15px 0;
     }
+
+    #TopBar div.Title,
+    #TopBar div.Navigation {
+        width: 40%;
+    }
+
+    #TopBar .Title {
+        }
+        #TopBar .Title h1 {
+            text-indent: 10px;
+            text-shadow: 1px 1px 0 #333;
+        }
+    
+    #TopBar .Controls {
+        width: 20%;
+        }
+        .Controls div {
+            margin: 5px auto 0;
+            width: 160px;
+            }
+            .Controls a {
+                background-repeat: no-repeat;
+                display: block;
+                height: 25px;
+                line-height: 28px;
+                width: 60px;
+            }
+            .Controls .prev {
+                background-image: url(../images/icons/gui/arrow_left_12x12.png);
+                background-position: 10% 50%;
+                float: left;
+                padding: 0 10px 0 0;
+                text-align: right;
+            }
+            .Controls .next {
+                background-image: url(../images/icons/gui/arrow_right_12x12.png);
+                background-position: 90% 50%;
+                float: right;
+                padding: 0 0 0 10px;
+                text-align: left;
+            }
+    
+    #TopBar .Navigation {
+        float: right;
+        }
+        #TopBar .Navigation ul {
+            float: right;
+            margin: 0 10px 0 0;
+            }
+            #TopBar .Navigation li {
+                float: left;
+                height: 30px;
+                line-height: 30px;
+                margin: 0 0 0 10px;
+                }
+                #TopBar .Navigation a {
+                    letter-spacing: 1px;
+                }
+    
+    
 
 /* Update Images
  --------------------------------------------------------*/

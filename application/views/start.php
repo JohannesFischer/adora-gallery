@@ -1,39 +1,38 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-    <title><?=$PageTitle;?></title>
-    <META http-equiv="Content-type" content="text/html; charset=utf8">
-    <?=$CSS;?>
-</head>
-<body>
-    
     <?php if(!$Loggedin): ;?>
         <?=$LoginForm;?>
     <?php else: ?>
     
     <div id="TopBar">
-        <div>
+
+        <div class="Title">
             <h1><?=$PageTitle;?></h1>
         </div>
-        <div>
-            
+
+        <div class="Controls">
+
+            <div>
+                <a href="#" class="control prev">prev</a>
+                <a href="#" class="control next">next</a>
+            </div>
+
         </div>
-        <div>
+
+        <div class="Navigation">
             <ul>
                 <li>
-                    <a href="#">Show Info</a>
+                    <a href="#" id="LinkInfo">Show Info</a>
                 </li>
                 <li>
-                    <a href="#">Comments</a>
+                    <a href="#" id="LinkComments">Comments</a>
                 </li>
                 <li>
-                    <a href="#">Options</a>
+                    <a href="#" id="LinkOptions">Options</a>
                 </li>
                 <li>
-                    <a href="#">Help</a>
+                    <a href="#" id="LinkHelp">Help</a>
                 </li>
                 <li>
-                    <a href="#">Logout</a>
+                    <a href="#" id="LinkLogout">Logout</a>
                 </li>
             </ul>
         </div>
@@ -43,7 +42,7 @@
     
     <div id="Thumbnails">
         
-        <a href="#" class="play" id="Play"></a>
+        <a href="#" class="control play" id="Play"></a>
         
         <ul>
         <?php foreach($Photos as $photo): ?>
@@ -54,14 +53,3 @@
     </div>
     
     <?php endif;?>
-    
-    <script type="text/javascript" src="resources/js/mootools-core-1.3-full-nocompat-yc.js"></script>
-    <script type="text/javascript" src="resources/js/mootools-more.js"></script>
-    <script type="text/javascript" src="resources/js/Photos.js"></script>
-    <script type="text/javascript" src="resources/js/infoBubble.js"></script>
-    <script type="text/javascript">
-        var AjaxURL = '<?=site_url('ajax');?>/';
-    </script>
-    
-</body>
-</html>

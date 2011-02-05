@@ -8,6 +8,31 @@ class Ajax extends CI_Controller {
 
 		$Loggedin = $this->session->userdata('loggedin');
 	}
+
+	/**
+	 * Gallery
+	 */
+	
+	public function getInfo()
+	{
+		$this->load->model('photos');
+
+		$src = $this->input->post('src');
+
+		if($src)
+		{
+			$info = $this->photos->getInfo($src);
+
+			$data = array(
+				'Comments' => 0,
+				'Date' => $info->FileDateTime,
+				'Description' => $info->Description,
+				'Title' => $info->Title
+			);
+
+			$this->index($data, 'ajax/infobox');
+		}
+	}
 	
 	/**
 	 * Login
@@ -110,9 +135,9 @@ class Ajax extends CI_Controller {
 		$this->index();
 	}
 	
-	public function index($data = array())
+	public function index($data = array(), $view = 'ajax')
 	{
-		$this->load->view('ajax', $data);
+		$this->load->view($view, $data);
 	}
 }
 

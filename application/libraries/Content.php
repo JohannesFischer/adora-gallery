@@ -72,9 +72,9 @@
 
         public function view($view, $data = array())
         {
-            //$this->CI->load->view('includes/head', $data);
+            $this->CI->load->view('includes/head', $data);
             $this->CI->load->view($view, $data);
-            //$this->load->view('includes/head', $data);
+            $this->CI->load->view('includes/footer', $data);
         }
 
     }

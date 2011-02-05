@@ -2,8 +2,11 @@ var AdoraGallery = new Class({
 
 	Implements: Options,
 
+	CurrentImage: null,
+	Interval: false,
+
 	options: {
-		
+		enableKeys: true
 	},
 	
 	initialize: function(imageContainer, thumbnails, options)
@@ -14,28 +17,121 @@ var AdoraGallery = new Class({
 		this.setOptions(options);
 
 		this.attach();
+		if(this.options.enableKeys)
+		{
+			this.attachKeyEvents();
+		}
+		
+		this.show(0);
 	},
 	
 	attach: function()
 	{
+		// Controls TopBar
+		$$('.prev')[0].addEvent('click', function(e){
+			e.stop();
+			//this.prev();
+		}.bind(this));
+
+		$$('.next')[0].addEvent('click', function(e){
+			e.stop();
+			//this.next();
+		}.bind(this));
 		
+		// Navigation		
+		$('LinkInfo').addEvent('click', function(e){
+			e.stop();
+			this.toggleInfo();
+		}.bind(this));
+
 		// Toggle SlideShow
 		$('Play').addEvent('click', function(e){
 			e.stop();
 			this.toggleSlideShow();
 		}.bind(this));
-		
-		this.thumbnails.each(function(el){
+
+		this.thumbnails.each(function(el, i){
 			el.addEvents({
 				'click': function(e){
 					e.stop();
-					this.imageContainer.empty();
-					new Element('img', {
-						src: el.get('href')	
-					}).inject(this.imageContainer);
+					this.show(i);
 				}.bind(this)
 			});
 		}, this);
+	},
+	
+	attachBoxFunctions: function(el)
+	{
+		el.getElement('a.close').addEvent('click', function(e){
+			e.stop();
+			this.closeBox(el);
+		}.bind(this));
+	},
+	
+	attachKeyEvents: function()
+	{
+		document.body.addEvent('keydown', function(e){
+			if(e.key == 'up')
+			{
+				this.toggleInfo();
+			}
+			if(e.key == 'space')
+			{
+				this.toggleSlideShow();
+			}
+		}.bind(this));	
+	},
+	
+	closeBox: function(el)
+	{
+		new Fx.Morph(el, {
+			duration: 250	
+		}).start({
+			marginTop: 20,
+			opacity: 0
+		}).chain(function(){
+			el.dispose();
+		});
+	},
+	
+	show: function(i)
+	{
+		this.imageContainer.empty();
+		
+		var thumbnail = this.thumbnails[i];
+		
+		var image = new Element('img', {
+			src: thumbnail.get('href')	
+		}).inject(this.imageContainer);
+		
+		// center image
+		var availSize = this.imageContainer.getSize();
+		
+		var imageSize = image.getSize();
+		console.log(availSize,imageSize);
+	},
+	
+	toggleInfo: function()
+	{
+		if($('Info'))
+		{
+			this.closeBox($('Info'));
+			return;
+		}
+
+		var Box = new Element('div#Info.Box').adopt(
+			new Element('div')
+		).inject(document.body);
+
+		var src = $('Image').getElement('img').get('src').split('/').getLast();
+
+		new Request.HTML({
+			onSuccess: function(){
+				this.attachBoxFunctions(Box);
+			}.bind(this),
+			update: $('Info').getElement('div'),
+			url: AjaxURL+'getInfo'
+		}).send('src='+src);
 	},
 	
 	toggleSlideShow: function()
