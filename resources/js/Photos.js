@@ -2,21 +2,28 @@ var AdoraGallery = new Class({
 
 	Implements: Options,
 
-	CurrentImage: null,
+	autoPlay: false,
+	currentImage: null,
 	Interval: false,
+	windowSize: null,
 
 	options: {
-		enableKeys: true
+		enableKeys: true,
+		slideShowInterval: 5000
 	},
 	
 	initialize: function(imageContainer, thumbnails, options)
 	{
 		this.imageContainer = $(imageContainer);
 		this.thumbnails = $$(thumbnails);
+		
+		this.windowSize = document.body.getCoordinates();
 
 		this.setOptions(options);
 
 		this.attach();
+		this.createLoader();
+
 		if(this.options.enableKeys)
 		{
 			this.attachKeyEvents();
@@ -71,13 +78,21 @@ var AdoraGallery = new Class({
 	attachKeyEvents: function()
 	{
 		document.body.addEvent('keydown', function(e){
-			if(e.key == 'up')
+			if(e.key == 'left')
 			{
-				this.toggleInfo();
+				this.prev();
+			}
+			if(e.key == 'right')
+			{
+				this.next();
 			}
 			if(e.key == 'space')
 			{
 				this.toggleSlideShow();
+			}
+			if(e.key == 'up')
+			{
+				this.toggleInfo();
 			}
 		}.bind(this));	
 	},
@@ -93,40 +108,98 @@ var AdoraGallery = new Class({
 			el.dispose();
 		});
 	},
+	
+	createLoader: function()
+	{
+		this.Loader = new Element('div#Loader').inject(document.body);
+
+		var size = this.Loader.getSize();
+
+		this.Loader.setStyles({
+			left: ((this.windowSize.width/2) - (size.x/2)).round(),
+			opacity: 0,
+			top: ((this.windowSize.height/2) - (size.y/2)).round()
+		});
+	},
     
     next: function()
     {
-        var next = this.CurrentImage + 1 < this.thumbnails.length ? this.CurrentImage + 1 : 0;
+        var next = this.currentImage + 1 < this.thumbnails.length ? this.currentImage + 1 : 0;
 
         this.show(next);
 
-        this.CurrentImage = next;
+        this.currentImage = next;
     },
     
     prev: function()
     {
-        var prev = this.CurrentImage - 1 > -1 ? this.CurrentImage - 1 : this.thumbnails.length - 1;
+        var prev = this.currentImage - 1 > -1 ? this.currentImage - 1 : this.thumbnails.length - 1;
 
         this.show(prev);
 
-        this.CurrentImage = prev;
+        this.currentImage = prev;
     },
 	
 	show: function(i)
 	{
-		this.imageContainer.empty();
-		
+		this.toggleLoader();
+
 		var thumbnail = this.thumbnails[i];
-		
-		var image = new Element('img', {
-			src: thumbnail.get('href')	
+
+		var current = this.imageContainer.getElement('div');
+
+		var target = new Element('div', {
+			styles: {
+				opacity: 0,
+				zIndex: 30	
+			}	
 		}).inject(this.imageContainer);
-		
+
+		var image = Asset.image(thumbnail.get('href'), {
+			onLoad: function(){
+				image.inject(target);
+
+				var imageSize = image.getSize();
+
+				target.setStyles({
+					left: ((this.windowSize.width/2) - (imageSize.x/2)).round().limit(0, this.windowSize.width),
+					top: ((this.windowSize.height/2) - (imageSize.y/2)).round().limit(0, this.windowSize.height)
+				});
+				
+				
+				this.toggleLoader();
+
+				if(current)
+				{
+					new Fx.Elements($$(current, target), {
+						onComplete: function(){
+							current.dispose();
+							target.setStyle('z-index', 20);
+						}
+					}).start({
+						'0': {
+							opacity: 0
+						},
+						'1': {
+							opacity: 1
+						}
+					});
+				}
+				else
+				{
+					new Fx.Tween(target, {
+						
+					}).start('opacity', 1);
+				}
+			}.bind(this)
+		});
+		/*		
 		// center image
 		var availSize = this.imageContainer.getSize();
 		
 		var imageSize = image.getSize();
-		console.log(availSize,imageSize);
+		//console.log(availSize,imageSize);
+		*/
 	},
 	
 	toggleInfo: function()
@@ -152,9 +225,25 @@ var AdoraGallery = new Class({
 		}).send('src='+src);
 	},
 	
+	toggleLoader: function()
+	{
+		this.Loader.fade(this.Loader.getStyle('opacity') == 0 ? 1 : 0);
+	},
+	
 	toggleSlideShow: function()
 	{
-		console.log('slideshow');
+		if(this.autoPlay)
+		{
+			$('Play').removeClass('pause');
+			window.clearInterval(this.interval);
+			this.autoPlay = false;
+		}
+		else
+		{
+			$('Play').addClass('pause');
+			this.interval = this.next.periodical(this.options.slideShowInterval, this);
+			this.autoPlay = true;
+		}
 	}
 	
 });

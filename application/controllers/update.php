@@ -47,7 +47,8 @@ class Update extends CI_Controller {
 
         $photos = $this->photos->getFilenames();
 
-        $files = get_filenames($this->config->item('image_dir'));
+        $files = get_dir_file_info($this->config->item('image_dir'), true);
+		//var_dump($files);
 
         $new_photos = array();
 
@@ -56,10 +57,12 @@ class Update extends CI_Controller {
         foreach($files as $file)
         {
 			//$this->config->item('thumb_marker', 'gallery')
-            if(!in_array($file, $photos))
+			$fn = $file['name'];
+
+            if(!in_array($fn, $photos))
             {
-				$new_photos[$i]['exif'] = exif_read_data($this->config->item('image_folder').$file);
-                $new_photos[$i]['filename'] = $file;
+				$new_photos[$i]['exif'] = exif_read_data($this->config->item('image_folder').$fn);
+                $new_photos[$i]['filename'] = $fn;
 				$i++;
             }
         }

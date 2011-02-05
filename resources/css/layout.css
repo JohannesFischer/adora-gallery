@@ -1,25 +1,3 @@
-/* Content
- --------------------------------------------------------*/
-
-#Content {
-    background: #888;
-    background: -moz-linear-gradient(left,  #888,  #444);
-    background: -webkit-gradient(linear, left, rigt, from(#888), to(#444));
-    border-radius: 8px;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
-    -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
-    -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
-    margin: 30px auto;
-    min-height: 400px;
-    overflow: hidden;
-    width: 800px;
-    }
-    #Content div:first-of-type {
-        margin: 10px;
-    }
-
 /* Login Form
  --------------------------------------------------------*/
 
@@ -27,6 +5,9 @@
     background: #fff;
     border-radius: 10px;
     -moz-border-radius: 10px;
+    box-shadow: 0 0 5px rgba(100, 100, 100, .5);
+    -moz-box-shadow: 0 0 5px rgba(100, 100, 100, .5);
+    -webkit-box-shadow: 0 0 5px rgba(100, 100, 100, .5);
     margin: 100px auto;
     overflow: hidden;
     padding: 10px;
@@ -109,6 +90,7 @@
     right: 10px;
     top: 80px;
     width: 300px;
+    z-index: 40;
     }
     .Box div {
         margin: 10px;
@@ -123,6 +105,17 @@
             width: 20px;
         }
 
+/* Image Holder
+ --------------------------------------------------------*/
+
+#Image {
+    position: relative;
+    }
+    #Image div {
+        position: absolute;
+        z-index: 20;
+    }
+
 /* InfoBox
  --------------------------------------------------------*/
 
@@ -132,19 +125,24 @@
     top: 80px;
 }
 
-/* Thumbnails
+/* Loader
  --------------------------------------------------------*/
 
-.play {
-    background-image: url(../images/icons/gui/play_12x16.png);
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    display: block;
-    float: left;
+#Loader {
+    background: #fff url(../images/indicator-image.gif) no-repeat 50% 50%;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .75);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .75);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .75);
     height: 50px;
-    margin: 10px;
+    position: absolute;
     width: 50px;
+    z-index: 50;
 }
+
+/* Thumbnails
+ --------------------------------------------------------*/
 
 #Thumbnails {
     bottom: 0;
@@ -153,6 +151,20 @@
     position: fixed;
     overflow: hidden;
     width: 100%;
+    z-index: 40;
+    }
+    .play {
+        background-image: url(../images/icons/gui/play_12x16.png);
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        display: block;
+        float: left;
+        height: 50px;
+        margin: 10px;
+        width: 50px;
+    }
+    .pause {
+        background-image: url(../images/icons/gui/pause_12x16.png);
     }
     #Thumbnails ul {
         margin: 10px;
@@ -180,6 +192,7 @@
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 40;
     }
     .Title,
     .Controls,
@@ -245,8 +258,6 @@
                 #TopBar .Navigation a {
                     letter-spacing: 1px;
                 }
-    
-    
 
 /* Update Images
  --------------------------------------------------------*/
