@@ -30,12 +30,12 @@ var AdoraGallery = new Class({
 		// Controls TopBar
 		$$('.prev')[0].addEvent('click', function(e){
 			e.stop();
-			//this.prev();
+			this.prev();
 		}.bind(this));
 
 		$$('.next')[0].addEvent('click', function(e){
 			e.stop();
-			//this.next();
+			this.next();
 		}.bind(this));
 		
 		// Navigation		
@@ -93,6 +93,24 @@ var AdoraGallery = new Class({
 			el.dispose();
 		});
 	},
+    
+    next: function()
+    {
+        var next = this.CurrentImage + 1 < this.thumbnails.length ? this.CurrentImage + 1 : 0;
+
+        this.show(next);
+
+        this.CurrentImage = next;
+    },
+    
+    prev: function()
+    {
+        var prev = this.CurrentImage - 1 > -1 ? this.CurrentImage - 1 : this.thumbnails.length - 1;
+
+        this.show(prev);
+
+        this.CurrentImage = prev;
+    },
 	
 	show: function(i)
 	{
