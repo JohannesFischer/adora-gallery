@@ -57,6 +57,7 @@ var AdoraGallery = new Class({
 			this.toggleSlideShow();
 		}.bind(this));
 
+		// Thumbnails
 		this.thumbnails.each(function(el, i){
 			el.addEvents({
 				'click': function(e){
@@ -65,6 +66,9 @@ var AdoraGallery = new Class({
 				}.bind(this)
 			});
 		}, this);
+		
+		// Navigation & Thumbnail
+		
 	},
 	
 	attachBoxFunctions: function(el)
@@ -119,7 +123,7 @@ var AdoraGallery = new Class({
 			left: ((this.windowSize.width/2) - (size.x/2)).round(),
 			opacity: 0,
 			top: ((this.windowSize.height/2) - (size.y/2)).round()
-		});
+		}).store('fxInstance', new Fx.Tween(this.Loader));
 	},
     
     next: function()
@@ -127,8 +131,6 @@ var AdoraGallery = new Class({
         var next = this.currentImage + 1 < this.thumbnails.length ? this.currentImage + 1 : 0;
 
         this.show(next);
-
-        this.currentImage = next;
     },
     
     prev: function()
@@ -136,13 +138,26 @@ var AdoraGallery = new Class({
         var prev = this.currentImage - 1 > -1 ? this.currentImage - 1 : this.thumbnails.length - 1;
 
         this.show(prev);
-
-        this.currentImage = prev;
     },
+	
+	setCurrentThumbnail: function()
+	{
+		var current = $$('ul .current')[0];
+
+		if(current)
+		{
+			current.removeClass('current');
+		}
+console.log(this.thumbnails, this.currentImage);
+
+		this.thumbnails[this.currentImage].addClass('current');
+	},
 	
 	show: function(i)
 	{
 		this.toggleLoader();
+
+		this.currentImage = i;
 
 		var thumbnail = this.thumbnails[i];
 
@@ -168,6 +183,7 @@ var AdoraGallery = new Class({
 				
 				
 				this.toggleLoader();
+				this.setCurrentThumbnail();
 
 				if(current)
 				{
@@ -193,13 +209,6 @@ var AdoraGallery = new Class({
 				}
 			}.bind(this)
 		});
-		/*		
-		// center image
-		var availSize = this.imageContainer.getSize();
-		
-		var imageSize = image.getSize();
-		//console.log(availSize,imageSize);
-		*/
 	},
 	
 	toggleInfo: function()
@@ -227,7 +236,9 @@ var AdoraGallery = new Class({
 	
 	toggleLoader: function()
 	{
-		this.Loader.fade(this.Loader.getStyle('opacity') == 0 ? 1 : 0);
+		var fx = this.Loader.retrieve('fxInstance');
+
+		fx.cancel().start('start', this.Loader.getStyle('opacity') == 0 ? 1 : 0);
 	},
 	
 	toggleSlideShow: function()
