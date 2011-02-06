@@ -148,7 +148,6 @@ var AdoraGallery = new Class({
 		{
 			current.removeClass('current');
 		}
-console.log(this.thumbnails, this.currentImage);
 
 		this.thumbnails[this.currentImage].addClass('current');
 	},
@@ -180,8 +179,7 @@ console.log(this.thumbnails, this.currentImage);
 					left: ((this.windowSize.width/2) - (imageSize.x/2)).round().limit(0, this.windowSize.width),
 					top: ((this.windowSize.height/2) - (imageSize.y/2)).round().limit(0, this.windowSize.height)
 				});
-				
-				
+
 				this.toggleLoader();
 				this.setCurrentThumbnail();
 

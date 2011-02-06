@@ -178,8 +178,12 @@
                 background-position: 50% 50%;
                 display: block;
                 height: 50px;
+                opacity: .5;
                 overflow: hidden;
                 width: 50px;
+            }
+            #Thumbnails .current {
+                opacity: 1;
             }
 
 /* Topbar
