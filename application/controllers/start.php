@@ -50,7 +50,7 @@ class Start extends CI_Controller {
 	
 	public function index()
 	{
-        $this->content->view('start', $this->data);
+        $this->content->view(array('start', 'includes/footer'), $this->data);
 	}
 }
 

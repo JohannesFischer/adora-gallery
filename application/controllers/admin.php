@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Update extends CI_Controller {
+class Admin extends CI_Controller {
 
     public $data = array();
 
@@ -15,12 +15,12 @@ class Update extends CI_Controller {
 		$Loggedin = $this->session->userdata('loggedin');
 
         $this->addData(array(
-			'CSS' => $this->content->getCSS(),
-            'Files' => $this->getNewPhotos(),
+			'CSS' => $this->content->getCSS(array('admin.css')),
 			'ImageFolder' => $this->config->item('image_dir'),
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
-            'PageTitle' => 'Update Photos'
+			'Tabs' => $this->getTabs(),
+            'PageTitle' => 'Adora Gallery Admin'
         ));
 	}
     
@@ -39,7 +39,7 @@ class Update extends CI_Controller {
         }
     }
     
-    public function getNewPhotos()
+    private function getNewPhotos()
     {
 		$this->config->load('gallery', true);
 
@@ -70,9 +70,36 @@ class Update extends CI_Controller {
         return $new_photos;
     }
 	
+	private function getTabs()
+	{
+		$tabs = array(
+			'settings',
+			'edit',
+			'update',
+			'user'
+		);
+
+		$links = array();
+		
+		foreach($tabs as $tab)
+		{
+			$links[] = anchor('admin/'.$tab, $tab, array('class'=>'tabs'));
+		}
+
+		return $links;
+	}
+	
+	public function update()
+	{
+	     $this->addData(array(
+            'Files' => $this->getNewPhotos()
+        ));
+		$this->content->view(array('admin','includes/admin_update', 'includes/admin_footer'), $this->data);
+	}
+	
 	public function index()
 	{
-		$this->content->view('update', $this->data);
+		$this->content->view(array('admin', 'includes/admin_footer'), $this->data);
 	}
 }
 

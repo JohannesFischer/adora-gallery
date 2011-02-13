@@ -9,7 +9,7 @@
             $this->CI =& get_instance();
         }
 
-		public function getCSS()
+		public function getCSS($files = array())
 		{
 			$this->CI->load->helper('html');
 
@@ -20,6 +20,8 @@
 				'layout.css',
 				'infoBubble.css'
 			);
+
+			$cssFiles = array_merge($cssFiles, $files);
 
 			$html = '';
 
@@ -73,8 +75,17 @@
         public function view($view, $data = array())
         {
             $this->CI->load->view('includes/head', $data);
-            $this->CI->load->view($view, $data);
-            $this->CI->load->view('includes/footer', $data);
+			if(is_array($view))
+			{
+				foreach($view as $v)
+				{
+					$this->CI->load->view($v, $data);		
+				}
+			}
+			else
+			{
+				$this->CI->load->view($view, $data);
+			}
         }
 
     }

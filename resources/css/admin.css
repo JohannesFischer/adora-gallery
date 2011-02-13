@@ -1,0 +1,43 @@
+/* Layout
+ --------------------------------------------------------*/
+
+#Wrapper {
+    margin: 0 auto;
+    width: 800px;
+}
+
+#Content {
+    background: #fff;
+}
+
+/* Tabs
+ --------------------------------------------------------*/
+
+ul.tabs {
+    margin: 0;
+    overflow: hidden;
+    }
+    ul.tabs li {
+        background: #fff;
+        float: left;
+        width: 140px;
+        }
+        ul.tabs a {
+            color: #333;
+            font-size: 22px;
+        }
+
+/* Update Images
+ --------------------------------------------------------*/
+
+.new-image {
+    margin: 0 0 20px !important;
+    overflow: hidden;
+    }
+    .new-image img {
+        float: left;
+        padding: 0 20px 0 0;
+    }
+    .new-image fieldset {
+        width: 444px;
+    }
