@@ -59,10 +59,17 @@
 				'id' => 'Login'
 			));
 			$form.= form_fieldset();
+			$form.= form_label('username');
 			$form.= form_input(array(
 				'maxlength' => 20,
-				'name' => 'usercode',
+				'name' => 'username',
 				'placeholder' => $this->CI->lang->line('login_placeholder')
+			));
+			$form.= form_label('password');
+			$form.= form_input(array(
+				'maxlength' => 20,
+				'name' => 'password',
+				'type' => 'password'
 			));
 			$form.= form_submit('login_submit', $this->CI->lang->line('login_button'));
 			$form.= form_fieldset_close();

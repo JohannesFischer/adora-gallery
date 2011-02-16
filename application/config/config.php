@@ -370,6 +370,7 @@ $config['proxy_ips'] = '';
 |
 */
 
+$config['user_icon_folder'] = 'resources/images/icons/user-icons/';
 $config['image_dir'] = 'photos/';
 $config['image_dir_resampled'] = 'photos/_resampled/';
 $config['image_folder'] = '/opt/lampp/htdocs/scripts/adora-gallery/photos/';

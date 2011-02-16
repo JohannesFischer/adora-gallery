@@ -2,11 +2,13 @@
 
 class Ajax extends CI_Controller {
 
+	private $Loggedin;
+
 	public function __construct()
 	{
 		parent::__construct();
 
-		$Loggedin = $this->session->userdata('loggedin');
+		$this->Loggedin = $this->session->userdata('loggedin');
 	}
 
 	/**
@@ -15,13 +17,13 @@ class Ajax extends CI_Controller {
 	
 	public function getInfo()
 	{
-		$this->load->model('photos');
+		$this->load->model('photo_model');
 
 		$src = $this->input->post('src');
 
 		if($src)
 		{
-			$info = $this->photos->getInfo($src);
+			$info = $this->photo_model->getInfo($src);
 
 			$data = array(
 				'Comments' => 0,
@@ -41,23 +43,35 @@ class Ajax extends CI_Controller {
 	public function login()
 	{
 		$this->lang->load('basic', 'english');
+		$this->load->model('user_model');
 
-		$usercode = $this->input->post('usercode');
+		$password = md5($this->input->post('password'));
+		$username = $this->input->post('username');
 
-		$data = array(
-			'icon' => base_url().'resources/images/icons/7_48x48.png',
-			'loggedin' => true,
-			'username' => 'johannes'
-		);
+		$login = $this->user_model->login($username, $password);
 
-		$data['username'] = str_replace('%u', $data['username'], $this->lang->line('login_welcome'));
-
-		$this->session->set_userdata($data);
+		if($login)
+		{
+			$data = array(
+				'icon' => base_url().'resources/images/icons/7_48x48.png',
+				'loggedin' => true,
+				'username' => 'johannes'
+			);
+	
+			$data['username'] = str_replace('%u', $data['username'], $this->lang->line('login_welcome'));
+	
+			$this->session->set_userdata($data);
+		}
 
 		$this->index(array(
 			'json' => true,
 			'response' => json_encode($data)
 		));
+	}
+	
+	public function logout()
+	{
+		return $this->session->sess_destroy();
 	}
 	
 	/**

@@ -41,9 +41,9 @@ class Start extends CI_Controller {
 	
 	private function getPhotos()
 	{
-		$this->load->model('photos');
+		$this->load->model('photo_model');
 
-		$photos = $this->photos->getAll();
+		$photos = $this->photo_model->getAll();
 
 		return $photos;
 	}
@@ -52,6 +52,7 @@ class Start extends CI_Controller {
 	{
         $this->content->view(array('start', 'includes/footer'), $this->data);
 	}
+
 }
 
 ?>

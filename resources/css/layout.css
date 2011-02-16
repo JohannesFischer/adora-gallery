@@ -11,7 +11,7 @@
     margin: 100px auto;
     overflow: hidden;
     padding: 10px;
-    width: 400px;
+    width: 365px;
     }
     #LoginForm p {
         font-size: 24px;
@@ -20,14 +20,15 @@
     #LoginForm fieldset {
         overflow: hidden;
         }
-        #LoginForm input[type=text],
-        #LoginForm input[type=submit] {
-            font-size: 24px;
+        #LoginForm input {
+            font-size: 18px;
         }
-        #LoginForm input[type=text] {
-            height: 30px;
+        #LoginForm input[type=text],
+        #LoginForm input[type=password] {
+            height: 20px;
+            margin: 0 0 10px;
             padding: 4px 8px;
-            width: 245px;
+            width: 213px;
         }
         #LoginForm input[type=submit] {
             background: #999;
@@ -36,9 +37,9 @@
             font-family: inherit;
             font-weight: bold;
             float: right;
-            height: 40px;
+            height: 30px;
             padding-top: 5px;
-            width: 130px;
+            width: 80px;
             }
             #LoginForm input[type=submit]:hover {
                 cursor: pointer;

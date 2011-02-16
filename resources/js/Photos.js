@@ -270,7 +270,8 @@ window.addEvent('domready', function(){
 		f.addEvent('submit', function(e){
 			e.stop();
 			
-			var code = f.getElement('input').get('value');
+			var password = f.getElement('input[name=password]').get('value');
+			var username = f.getElement('input[name=username]').get('value');
 			
 			new Request.JSON({
 				onSuccess: function(json){
@@ -292,7 +293,7 @@ window.addEvent('domready', function(){
 					});
 				},
 				url: AjaxURL+'login/'
-			}).send('usercode='+code);
+			}).send('username='+username+'&password='+password);
 		});
 	}
 	
@@ -319,6 +320,19 @@ window.addEvent('domready', function(){
 					url: AjaxURL+'addPhoto'
 				}).send('data='+JSON.encode(formData));
 			});
+		});
+	}
+	
+	if($('LinkLogout'))
+	{
+		$('LinkLogout').addEvent('click', function(e){
+			e.stop();
+			new Request({
+				onSuccess: function(){
+					location.reload();	
+				},
+				url: AjaxURL+'logout'	
+			}).send();
 		});
 	}
 	

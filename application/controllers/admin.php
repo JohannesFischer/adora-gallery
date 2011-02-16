@@ -10,7 +10,7 @@ class Admin extends CI_Controller {
 
         $this->lang->load('basic', 'english');
         $this->load->library('content');
-		$this->load->model('photos');
+		$this->load->model('photo_model');
 
 		$Loggedin = $this->session->userdata('loggedin');
 
@@ -45,10 +45,9 @@ class Admin extends CI_Controller {
 
         $this->load->helper('file');
 
-        $photos = $this->photos->getFilenames();
+        $photos = $this->photo_model->getFilenames();
 
         $files = get_dir_file_info($this->config->item('image_dir'), true);
-		//var_dump($files);
 
         $new_photos = array();
 
@@ -94,7 +93,20 @@ class Admin extends CI_Controller {
 	     $this->addData(array(
             'Files' => $this->getNewPhotos()
         ));
+
 		$this->content->view(array('admin','includes/admin_update', 'includes/admin_footer'), $this->data);
+	}
+	
+	public function user()
+	{
+		$this->load->model('user_model');
+
+		$this->addData(array(
+			'IconFolder' => $this->config->item('user_icon_folder'),
+			'User' => $this->user_model->getUser()
+		));
+
+		$this->content->view(array('admin','includes/admin_user', 'includes/admin_footer'), $this->data);
 	}
 	
 	public function index()
