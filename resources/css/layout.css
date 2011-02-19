@@ -8,9 +8,10 @@
     box-shadow: 0 0 5px rgba(100, 100, 100, .5);
     -moz-box-shadow: 0 0 5px rgba(100, 100, 100, .5);
     -webkit-box-shadow: 0 0 5px rgba(100, 100, 100, .5);
-    margin: 100px auto;
     overflow: hidden;
     padding: 10px;
+    position: absolute;
+    top: -500px;
     width: 365px;
     }
     #LoginForm p {

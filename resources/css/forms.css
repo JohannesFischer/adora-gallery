@@ -2,6 +2,7 @@ form {
     overflow: hidden;
 }
 
+input[type=password],
 input[type=text],
 textarea {
     border: 1px solid #999;

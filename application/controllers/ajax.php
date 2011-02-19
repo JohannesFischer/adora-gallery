@@ -62,6 +62,12 @@ class Ajax extends CI_Controller {
 	
 			$this->session->set_userdata($data);
 		}
+		else
+		{
+			$data = array(
+				'error' => 'Invalid login'
+			);
+		}
 
 		$this->index(array(
 			'json' => true,
