@@ -1,0 +1,3 @@
+<?php if(!$Loggedin): ;?>
+	<?=$LoginForm;?>
+<?php endif; ?>

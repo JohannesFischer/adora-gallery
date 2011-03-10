@@ -38,6 +38,29 @@
 			return $html;
 		}
 
+		public function getJS($files = array())
+		{
+			$jsFolder = base_url().'resources/js/';
+
+			$jsFiles = array(
+				$jsFolder.'third-party/mootools-core-1.3-full-nocompat-yc.js',
+				$jsFolder.'third-party/mootools-more.js',
+				$jsFolder.'Photos.js'		 
+			);
+			
+			$count = count($files);
+			
+			if($count > 0)
+			{
+				for($i = 0; $i < $count; $i++)
+				{
+					$files[$i] = $jsFolder.$files[$i];
+				}
+			}
+
+			return array_merge($jsFiles, $files);
+		}
+
         public function getDate($date = false)
         {
             $this->CI->lang->load('basic', 'english');
@@ -62,8 +85,7 @@
 			$form.= form_label('username');
 			$form.= form_input(array(
 				'maxlength' => 20,
-				'name' => 'username',
-				'placeholder' => $this->CI->lang->line('login_placeholder')
+				'name' => 'username'
 			));
 			$form.= form_label('password');
 			$form.= form_input(array(

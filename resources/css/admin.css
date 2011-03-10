@@ -2,29 +2,54 @@
  --------------------------------------------------------*/
 
 #Wrapper {
-    margin: 0 auto;
+    margin: 20px auto;
     width: 800px;
 }
 
 #Content {
     background: #fff;
-}
+    overflow: hidden;
+    }
+    #Content>div {
+        margin: 20px;
+    }
+    #Content h1+div {
+        margin: 20px 0;
+    }
+    #Content a,
+    #Content p,
+    #Content span,
+    #Content strong {
+        font-family: Verdana, Helvetica, sans-serif;
+        font-size: 12px;
+        color: #333;
+    }
+    #Content a {
+        text-decoration: underline;
+    }
 
 /* Tabs
  --------------------------------------------------------*/
 
 ul.tabs {
+    clear: both;
     margin: 0;
     overflow: hidden;
     }
     ul.tabs li {
         background: #fff;
         float: left;
-        width: 140px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        width: 200px;
         }
         ul.tabs a {
             color: #333;
             font-size: 22px;
+        }
+        ul.tabs .active a {
+            font-weight: bold;
         }
 
 /* Update Images
@@ -41,3 +66,56 @@ ul.tabs {
     .new-image fieldset {
         width: 444px;
     }
+    
+/* User Management
+ --------------------------------------------------------*/
+
+#User ul {    
+    }
+    #User li,
+    #User li>div {
+        overflow: hidden;
+        }
+        #User li img,
+        #User li div div {
+            float: left;
+        }
+        #User li img {
+            margin: 0 20px 0 0;
+        }
+        #User .ID {
+            display: none;
+        }
+        #User li strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        #User li a {
+        }
+
+#User form {
+    width: 215px;
+}
+
+ul.user-icons {
+    float: left;
+    height: 48px;
+    overflow: hidden;
+    position: realative;
+}
+
+/* Misc
+ --------------------------------------------------------*/
+
+a.back-to-gallery {
+    background: #fff url(../images/icons/gui/arrow_left_24x24.png) no-repeat 5px 50%;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    color: #333;
+    display: block;
+    float: right;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 20px;
+    padding: 0 10px 0 40px;
+}

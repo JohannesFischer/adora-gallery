@@ -42,3 +42,11 @@ input[type=submit] {
     padding: 4px 0;
     width: 80px;
 }
+
+/* User Management
+ --------------------------------------------------------*/
+
+#User input[type=text] {
+    float: none;
+    width: 200px;
+}

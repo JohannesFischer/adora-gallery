@@ -17,6 +17,7 @@ class Start extends CI_Controller {
 			'CSS' => $this->content->getCSS(),
             'Date' => $this->content->getDate(),
 			'ImageFolder' => $this->config->item('image_dir_resampled'),
+			'JS' => $this->content->getJS(array('infoBubble.js')),
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
             'PageTitle' => 'Adora Gallery',
@@ -50,7 +51,16 @@ class Start extends CI_Controller {
 	
 	public function index()
 	{
-        $this->content->view(array('start', 'includes/footer'), $this->data);
+		$this->load->view('includes/head', $this->data);
+		if($this->data['Loggedin'])
+		{
+			$this->load->view('start', $this->data);
+		}
+		else
+		{
+			$this->load->view('includes/login_form', $this->data);
+		}
+        $this->load->view('includes/footer', $this->data);
 	}
 
 }

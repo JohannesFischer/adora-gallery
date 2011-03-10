@@ -279,20 +279,27 @@ window.addEvent('domready', function(){
 		}).start({
 			opacity: 1,
 			top: ((windowSize.y/2)-(size.y/2)).round()
+		}).chain(function(){
+			f.getElement('input[type=text]').focus();
 		});
-	
-		f.getElement('input').focus();
 		
 		f.addEvent('submit', function(e){
 			e.stop();
-			
-			var password = f.getElement('input[name=password]').get('value');
-			var username = f.getElement('input[name=username]').get('value');
-			
+
+			var password = f.getElement('input[name=password]').get('value').trim();
+			var username = f.getElement('input[name=username]').get('value').trim();
+
+			if(username == '' || password == '')
+			{
+				return;
+			}
+
 			new Request.JSON({
 				onSuccess: function(json){
 					if(json.error)
 					{
+						f.getElement('input[name=password]').set('text', '');
+
 						new Fx.Tween(target, {
 							duration: 500,
 							transition: 'elastic:out'
@@ -301,7 +308,6 @@ window.addEvent('domready', function(){
 					else
 					{
 						new Fx.Tween(f, {
-							
 						}).start('opacity', 0).chain(function(){
 							target.empty();
 							new Element('span.user-icon',{
@@ -323,32 +329,6 @@ window.addEvent('domready', function(){
 		});
 	}
 	
-	if($('AddImages'))
-	{
-		var images = $$('.new-image');
-
-		images.each(function(el){
-			var f = el.getElement('form');
-
-			f.addEvent('submit', function(e){
-				e.stop();
-				var formData = {};
-
-				f.getElements('input[type=text], input[type=hidden], textarea').each(function(el){
-					formData[el.get('name')] = el.get('value').trim();
-				});
-				
-				new Request.JSON({
-					onSuccess: function(){
-						//el.dispose();
-						el.setStyle('display', 'none');
-					},
-					url: AjaxURL+'addPhoto'
-				}).send('data='+JSON.encode(formData));
-			});
-		});
-	}
-	
 	if($('LinkLogout'))
 	{
 		$('LinkLogout').addEvent('click', function(e){
@@ -367,8 +347,38 @@ window.addEvent('domready', function(){
 		new AdoraGallery($('Image'), $$('#Thumbnails li a'));
 	}
 	
-	new infoBubble('#Thumbnails li a', {
-		imageSource: 'rel'	
-	});
-	
+	if($('Thumbnails'))
+	{
+		new infoBubble('#Thumbnails li a', {
+			imageSource: 'rel'	
+		});
+		/*
+		var el = $('Thumbnails');
+
+		var height = el.getHeight();
+
+		var holder = new Element('div.holder', {
+			styles: {
+				bottom: 0,
+				height: height
+			}
+		}).inject(el, 'after').grab(el).store('fx', new Fx.Tween(el));
+
+		holder.addEvents({
+			'mouseenter': function(){
+				console.log('enter');
+				var fx = holder.retrieve('fx');
+				fx.cancel().start('bottom', 0);
+			},
+			'mouseleave': function(){
+				(function(){
+					var fx = holder.retrieve('fx');
+					console.log('fx', height*-1);
+					fx.cancel().start('bottom', height*-1);
+				}).delay(3000);
+			}
+		});
+		*/
+	}
+
 });

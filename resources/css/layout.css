@@ -82,6 +82,11 @@
         background-color: rgba(50, 50, 50, .75);
     }
 
+.holder {
+    position: fixed;
+    width: 100%;
+}
+
 /* Boxes
  --------------------------------------------------------*/
 

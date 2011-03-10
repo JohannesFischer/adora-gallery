@@ -16,10 +16,19 @@ class Admin extends CI_Controller {
 
         $this->addData(array(
 			'CSS' => $this->content->getCSS(array('admin.css')),
+			'currentPage' => '',
+			'GalleryLinkText' => $this->lang->line('gallery_link_text'),
 			'ImageFolder' => $this->config->item('image_dir'),
+			'isAdmin' => $this->session->userdata('role') == 'admin',
+			'JS' => $this->content->getJS(array('Admin.js')),
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
-			'Tabs' => $this->getTabs(),
+			'Tabs' => array(
+				'settings',
+				'edit',
+				'update',
+				'user'
+			),
             'PageTitle' => 'Adora Gallery Admin'
         ));
 	}
@@ -58,7 +67,7 @@ class Admin extends CI_Controller {
 			//$this->config->item('thumb_marker', 'gallery')
 			$fn = $file['name'];
 
-            if(!in_array($fn, $photos))
+            if(!in_array($fn, $photos) && preg_match('/\.jpg/i', $fn))
             {
 				$new_photos[$i]['exif'] = exif_read_data($this->config->item('image_folder').$fn);
                 $new_photos[$i]['filename'] = $fn;
@@ -69,28 +78,10 @@ class Admin extends CI_Controller {
         return $new_photos;
     }
 	
-	private function getTabs()
-	{
-		$tabs = array(
-			'settings',
-			'edit',
-			'update',
-			'user'
-		);
-
-		$links = array();
-		
-		foreach($tabs as $tab)
-		{
-			$links[] = anchor('admin/'.$tab, $tab, array('class'=>'tabs'));
-		}
-
-		return $links;
-	}
-	
 	public function update()
 	{
 	     $this->addData(array(
+			'currentPage' => 'update',
             'Files' => $this->getNewPhotos()
         ));
 
@@ -102,6 +93,8 @@ class Admin extends CI_Controller {
 		$this->load->model('user_model');
 
 		$this->addData(array(
+			'addUser' => $this->lang->line('add_user'),
+			'currentPage' => 'user',
 			'IconFolder' => $this->config->item('user_icon_folder'),
 			'User' => $this->user_model->getUser()
 		));
@@ -111,7 +104,16 @@ class Admin extends CI_Controller {
 	
 	public function index()
 	{
-		$this->content->view(array('admin', 'includes/admin_footer'), $this->data);
+		$this->load->view('includes/head', $this->data);
+		if($this->data['Loggedin'])
+		{
+			$this->load->view('admin', $this->data);
+		}
+		else
+		{
+			$this->load->view('includes/login_form', $this->data);
+		}
+        $this->load->view('includes/admin_footer', $this->data);
 	}
 }
 
