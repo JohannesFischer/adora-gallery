@@ -4,10 +4,12 @@ var AdoraGallery = new Class({
 
 	autoPlay: false,
 	currentImage: null,
+	infoWindowOpen: false,
 	Interval: false,
 	windowSize: null,
 
 	options: {
+		autoHideNavigation: true,
 		enableKeys: true,
 		slideShowInterval: 5000
 	},
@@ -28,7 +30,9 @@ var AdoraGallery = new Class({
 		{
 			this.attachKeyEvents();
 		}
-		
+
+		this.initThumbnails();
+
 		this.show(0);
 	},
 	
@@ -125,6 +129,54 @@ var AdoraGallery = new Class({
 			top: ((this.windowSize.height/2) - (size.y/2)).round()
 		}).store('fxInstance', new Fx.Tween(this.Loader));
 	},
+
+	// TODO extend Element
+	getElementWidth: function(el)
+	{
+		return el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();		
+	},
+	
+	initThumbnails: function()
+	{
+		var thumbnailHolder = $('Thumbnails');
+		var thumbnailWrapper = thumbnailHolder.getElement('div');
+		var ul = thumbnailHolder.getElement('ul');
+		var thumbnails = ul.getElements('li');
+		
+		console.log(thumbnailWrapper.getWidth(), ul.getWidth());
+
+		var availWidth = document.body.getWidth();
+		var playButtonWidth = this.getElementWidth($('Play'));
+		var paginationButtonWidth = this.getElementWidth($('Slide'));
+		console.log(paginationButtonWidth);
+		availWidth-= (playButtonWidth + paginationButtonWidth) + (thumbnailWrapper.getStyle('margin-left').toInt() + thumbnailWrapper.getStyle('margin-right').toInt());
+		console.log(availWidth);
+		
+		thumbnailWrapper.setStyle('width', availWidth);
+		
+		return;
+		
+		var ulMargin = ul.getStyle('margin-left').toInt() + ul.getStyle('margin-right').toInt();
+		
+		var width = ulMargin;
+		
+		thumbnails.each(function(el){
+			width+= el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();
+		});
+		
+		if(width > thumbnailHolder.getWidth())
+		{
+			var buttonSize = $('Play').getWidth() + $('Play').getStyle('margin-left').toInt() + $('Play').getStyle('margin-right').toInt();
+			
+			var availableWidth = thumbnailHolder.getWidth() - ulMargin - (buttonSize * 2);
+
+			//new Element('div').setStyle('width', availableWidth).wraps(ul);
+
+			new Element('a.control.slide', {
+				href: '#'
+			}).inject(thumbnailHolder);
+		}
+	},
     
     next: function()
     {
@@ -189,7 +241,9 @@ var AdoraGallery = new Class({
 						onComplete: function(){
 							current.dispose();
 							target.setStyle('z-index', 20);
-						}
+							// update image details in the Info box
+							this.updateInfo();
+						}.bind(this)
 					}).start({
 						'0': {
 							opacity: 0
@@ -221,15 +275,7 @@ var AdoraGallery = new Class({
 			new Element('div')
 		).inject(document.body);
 
-		var src = $('Image').getElement('img').get('src').split('/').getLast();
-
-		new Request.HTML({
-			onSuccess: function(){
-				this.attachBoxFunctions(Box);
-			}.bind(this),
-			update: $('Info').getElement('div'),
-			url: AjaxURL+'getInfo'
-		}).send('src='+src);
+		this.updateInfo();
 	},
 	
 	toggleLoader: function()
@@ -253,6 +299,24 @@ var AdoraGallery = new Class({
 			this.interval = this.next.periodical(this.options.slideShowInterval, this);
 			this.autoPlay = true;
 		}
+	},
+	
+	updateInfo: function()
+	{
+		if(!$('Info'))
+		{
+			return;
+		}
+
+		var src = $('Image').getElement('img').get('src').split('/').getLast();
+
+		new Request.HTML({
+			onSuccess: function(){
+				this.attachBoxFunctions($('Info'));
+			}.bind(this),
+			update: $('Info').getElement('div'),
+			url: AjaxURL+'getInfo'
+		}).send('src='+src);
 	}
 	
 });
@@ -350,7 +414,12 @@ window.addEvent('domready', function(){
 	if($('Thumbnails'))
 	{
 		new infoBubble('#Thumbnails li a', {
-			imageSource: 'rel'	
+			hideDelay: 1500,
+			imageSource: 'rel',
+			size: {
+				height: 150,
+				width: 200
+			}
 		});
 		/*
 		var el = $('Thumbnails');

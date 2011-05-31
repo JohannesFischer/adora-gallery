@@ -32,7 +32,7 @@
 		
 		public function login($username, $password)
 		{
-			$this->db->select('Email, Icon, Last_Login, Role, Username');
+			$this->db->select('Email, Icon, Last_Login, Login_Text, Role, Username');
 			$this->db->from($this->user_table);
 			$this->db->where('username', $username);
 			$this->db->where('password', $password);

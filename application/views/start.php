@@ -42,14 +42,20 @@
     
     <div id="Thumbnails">
         
-        <a href="#" class="control play" id="Play"></a>
+        <a href="#" class="control play" id="Play" title="<?=$Language['gallery_title_play_button'];?>"></a>
         
-        <ul>
-        <?php foreach($Photos as $photo): ?>
-            <li>
-                <a href="<?=$ImageFolder.$photo['Filename_Large'];?>" style="background-image:url(<?=$ImageFolder.$photo['Filename_Thumbnail'];?>)" rel="<?=$ImageFolder.$photo['Filename_Thumbnail'];?>"></a>
-            </li>
-        <?php endforeach; ?>
+		<div class="thumbnail-wrapper">
+			<ul>
+			<?php foreach($Photos as $photo): ?>
+				<li>
+					<a href="<?=$ImageFolder.$photo['Filename_Large'];?>" style="background-image:url(<?=$ImageFolder.$photo['Filename_Thumbnail'];?>)" rel="<?=$ImageFolder.$photo['Filename_Thumbnail'];?>"></a>
+				</li>
+			<?php endforeach; ?>
+			</ul>
+		</div>
+
+		<a href="#" class="control slide" id="Slide"></a>
+
     </div>
     
-    <?php endif;?>
+    <?php endif; ?>

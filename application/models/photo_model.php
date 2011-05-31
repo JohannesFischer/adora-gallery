@@ -13,11 +13,11 @@
 			return $this->db->insert($this->photo_table, $data);
 		}
 
-        public function getAll()
+        public function getAll($order = 'DESC')
         {
             $this->db->from($this->photo_table);
 			$this->db->select('Created, Filename_Large, Filename_Thumbnail, Title');
-			$this->db->order_by('Created, Filename');
+			$this->db->order_by('Created '.$order);
 
 			$query = $this->db->get();
 	

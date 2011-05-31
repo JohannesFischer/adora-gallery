@@ -70,7 +70,7 @@
 #InfoBox,
 #Thumbnails,
 #TopBar {
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, .75);
 }
 
 .control {
@@ -160,8 +160,8 @@
     width: 100%;
     z-index: 40;
     }
-    .play {
-        background-image: url(../images/icons/gui/play_12x16.png);
+    .play,
+    .slide {
         background-position: 50% 50%;
         background-repeat: no-repeat;
         display: block;
@@ -170,18 +170,33 @@
         margin: 10px;
         width: 50px;
     }
+    .play {
+        background-image: url(../images/icons/gui/play_12x16.png);
+    }
     .pause {
         background-image: url(../images/icons/gui/pause_12x16.png);
     }
-    #Thumbnails ul {
+    .slide {
+        background-image: url(../images/icons/gui/last_16x16.png);
+    }
+    .thumbnail-wrapper {
+        float: left;
+        height: 50px; /* thumbnail height + margin */
         margin: 10px;
         overflow: hidden;
+        position: relative;
+    }
+    .thumbnail-wrapper Thumbnails ul {
+        overflow: hidden;
         }
-        #Thumbnails li {
+        .thumbnail-wrapper li {
             float: left;
             margin: 0 10px 0 0;
             }
-            #Thumbnails li a {
+        .thumbnail-wrapper li:last-of-type {
+            margin: 0;
+            }
+            .thumbnail-wrapper li a {
                 background-position: 50% 50%;
                 display: block;
                 height: 50px;
@@ -189,7 +204,7 @@
                 overflow: hidden;
                 width: 50px;
             }
-            #Thumbnails .current {
+            .thumbnail-wrapper .current {
                 opacity: 1;
             }
 

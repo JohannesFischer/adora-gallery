@@ -82,7 +82,8 @@ class Admin extends CI_Controller {
 	{
 	     $this->addData(array(
 			'currentPage' => 'update',
-            'Files' => $this->getNewPhotos()
+            'Files' => $this->getNewPhotos(),
+			'Text' => $this->lang->line('new_image')
         ));
 
 		$this->content->view(array('admin','includes/admin_update', 'includes/admin_footer'), $this->data);

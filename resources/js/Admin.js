@@ -1,3 +1,40 @@
+var addImage = function(els)
+{
+	els.each(function(el){
+		el.addEvent('click', function(e){
+			e.stop();
+
+			var target = new Element('div.new-image').inject(el, 'after');
+
+			new Request.HTML({
+				onSuccess: function(){
+					var f = target.getElement('form');
+
+					f.addEvent('submit', function(e){
+						e.stop();
+						var formData = {};
+		
+						f.getElements('input[type=text], input[type=hidden], textarea').each(function(el){
+							formData[el.get('name')] = el.get('value').trim();
+						});
+		
+						new Request.JSON({
+							onSuccess: function(){
+								//el.dispose();
+								el.setStyle('display', 'none');
+								console.log(el);
+							},
+							url: AjaxURL+'addPhoto'
+						}).send('data='+JSON.encode(formData));
+					});
+				},
+				update: target,
+				url: AjaxURL+'getImageForm'	
+			}).send('file='+el.get('href'));
+		});
+	});	
+};
+
 var editUser = function(el)
 {
 	var li = el.getParent('li');
@@ -54,38 +91,7 @@ window.addEvent('domready', function(){
 
 	if($('AddImages'))
 	{
-		$$('#AddImages li a').each(function(el){
-			el.addEvent('click', function(e){
-				e.stop();
-
-				var target = new Element('div.new-image').inject(el, 'after');
-
-				new Request.HTML({
-					onSuccess: function(){
-						var f = target.getElement('form');
-
-						f.addEvent('submit', function(e){
-							e.stop();
-							var formData = {};
-			
-							f.getElements('input[type=text], input[type=hidden], textarea').each(function(el){
-								formData[el.get('name')] = el.get('value').trim();
-							});
-			
-							new Request.JSON({
-								onSuccess: function(){
-									//el.dispose();
-									el.setStyle('display', 'none');
-								},
-								url: AjaxURL+'addPhoto'
-							}).send('data='+JSON.encode(formData));
-						});
-					},
-					update: target,
-					url: AjaxURL+'getImageForm'	
-				}).send('file='+el.get('href'));
-			});
-		});
+		addImage($$('#AddImages li a'));
 	}
 
 	if($('User'))

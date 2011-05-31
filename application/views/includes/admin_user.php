@@ -8,7 +8,7 @@
 
 			<a href="#"><?=$addUser;?></a>
 
-			<ul>
+			<ul id="UserList">
 			<?php foreach($User as $u): ?>
 				<li>
 					<div>

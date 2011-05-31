@@ -3,6 +3,7 @@
 class Start extends CI_Controller {
 
     public $data = array();
+	public $Language = array();
 
 	public function __construct()
 	{
@@ -11,6 +12,10 @@ class Start extends CI_Controller {
         $this->lang->load('basic', 'english');
         $this->load->library('content');
 
+		$this->loadLanguageItems(array(
+			'gallery_title_play_button'
+		));
+
 		$Loggedin = $this->session->userdata('loggedin');
 
         $this->addData(array(
@@ -18,6 +23,7 @@ class Start extends CI_Controller {
             'Date' => $this->content->getDate(),
 			'ImageFolder' => $this->config->item('image_dir_resampled'),
 			'JS' => $this->content->getJS(array('infoBubble.js')),
+			'Language' => $this->Language,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
             'PageTitle' => 'Adora Gallery',
@@ -40,11 +46,19 @@ class Start extends CI_Controller {
         }
     }
 	
+	private function loadLanguageItems($keys)
+	{
+		foreach($keys as $key)
+		{
+			$this->Language[$key] = $this->lang->line($key);
+		}
+	}
+	
 	private function getPhotos()
 	{
 		$this->load->model('photo_model');
 
-		$photos = $this->photo_model->getAll();
+		$photos = $this->photo_model->getAll('DESC');
 
 		return $photos;
 	}

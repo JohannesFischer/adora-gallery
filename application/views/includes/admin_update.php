@@ -4,6 +4,8 @@
 
 		<h1><?=$PageTitle;?></h1>
 	
+		<p><?=$Text;?></p>
+	
 		<div id="AddImages">            
 			<?php
 				$i = 0;

@@ -61,7 +61,9 @@ class Ajax extends CI_Controller {
 				'username' => $login->Username
 			);
 	
-			$data['username'] = str_replace('%u', $data['username'], $this->lang->line('login_welcome'));
+			$login_text = $login->Login_Text != '' ? $login->Login_Text : $this->lang->line('login_welcome');
+
+			$data['username'] = str_replace('%U', $data['username'], $login_text);
 	
 			$this->session->set_userdata($data);
 
@@ -188,7 +190,7 @@ class Ajax extends CI_Controller {
 
 		unset($data['Orientation']);
 
-		$data['Created'] = date('%Y-%m-%d');
+		$data['Created'] = date('Y-m-d h:m:i');
 
 		$this->photo_model->addPhoto($data);
 
@@ -231,6 +233,7 @@ class Ajax extends CI_Controller {
 		$source_image = $this->config->item('image_folder').$filename;
 		$thumb_marker = '_preview';
 		
+		// todo error handling
 		$exif_data = exif_read_data($this->config->item('image_folder').$filename);
 
 		if(!file_exists($this->config->item('image_folder_resampled').$fn[0].$thumb_marker.'.'.$fn[1]))
