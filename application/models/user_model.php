@@ -41,6 +41,7 @@
 
 			if($query->num_rows() == 1)
 			{
+				$this->updateLastLogin();
 				return $query->row();
 			}
 

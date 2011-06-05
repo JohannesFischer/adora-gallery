@@ -18,11 +18,27 @@ class Start extends CI_Controller {
 
 		$Loggedin = $this->session->userdata('loggedin');
 
+		$this->content->addCSSFiles(array(
+			'reset.css',
+			'basic.css',
+			'forms.css',
+			'layout.css',
+			'infoBubble.css'
+		));
+		
+		$jsFolder = base_url().'resources/js/';
+		$jsFiles = array(
+			$jsFolder.'third-party/mootools-core-1.3-full-nocompat-yc.js',
+			$jsFolder.'third-party/mootools-more.js',
+			$jsFolder.'infoBuble.js',
+			$jsFolder.'Photos.js'
+		);
+
         $this->addData(array(
 			'CSS' => $this->content->getCSS(),
             'Date' => $this->content->getDate(),
 			'ImageFolder' => $this->config->item('image_dir_resampled'),
-			'JS' => $this->content->getJS(array('infoBubble.js')),
+			'JS' => $jsFiles,
 			'Language' => $this->Language,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),

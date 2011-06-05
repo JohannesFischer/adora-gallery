@@ -3,29 +3,29 @@
     class Content {
 
         private $CI;
+		public $cssFiles = array();
+		public $jsFiles = array();
 
         public function __construct()
         {
             $this->CI =& get_instance();
         }
+		
+		public function addCSSFiles($files)
+		{
+			foreach($files as $file)
+			{
+				array_push($this->cssFiles, $file);
+			}
+		}
 
 		public function getCSS($files = array())
 		{
 			$this->CI->load->helper('html');
 
-			$cssFiles = array(
-				'reset.css',
-				'basic.css',
-                'forms.css',
-				'layout.css',
-				'infoBubble.css'
-			);
-
-			$cssFiles = array_merge($cssFiles, $files);
-
 			$html = '';
 
-			foreach($cssFiles as $file)
+			foreach($this->cssFiles as $file)
 			{
 				$html.= link_tag(array(
 					'href' => 'resources/css/'.$file,
@@ -36,29 +36,6 @@
 			}
 
 			return $html;
-		}
-
-		public function getJS($files = array())
-		{
-			$jsFolder = base_url().'resources/js/';
-
-			$jsFiles = array(
-				$jsFolder.'third-party/mootools-core-1.3-full-nocompat-yc.js',
-				$jsFolder.'third-party/mootools-more.js',
-				$jsFolder.'Photos.js'		 
-			);
-			
-			$count = count($files);
-			
-			if($count > 0)
-			{
-				for($i = 0; $i < $count; $i++)
-				{
-					$files[$i] = $jsFolder.$files[$i];
-				}
-			}
-
-			return array_merge($jsFiles, $files);
 		}
 
         public function getDate($date = false)

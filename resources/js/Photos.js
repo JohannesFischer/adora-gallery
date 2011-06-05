@@ -149,16 +149,13 @@ var AdoraGallery = new Class({
 		var playButtonWidth = this.getElementWidth($('Play'));
 		var paginationButtonWidth = this.getElementWidth($('Slide'));
 		console.log(paginationButtonWidth);
-		availWidth-= (playButtonWidth + paginationButtonWidth) + (thumbnailWrapper.getStyle('margin-left').toInt() + thumbnailWrapper.getStyle('margin-right').toInt());
+		availWidth -= (playButtonWidth + paginationButtonWidth);
+		availWidth -= (thumbnailWrapper.getStyle('margin-left').toInt() + thumbnailWrapper.getStyle('margin-right').toInt());
 		console.log(availWidth);
 		
 		thumbnailWrapper.setStyle('width', availWidth);
 		
 		return;
-		
-		var ulMargin = ul.getStyle('margin-left').toInt() + ul.getStyle('margin-right').toInt();
-		
-		var width = ulMargin;
 		
 		thumbnails.each(function(el){
 			width+= el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();
