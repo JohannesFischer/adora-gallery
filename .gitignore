@@ -1,2 +1,4 @@
-photos/*
-photos/_resampled/*
+photos/*.jpg
+photos/*.JPG
+photos/_resampled/*.jpg
+photos/_resampled/*.JPG
