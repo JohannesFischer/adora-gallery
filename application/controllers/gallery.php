@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Start extends CI_Controller {
+class Gallery extends CI_Controller {
 
     public $data = array();
 	public $Language = array();
@@ -84,7 +84,7 @@ class Start extends CI_Controller {
 		$this->load->view('includes/head', $this->data);
 		if($this->data['Loggedin'])
 		{
-			$this->load->view('start', $this->data);
+			$this->load->view('gallery', $this->data);
 		}
 		else
 		{
