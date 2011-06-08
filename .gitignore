@@ -1,3 +1,4 @@
+# TODO add database config file
 photos/*.jpg
 photos/*.JPG
 photos/_resampled/*.jpg

@@ -19,7 +19,7 @@ var AdoraGallery = new Class({
 		this.imageContainer = $(imageContainer);
 		this.thumbnails = $$(thumbnails);
 		
-		this.windowSize = document.body.getCoordinates();
+		this.windowSize = $(document.body).getCoordinates();
 
 		this.setOptions(options);
 
@@ -38,6 +38,8 @@ var AdoraGallery = new Class({
 	
 	attach: function()
 	{
+		// TODO add window Events resize to update windowSize / fire center image function
+		
 		// Controls TopBar
 		$$('.prev')[0].addEvent('click', function(e){
 			e.stop();
@@ -69,15 +71,12 @@ var AdoraGallery = new Class({
 					this.show(i);
 				}.bind(this)
 			});
-		}, this);
-		
-		// Navigation & Thumbnail
-		
+		}, this);	
 	},
 	
 	attachBoxFunctions: function(el)
 	{
-		el.getElement('a.close').addEvent('click', function(e){
+		el.getElement('a.close').addEvent('click', function(e) {
 			e.stop();
 			this.closeBox(el);
 		}.bind(this));
@@ -85,24 +84,29 @@ var AdoraGallery = new Class({
 	
 	attachKeyEvents: function()
 	{
-		document.body.addEvent('keydown', function(e){
+		$(document.body).addEvent('keydown', function(e) {
 			if(e.key == 'left')
 			{
 				this.prev();
 			}
-			if(e.key == 'right')
+			else if(e.key == 'right')
 			{
 				this.next();
 			}
-			if(e.key == 'space')
+			else if(e.key == 'space')
 			{
 				this.toggleSlideShow();
 			}
-			if(e.key == 'up')
+			else if(e.key == 'up')
 			{
 				this.toggleInfo();
 			}
 		}.bind(this));	
+	},
+
+	centerElement: function ()
+	{
+		
 	},
 	
 	closeBox: function(el)
@@ -138,12 +142,11 @@ var AdoraGallery = new Class({
 	
 	initThumbnails: function()
 	{
+		// TODO use script from cwpGallery
 		var thumbnailHolder = $('Thumbnails');
 		var thumbnailWrapper = thumbnailHolder.getElement('div');
 		var ul = thumbnailHolder.getElement('ul');
 		var thumbnails = ul.getElements('li');
-		
-		console.log(thumbnailWrapper.getWidth(), ul.getWidth());
 
 		var availWidth = document.body.getWidth();
 		var playButtonWidth = this.getElementWidth($('Play'));
@@ -151,7 +154,6 @@ var AdoraGallery = new Class({
 		console.log(paginationButtonWidth);
 		availWidth -= (playButtonWidth + paginationButtonWidth);
 		availWidth -= (thumbnailWrapper.getStyle('margin-left').toInt() + thumbnailWrapper.getStyle('margin-right').toInt());
-		console.log(availWidth);
 		
 		thumbnailWrapper.setStyle('width', availWidth);
 		
@@ -224,6 +226,7 @@ var AdoraGallery = new Class({
 
 				var imageSize = image.getSize();
 
+				// TODO use centerElement()
 				target.setStyles({
 					left: ((this.windowSize.width/2) - (imageSize.x/2)).round().limit(0, this.windowSize.width),
 					top: ((this.windowSize.height/2) - (imageSize.y/2)).round().limit(0, this.windowSize.height)
@@ -405,6 +408,7 @@ window.addEvent('domready', function(){
 	
 	if($('Image'))
 	{
+		// maybe use modified cwpGallery?
 		new AdoraGallery($('Image'), $$('#Thumbnails li a'));
 	}
 	

@@ -67,7 +67,7 @@
  --------------------------------------------------------*/
 
 .Box,
-#InfoBox,
+#Info,
 #Thumbnails,
 #TopBar {
     background: rgba(0, 0, 0, .75);
@@ -111,6 +111,17 @@
             top: 0;
             width: 20px;
         }
+        .Box p,
+        .Box span {
+            text-shadow: 1px 1px 0 #fff;
+        }
+        .Box strong {
+            text-shadow: none;
+        }
+
+        .meta {
+            display: block;
+        }
 
 /* Image Holder
  --------------------------------------------------------*/
@@ -126,7 +137,7 @@
 /* InfoBox
  --------------------------------------------------------*/
 
-#InfoBox {
+#Info {
     position: absolute;
     right: 20px;
     top: 80px;

@@ -9,6 +9,8 @@ class Ajax extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->config->load('gallery', true);
+
 		$this->Loggedin = $this->session->userdata('loggedin');
 		$this->Role = $this->session->userdata('role');
 	}
@@ -27,9 +29,11 @@ class Ajax extends CI_Controller {
 		{
 			$info = $this->photo_model->getInfo($src);
 
+			$date_format = $this->config->item('date_format', 'gallery');
+
 			$data = array(
 				'Comments' => 0,
-				'Date' => $info->FileDateTime,
+				'Date' => date($date_format, $info->FileDateTime),
 				'Description' => $info->Description,
 				'Title' => $info->Title
 			);
@@ -55,7 +59,7 @@ class Ajax extends CI_Controller {
 		if($login)
 		{
 			$data = array(
-				'icon' => base_url().$this->config->item('user_icon_folder').$login->Icon,
+				'icon' => base_url().$this->config->item('user_icon_folder', 'gallery').$login->Icon,
 				'loggedin' => true,
 				'role' => $login->Role,
 				'username' => $login->Username
@@ -98,7 +102,7 @@ class Ajax extends CI_Controller {
 		$data = json_decode($this->input->post('data'), true);
 
 		$filename = $data['Filename'];
-		$source_image = $this->config->item('image_folder').$data['Filename'];
+		$source_image = $this->config->item('image_folder', 'gallery').$data['Filename'];
 
 		$this->load->library('image_lib');
 
@@ -108,7 +112,7 @@ class Ajax extends CI_Controller {
 		{
 			$config = array(
 				'image_library' => 'gd2',
-				'new_image' => $this->config->item('image_folder_resampled').$filename,
+				'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
 				'rotation_angle' => 270,
 				'source_image' => $source_image
 			);
@@ -122,7 +126,7 @@ class Ajax extends CI_Controller {
 				echo $this->image_lib->display_errors();
 			}
 			
-			$source_image = $this->config->item('image_folder_resampled').$filename;
+			$source_image = $this->config->item('image_folder_resampled', 'gallery').$filename;
 			
 			$this->image_lib->clear();
 		}
@@ -144,7 +148,7 @@ class Ajax extends CI_Controller {
 			'create_thumb' => true,
 			'image_library' => 'gd2',
 			'maintain_ratio' => true,
-			'new_image' => $this->config->item('image_folder_resampled').$filename,
+			'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
 			'source_image' => $source_image
 		);
 
@@ -210,11 +214,11 @@ class Ajax extends CI_Controller {
 
 			$buffer = array();
 
-			$icons = get_filenames($this->config->item('user_icon_folder'));
+			$icons = get_filenames($this->config->item('user_icon_folder', 'gallery'));
 
 			foreach($icons as $icon)
 			{
-				$buffer[] = $this->config->item('user_icon_folder').$icon;
+				$buffer[] = $this->config->item('user_icon_folder', 'gallery').$icon;
 			}
 
 			$data['Icons'] = $buffer;
@@ -230,13 +234,13 @@ class Ajax extends CI_Controller {
 		
 		$filename = $this->input->post('file');
 		$fn = explode('.', $filename);
-		$source_image = $this->config->item('image_folder').$filename;
+		$source_image = $this->config->item('image_folder', 'gallery').$filename;
 		$thumb_marker = '_preview';
 		
 		// todo error handling
-		$exif_data = exif_read_data($this->config->item('image_folder').$filename);
+		$exif_data = exif_read_data($this->config->item('image_folder', 'gallery').$filename);
 
-		if(!file_exists($this->config->item('image_folder_resampled').$fn[0].$thumb_marker.'.'.$fn[1]))
+		if(!file_exists($this->config->item('image_folder_resampled', 'gallery').$fn[0].$thumb_marker.'.'.$fn[1]))
 		{
 			$this->load->library('image_lib');
 
@@ -248,7 +252,7 @@ class Ajax extends CI_Controller {
 			if($exif_data['Orientation'] > 1)
 			{
 				$config_rotate = array(
-					'new_image' => $this->config->item('image_folder_resampled').$filename,
+					'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
 					'rotation_angle' => 270
 				);
 
@@ -261,14 +265,14 @@ class Ajax extends CI_Controller {
 
 				$this->image_lib->clear();
 
-				$source_image = $this->config->item('image_folder_resampled').$filename;
+				$source_image = $this->config->item('image_folder_resampled', 'gallery').$filename;
 			}
 			
 			$config_thumbnail = array(
 				'create_thumb' => true,
 				'height' => 250,
 				'maintain_ratio' => true,
-				'new_image' => $this->config->item('image_folder_resampled').$filename,
+				'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
 				'source_image' => $source_image,
 				'thumb_marker' => '_preview',
 				'width' => 250
@@ -286,7 +290,7 @@ class Ajax extends CI_Controller {
 
 		$data = array(
 			'exif' => $exif_data,
-			'file' => $this->config->item('image_dir_resampled').$fn[0].$thumb_marker.'.'.$fn[1],
+			'file' => $this->config->item('image_dir_resampled', 'gallery').$fn[0].$thumb_marker.'.'.$fn[1],
 			'source_file' => $filename
 		);
 

@@ -1,6 +1,6 @@
-    <?php if(!$Loggedin): ;?>
-        <?=$LoginForm;?>
-    <?php else: ?>
+<?php if(!$Loggedin): ;?>
+	<?=$LoginForm;?>
+<?php else: ?>
     
     <div id="TopBar">
 
@@ -48,6 +48,7 @@
 			<ul>
 			<?php foreach($Photos as $photo): ?>
 				<li>
+					<!-- TODO store thumbnail in a child element -->
 					<a href="<?=$ImageFolder.$photo['Filename_Large'];?>" style="background-image:url(<?=$ImageFolder.$photo['Filename_Thumbnail'];?>)" rel="<?=$ImageFolder.$photo['Filename_Thumbnail'];?>"></a>
 				</li>
 			<?php endforeach; ?>
@@ -58,4 +59,4 @@
 
     </div>
     
-    <?php endif; ?>
+<?php endif; ?>

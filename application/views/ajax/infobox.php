@@ -6,5 +6,5 @@
 <p><?=$Description;?></p>
 <?php endif; ?>
 
-<span><?=$Date;?></span>
-<span><?=$Comments;?></span>
+<span class="date meta">Date: <?=$Date;?></span>
+<span class="comments meta">Comments: <?=$Comments;?></span>

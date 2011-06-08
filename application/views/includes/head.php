@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
     <title><?=$PageTitle;?></title>
-    <META http-equiv="Content-type" content="text/html; charset=utf8">
+     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <?=$CSS;?>
 </head>
 <body>

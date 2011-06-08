@@ -9,6 +9,7 @@ class Gallery extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->config->load('gallery', true);
         $this->lang->load('basic', 'english');
         $this->load->library('content');
 
@@ -30,14 +31,14 @@ class Gallery extends CI_Controller {
 		$jsFiles = array(
 			$jsFolder.'third-party/mootools-core-1.3-full-nocompat-yc.js',
 			$jsFolder.'third-party/mootools-more.js',
-			$jsFolder.'infoBuble.js',
+			$jsFolder.'infoBubble.js',
 			$jsFolder.'Photos.js'
 		);
 
         $this->addData(array(
 			'CSS' => $this->content->getCSS(),
             'Date' => $this->content->getDate(),
-			'ImageFolder' => $this->config->item('image_dir_resampled'),
+			'ImageFolder' => $this->config->item('image_dir_resampled', 'gallery'),
 			'JS' => $jsFiles,
 			'Language' => $this->Language,
 			'Loggedin' => $Loggedin,
