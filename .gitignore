@@ -1,4 +1,6 @@
 # TODO add database config file
+.htaccess
+# ignore images
 photos/*.jpg
 photos/*.JPG
 photos/_resampled/*.jpg
