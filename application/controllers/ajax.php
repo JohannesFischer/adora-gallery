@@ -3,7 +3,6 @@
 class Ajax extends CI_Controller {
 
 	private $Loggedin;
-	private $Role;
 
 	public function __construct()
 	{
@@ -12,7 +11,15 @@ class Ajax extends CI_Controller {
 		$this->config->load('gallery', true);
 
 		$this->Loggedin = $this->session->userdata('loggedin');
-		$this->Role = $this->session->userdata('role');
+	}
+
+	/**
+	 * Private
+	 */
+	
+	private function _isAdmin()
+	{
+		return $this->session->userdata('role') == 'Admin';
 	}
 
 	/**
@@ -51,6 +58,7 @@ class Ajax extends CI_Controller {
 		$this->lang->load('basic', 'english');
 		$this->load->model('user_model');
 
+		// TODO use JS md5 function before sending the psswd
 		$password = md5($this->input->post('password'));
 		$username = $this->input->post('username');
 
@@ -97,6 +105,11 @@ class Ajax extends CI_Controller {
 	
 	public function addPhoto()
 	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+
 		$this->load->model('photo_model');
 
 		$data = json_decode($this->input->post('data'), true);
@@ -203,6 +216,11 @@ class Ajax extends CI_Controller {
 
 	public function editUser()
 	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+
 		$this->load->helper(array('file','html'));
 		$this->load->model('user_model');
 
@@ -224,12 +242,17 @@ class Ajax extends CI_Controller {
 			$data['Icons'] = $buffer;
 			unset($buffer);
 
-			$this->index($data, 'ajax/admin_user_form');
+			$this->index($data, 'ajax/admin_form_user');
 		}
 	}
 	
 	public function getImageForm()
 	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+
 		$this->load->helper('html');
 		
 		$filename = $this->input->post('file');
@@ -299,6 +322,11 @@ class Ajax extends CI_Controller {
 	
 	public function updateUser()
 	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+
 		$this->load->model('user_model');
 
 		$data = json_decode($this->input->post('data'), true);
@@ -310,6 +338,7 @@ class Ajax extends CI_Controller {
 	{
 		$this->load->view($view, $data);
 	}
+
 }
 
 ?>

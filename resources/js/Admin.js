@@ -17,10 +17,14 @@ var addImage = function(els)
 						f.getElements('input[type=text], input[type=hidden], textarea').each(function(el){
 							formData[el.get('name')] = el.get('value').trim();
 						});
-		
+
 						new Request.JSON({
 							onSuccess: function(){
+								console.log(target);
 								//el.dispose();
+								new Fx.Tween(target).start('height', 0).chain(function () {
+									target.dispose();
+								});
 								el.setStyle('display', 'none');
 								console.log(el);
 							},

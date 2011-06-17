@@ -10,7 +10,11 @@ var AdoraGallery = new Class({
 
 	options: {
 		autoHideNavigation: true,
+		autoHideTime: 5000,
+		disableRightClick: true,
 		enableKeys: true,
+		fxDuration: 1000,
+		fxTransition: 'sine:in',
 		slideShowInterval: 5000
 	},
 	
@@ -34,6 +38,16 @@ var AdoraGallery = new Class({
 		this.initThumbnails();
 
 		this.show(0);
+		
+		if (this.options.autoHideNavigation)
+		{
+			/*
+			var top_bar = $('TopBar');
+			top_bar.addEvent('mouseleave', function (e) {
+				this.hideElement(top_bar, ['top', top_bar.getHeight() * -1]);
+			}.bind(this));
+			*/
+		}
 	},
 	
 	attach: function()
@@ -49,6 +63,13 @@ var AdoraGallery = new Class({
 		$$('.next')[0].addEvent('click', function(e){
 			e.stop();
 			this.next();
+		}.bind(this));
+
+		// center image
+		window.addEvent('resize', function () {
+			this.windowSize = $(document.body).getCoordinates();
+
+			this.centerElement(this.imageContainer.getElement('img'), this.imageContainer.getElement('div'));
 		}.bind(this));
 		
 		// Navigation		
@@ -104,17 +125,28 @@ var AdoraGallery = new Class({
 		}.bind(this));	
 	},
 
-	centerElement: function ()
+	centerElement: function (el, target)
 	{
-		
+		var size = el.getSize();
+
+		console.log(size);
+		console.log({
+			left: ((this.windowSize.width/2) - (size.x/2)).round().limit(0, this.windowSize.width),
+			top: ((this.windowSize.height/2) - (size.y/2)).round().limit(0, this.windowSize.height)	
+		});
+
+		(target !== undefined ? target : el).setStyles({
+			left: ((this.windowSize.width/2) - (size.x/2)).round().limit(0, this.windowSize.width),
+			top: ((this.windowSize.height/2) - (size.y/2)).round().limit(0, this.windowSize.height)
+		});
 	},
 	
 	closeBox: function(el)
 	{
 		new Fx.Morph(el, {
-			duration: 250	
+			duration: 500
 		}).start({
-			marginTop: 20,
+			marginTop: 25,
 			opacity: 0
 		}).chain(function(){
 			el.dispose();
@@ -125,19 +157,21 @@ var AdoraGallery = new Class({
 	{
 		this.Loader = new Element('div#Loader').inject(document.body);
 
-		var size = this.Loader.getSize();
+		this.centerElement(this.Loader);
 
-		this.Loader.setStyles({
-			left: ((this.windowSize.width/2) - (size.x/2)).round(),
-			opacity: 0,
-			top: ((this.windowSize.height/2) - (size.y/2)).round()
-		}).store('fxInstance', new Fx.Tween(this.Loader));
+		this.Loader.setStyle('opacity', 0).store('fxInstance', new Fx.Tween(this.Loader));
 	},
 
-	// TODO extend Element
+	// TODO extend Element?
 	getElementWidth: function(el)
 	{
 		return el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();		
+	},
+	
+	hideElement: function (el, styles)
+	{
+		el.removeEvent('mouseleave', this.hideElement);
+		el.tween(styles[0], styles[1]);
 	},
 	
 	initThumbnails: function()
@@ -151,7 +185,7 @@ var AdoraGallery = new Class({
 		var availWidth = document.body.getWidth();
 		var playButtonWidth = this.getElementWidth($('Play'));
 		var paginationButtonWidth = this.getElementWidth($('Slide'));
-		console.log(paginationButtonWidth);
+		
 		availWidth -= (playButtonWidth + paginationButtonWidth);
 		availWidth -= (thumbnailWrapper.getStyle('margin-left').toInt() + thumbnailWrapper.getStyle('margin-right').toInt());
 		
@@ -205,15 +239,19 @@ var AdoraGallery = new Class({
 	
 	show: function(i)
 	{
+		var current,
+			target,
+			thumbnail;
+
 		this.toggleLoader();
 
 		this.currentImage = i;
 
-		var thumbnail = this.thumbnails[i];
+		thumbnail = this.thumbnails[i];
 
-		var current = this.imageContainer.getElement('div');
+		current = this.imageContainer.getElement('div');
 
-		var target = new Element('div', {
+		target = new Element('div', {
 			styles: {
 				opacity: 0,
 				zIndex: 30	
@@ -221,16 +259,24 @@ var AdoraGallery = new Class({
 		}).inject(this.imageContainer);
 
 		var image = Asset.image(thumbnail.get('href'), {
-			onLoad: function(){
+			onLoad: function () {
 				image.inject(target);
+				
+				if (this.options.disableRightClick)
+				{
+					image.addEvent('contextmenu', function (e) {
+						e.stop();
+					});
+				}
 
-				var imageSize = image.getSize();
+				//var imageSize = image.getSize();
+				this.centerElement(image, target);
 
 				// TODO use centerElement()
-				target.setStyles({
-					left: ((this.windowSize.width/2) - (imageSize.x/2)).round().limit(0, this.windowSize.width),
-					top: ((this.windowSize.height/2) - (imageSize.y/2)).round().limit(0, this.windowSize.height)
-				});
+				//target.setStyles({
+				//	left: ((this.windowSize.width/2) - (imageSize.x/2)).round().limit(0, this.windowSize.width),
+				//	top: ((this.windowSize.height/2) - (imageSize.y/2)).round().limit(0, this.windowSize.height)
+				//});
 
 				this.toggleLoader();
 				this.setCurrentThumbnail();
@@ -238,12 +284,14 @@ var AdoraGallery = new Class({
 				if(current)
 				{
 					new Fx.Elements($$(current, target), {
+						duration: this.options.fxDuration,
 						onComplete: function(){
 							current.dispose();
 							target.setStyle('z-index', 20);
 							// update image details in the Info box
 							this.updateInfo();
-						}.bind(this)
+						}.bind(this),
+						transition: this.options.fxTransition
 					}).start({
 						'0': {
 							opacity: 0
@@ -256,7 +304,8 @@ var AdoraGallery = new Class({
 				else
 				{
 					new Fx.Tween(target, {
-						
+						duration: this.options.fxDuration,
+						transition: this.options.fxTransition
 					}).start('opacity', 1);
 				}
 			}.bind(this)
@@ -271,11 +320,23 @@ var AdoraGallery = new Class({
 			return;
 		}
 
-		var Box = new Element('div#Info.Box').adopt(
+		var Box = new Element('div#Info.Box', {
+			styles: {
+				marginTop: -25,
+				opacity: 0
+			}	
+		}).adopt(
 			new Element('div')
 		).inject(document.body);
 
 		this.updateInfo();
+		
+		new Fx.Morph(Box, {
+			duration: 500
+		}).start({
+			marginTop: 0,
+			opacity: 1
+		});
 	},
 	
 	toggleLoader: function()
@@ -408,7 +469,6 @@ window.addEvent('domready', function(){
 	
 	if($('Image'))
 	{
-		// maybe use modified cwpGallery?
 		new AdoraGallery($('Image'), $$('#Thumbnails li a'));
 	}
 	

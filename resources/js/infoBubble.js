@@ -17,6 +17,7 @@ var infoBubble = new Class({
 		fade: true,
 		fxDuration: 250,
 		hideDelay: 2500,
+		ignore: false,
 		imageSource: 'href',
 		marginBottom: 10,
 		marginTop: -20,
@@ -294,6 +295,7 @@ var infoBubble = new Class({
 	
 	showBubble: function(el)
 	{
+		//if(this.options.ignore !== false)
 		this.bubbleContainer.setStyle('display', 'block');
 		
 		this.clearDelay();

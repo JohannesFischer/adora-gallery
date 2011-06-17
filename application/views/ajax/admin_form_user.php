@@ -13,7 +13,7 @@
 <form method="post" action="#">
 
 	<fieldset>
-		<input type="text" name="Username" value="<?=$Username;?>" />
+		<input type="text" name="Username" value="<?php if($Username){ echo $Username;} ?>" />
 		<input type="text" name="Email" value="<?=$Email;?>" />
 		<input type="text" name="Role" value="<?=$Role;?>" />
 		<input type="hidden" name="Icon" value="<?=$Icon;?>" />

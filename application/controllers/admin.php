@@ -14,6 +14,11 @@ class Admin extends CI_Controller {
 		$this->load->model('photo_model');
 
 		$Loggedin = $this->session->userdata('loggedin');
+		
+		if($Loggedin && $this->session->userdata('role') != 'Admin')
+		{
+			redirect('gallery');
+		}
 
 		$this->content->addCSSFiles(array(
 			'reset.css',
@@ -27,6 +32,7 @@ class Admin extends CI_Controller {
 		$jsFiles = array(
 			$jsFolder.'third-party/mootools-core-1.3-full-nocompat-yc.js',
 			$jsFolder.'third-party/mootools-more.js',
+			$jsFolder.'Photos.js',
 			$jsFolder.'Admin.js'
 		);
 
@@ -35,15 +41,14 @@ class Admin extends CI_Controller {
 			'currentPage' => '',
 			'GalleryLinkText' => $this->lang->line('gallery_link_text'),
 			'ImageFolder' => $this->config->item('image_dir', 'gallery'),
-			'isAdmin' => $this->session->userdata('role') == 'Admin',
 			'JS' => $jsFiles,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
 			'Tabs' => array(
-				'settings',
-				'edit',
-				'update',
-				'user'
+				'add' => 'Add images',
+				'update' => 'Edit images',
+				'settings' => 'Settings',				
+				'user' => 'User'
 			),
             'PageTitle' => 'Adora Gallery Admin'
         ));
@@ -66,28 +71,29 @@ class Admin extends CI_Controller {
     
     private function getNewPhotos()
     {
-        $this->load->helper('file');
+        $this->load->helper(array('file', 'gallery'));
 
-        $photos = $this->photo_model->getFilenames();
-
-        $files = get_dir_file_info($this->config->item('image_dir', 'gallery'), true);
-
-        $new_photos = array();
-
+		$exif_availbale = is_exif_available();
+		$files = get_dir_file_info($this->config->item('image_dir', 'gallery'), true);
 		$i = 0;
-	
+		$new_photos = array();
+		$photos = $this->photo_model->getFilenames();
+
         foreach($files as $file)
         {
 			$fn = $file['name'];
 
             if(!in_array($fn, $photos) && preg_match('/\.jpg/i', $fn))
             {
-				$new_photos[$i]['exif'] = exif_read_data($this->config->item('image_folder', 'gallery').$fn);
+				if($exif_availbale)
+				{
+					$new_photos[$i]['exif'] = exif_read_data($this->config->item('image_folder', 'gallery').$fn);
+				}
                 $new_photos[$i]['filename'] = $fn;
 				$i++;
             }
         }
-        
+
         return $new_photos;
     }
 	

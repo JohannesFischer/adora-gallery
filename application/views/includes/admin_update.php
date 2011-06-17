@@ -10,7 +10,7 @@
 			<?php
 				$i = 0;
 			?>
-			<ul>
+			<ul class="zebra">
 			<?php foreach($Files as $file): ?>
 				<li>
 					<a href="<?=$file['filename'];?>"><?=$file['filename'];?></a>

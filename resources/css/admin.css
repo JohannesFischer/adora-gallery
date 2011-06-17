@@ -28,6 +28,19 @@
         text-decoration: underline;
     }
 
+/* Lists
+ --------------------------------------------------------*/
+
+ul.zebra {
+    }
+    ul.zebra li {
+        background: #eee;
+        padding: 4px 3px;
+    }
+    ul.zebra li:nth-child(odd) {
+        background: #ccc;
+    }
+
 /* Tabs
  --------------------------------------------------------*/
 
@@ -54,6 +67,10 @@ ul.tabs {
 
 /* Update Images
  --------------------------------------------------------*/
+
+#AddImages li > a {
+    text-decoration: none;
+}
 
 .new-image {
     margin: 0 0 20px !important;

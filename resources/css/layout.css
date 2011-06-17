@@ -211,10 +211,14 @@
                 background-position: 50% 50%;
                 display: block;
                 height: 50px;
-                opacity: .5;
+                opacity: .25;
                 overflow: hidden;
+                webkit-transition: opacity 1s ease;
+                -moz-transition: opacity 1s ease;
+                -o-transition: opacity 1s ease;
                 width: 50px;
             }
+            .thumbnail-wrapper a:hover,
             .thumbnail-wrapper .current {
                 opacity: 1;
             }

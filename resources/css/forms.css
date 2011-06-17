@@ -15,6 +15,7 @@ textarea {
     padding: 4px 6px;
     width: 300px;
     }
+    input[type=password]:focus,
     input[type=text]:focus,
     textarea:focus {
         background: #ededed;
