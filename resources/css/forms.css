@@ -4,6 +4,7 @@ form {
 
 input[type=password],
 input[type=text],
+select,
 textarea {
     border: 1px solid #999;
     border-radius: 6px 0;
@@ -17,9 +18,14 @@ textarea {
     }
     input[type=password]:focus,
     input[type=text]:focus,
+    select:focus,
     textarea:focus {
         background: #ededed;
-    }    
+    }
+    
+select {
+    
+}
 textarea {
     height: 100px;
 }
@@ -43,6 +49,55 @@ input[type=submit] {
     padding: 4px 0;
     width: 80px;
 }
+
+/* Login Form
+ --------------------------------------------------------*/
+
+#LoginForm {
+    background: #fff;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    box-shadow: 0 0 5px rgba(100, 100, 100, .5);
+    -moz-box-shadow: 0 0 5px rgba(100, 100, 100, .5);
+    -webkit-box-shadow: 0 0 5px rgba(100, 100, 100, .5);
+    overflow: hidden;
+    padding: 10px;
+    position: absolute;
+    top: -500px;
+    width: 365px;
+    }
+    #LoginForm p {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    #LoginForm fieldset {
+        overflow: hidden;
+        }
+        #LoginForm input {
+            font-size: 18px;
+        }
+        #LoginForm input[type=text],
+        #LoginForm input[type=password] {
+            height: 20px;
+            margin: 0 0 10px;
+            padding: 4px 8px;
+            width: 213px;
+        }
+        #LoginForm input[type=submit] {
+            background: #999;
+            color: #fff;
+            border: none;
+            font-family: inherit;
+            font-weight: bold;
+            float: right;
+            height: 30px;
+            padding-top: 5px;
+            width: 80px;
+            }
+            #LoginForm input[type=submit]:hover {
+                cursor: pointer;
+                background: #222;
+            }
 
 /* User Management
  --------------------------------------------------------*/

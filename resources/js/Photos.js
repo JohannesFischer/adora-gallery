@@ -15,6 +15,7 @@ var AdoraGallery = new Class({
 		enableKeys: true,
 		fxDuration: 1000,
 		fxTransition: 'sine:in',
+		showBubble: false,
 		slideShowInterval: 5000
 	},
 	
@@ -36,6 +37,18 @@ var AdoraGallery = new Class({
 		}
 
 		this.initThumbnails();
+
+		if (this.options.showBubble)
+		{
+			new infoBubble(this.thumbnails, {
+				hideDelay: 1500,
+				imageSource: 'rel',
+				size: {
+					height: 150,
+					width: 200
+				}
+			});
+		}
 
 		this.show(0);
 		
@@ -76,6 +89,11 @@ var AdoraGallery = new Class({
 		$('LinkInfo').addEvent('click', function(e){
 			e.stop();
 			this.toggleInfo();
+		}.bind(this));
+
+		$('LinkHelp').addEvent('click', function(e){
+			e.stop();
+			//this.toggleHelp();
 		}.bind(this));
 
 		// Toggle SlideShow
@@ -311,7 +329,7 @@ var AdoraGallery = new Class({
 			}.bind(this)
 		});
 	},
-	
+
 	toggleInfo: function()
 	{
 		if($('Info'))
@@ -474,14 +492,6 @@ window.addEvent('domready', function(){
 	
 	if($('Thumbnails'))
 	{
-		new infoBubble('#Thumbnails li a', {
-			hideDelay: 1500,
-			imageSource: 'rel',
-			size: {
-				height: 150,
-				width: 200
-			}
-		});
 		/*
 		var el = $('Thumbnails');
 

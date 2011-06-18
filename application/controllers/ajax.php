@@ -110,7 +110,7 @@ class Ajax extends CI_Controller {
 			return false;
 		}
 
-		$this->load->model('photo_model');
+		$this->load->model(array('album_model', 'photo_model'));
 
 		$data = json_decode($this->input->post('data'), true);
 
@@ -209,7 +209,14 @@ class Ajax extends CI_Controller {
 
 		$data['Created'] = date('Y-m-d h:m:i');
 
-		$this->photo_model->addPhoto($data);
+		// store Album ID
+		$album_id = $data['Album'];
+		unset($data['Album']);
+
+		$photo_id = $this->photo_model->addPhoto($data);
+		
+		// get photo ID
+		$this->album_model->addPhotoToGallery($album_id, $photo_id);
 
 		$this->index();
 	}
@@ -254,6 +261,7 @@ class Ajax extends CI_Controller {
 		}
 
 		$this->load->helper('html');
+		$this->load->model('album_model');
 		
 		$filename = $this->input->post('file');
 		$fn = explode('.', $filename);
@@ -311,7 +319,10 @@ class Ajax extends CI_Controller {
 			}
 		}
 
+		$albums = $this->album_model->getAlbums();
+
 		$data = array(
+			'Albums' => $albums,
 			'exif' => $exif_data,
 			'file' => $this->config->item('image_dir_resampled', 'gallery').$fn[0].$thumb_marker.'.'.$fn[1],
 			'source_file' => $filename

@@ -5,6 +5,12 @@
 	<fieldset>
 		<label>Title</label>
 		<input type="text" name="Title" placeholder="Title" />
+		<label>Album</label>
+		<select name="Album" size="1">
+			<?php foreach($Albums as $album): ?>
+				<option value="<?=$album['ID'];?>"><?=$album['Title'];?></option>
+			<?php endforeach; ?>
+		</select>
 		<label>Description</label>
 		<textarea name="Description" cols="45" rows="5"></textarea>
 		<input type="hidden" name="Filename" value="<?=$source_file;?>" />

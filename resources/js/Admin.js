@@ -4,6 +4,13 @@ var addImage = function(els)
 		el.addEvent('click', function(e){
 			e.stop();
 
+			if (el.getParent().getElement('div'))
+			{
+				return;
+			}
+
+			// TODO add indicator behind el
+
 			var target = new Element('div.new-image').inject(el, 'after');
 
 			new Request.HTML({
@@ -14,19 +21,17 @@ var addImage = function(els)
 						e.stop();
 						var formData = {};
 		
-						f.getElements('input[type=text], input[type=hidden], textarea').each(function(el){
+						f.getElements('input[type=text], input[type=hidden], select, textarea').each(function(el){
+							// TODO use overlay with loader to disable the form
+							el.disabled = true;
 							formData[el.get('name')] = el.get('value').trim();
 						});
 
-						new Request.JSON({
+						new Request({
 							onSuccess: function(){
-								console.log(target);
-								//el.dispose();
 								new Fx.Tween(target).start('height', 0).chain(function () {
 									target.dispose();
 								});
-								el.setStyle('display', 'none');
-								console.log(el);
 							},
 							url: AjaxURL+'addPhoto'
 						}).send('data='+JSON.encode(formData));

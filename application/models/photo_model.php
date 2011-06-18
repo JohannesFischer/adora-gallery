@@ -10,7 +10,9 @@
 
 		public function addPhoto($data)
 		{
-			return $this->db->insert($this->photo_table, $data);
+			$this->db->insert($this->photo_table, $data);
+
+			return $this->db->insert_id();
 		}
 
         public function getAll($order = 'DESC')
