@@ -46,8 +46,8 @@ class Admin extends CI_Controller {
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
 			'Tabs' => array(
-				'add' => 'Add images',
-				'update' => 'Edit images',
+				'galleries' => 'Galleries',
+				'update' => 'Add images',
 				'settings' => 'Settings',				
 				'user' => 'User'
 			),

@@ -2,19 +2,25 @@ var addImage = function(els)
 {
 	els.each(function(el){
 		el.addEvent('click', function(e){
+
+			var parent = el.getParent();
+			
 			e.stop();
 
-			if (el.getParent().getElement('div'))
+			if (parent.getElement('div'))
 			{
 				return;
 			}
 
-			// TODO add indicator behind el
+			// TODO add indicator
+			el.removeClass('image').addClass('loading');
 
 			var target = new Element('div.new-image').inject(el, 'after');
 
 			new Request.HTML({
 				onSuccess: function(){
+					el.removeClass('loading').addClass('image');
+					
 					var f = target.getElement('form');
 
 					f.addEvent('submit', function(e){
