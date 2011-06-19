@@ -401,6 +401,8 @@ var AdoraGallery = new Class({
 });
 
 
+// TODO move domraedy function to seperate file
+
 window.addEvent('domready', function(){
 	
 	if($('Login'))
@@ -429,7 +431,7 @@ window.addEvent('domready', function(){
 		f.addEvent('submit', function(e){
 			e.stop();
 
-			var password = f.getElement('input[name=password]').get('value').trim();
+			var password = MD5_hexhash(f.getElement('input[name=password]').get('value').trim());
 			var username = f.getElement('input[name=username]').get('value').trim();
 
 			if(username == '' || password == '')

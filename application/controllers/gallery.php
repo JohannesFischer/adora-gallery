@@ -29,8 +29,9 @@ class Gallery extends CI_Controller {
 		
 		$jsFolder = base_url().'resources/js/';
 		$jsFiles = array(
-			$jsFolder.'third-party/mootools-core-1.3-full-nocompat-yc.js',
+			$jsFolder.'third-party/mootools-core-1.3.2-full-nocompat-yc.js',
 			$jsFolder.'third-party/mootools-more.js',
+			$jsFolder.'third-party/md5.js',
 			$jsFolder.'infoBubble.js',
 			$jsFolder.'Photos.js'
 		);

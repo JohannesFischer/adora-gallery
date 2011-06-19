@@ -58,8 +58,7 @@ class Ajax extends CI_Controller {
 		$this->lang->load('basic', 'english');
 		$this->load->model('user_model');
 
-		// TODO use JS md5 function before sending the psswd
-		$password = md5($this->input->post('password'));
+		$password = $this->input->post('password');
 		$username = $this->input->post('username');
 
 		$login = $this->user_model->login($username, $password);
