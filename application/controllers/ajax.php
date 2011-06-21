@@ -119,13 +119,22 @@ class Ajax extends CI_Controller {
 		$this->load->library('image_lib');
 
 		// Rotate Image
-
 		if($data['Orientation'] > 1)
 		{
+			// TODO put this into a helper since its used twice
+			if($exif_data['Orientation'] == 6)
+			{
+				$rotation_angle = 270;
+			}
+			else if($exif_data['Orientation'] == 8)
+			{
+				$rotation_angle = 90;
+			}
+
 			$config = array(
 				'image_library' => 'gd2',
 				'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
-				'rotation_angle' => 270,
+				'rotation_angle' => $rotation_angle,
 				'source_image' => $source_image
 			);
 
@@ -144,7 +153,6 @@ class Ajax extends CI_Controller {
 		}
 
 		// Resize Image
-
 		$size = array(
 			'large' => array(
 				'height' => 600,
@@ -281,9 +289,18 @@ class Ajax extends CI_Controller {
 
 			if($exif_data['Orientation'] > 1)
 			{
+				if($exif_data['Orientation'] == 6)
+				{
+					$rotation_angle = 270;
+				}
+				else if($exif_data['Orientation'] == 8)
+				{
+					$rotation_angle = 90;
+				}
+				
 				$config_rotate = array(
 					'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
-					'rotation_angle' => 270
+					'rotation_angle' => $rotation_angle
 				);
 
 				$this->image_lib->initialize(array_merge($config, $config_rotate));

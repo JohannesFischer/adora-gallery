@@ -13,7 +13,7 @@
 			<ul class="zebra">
 			<?php foreach($Files as $file): ?>
 				<li>
-					<a href="<?=$file['filename'];?>"><?=$file['filename'];?></a>
+					<a href="<?=$file['filename'];?>" class="icon image"><?=$file['filename'];?></a>
 				</li>
 			<?php endforeach; ?>
 			</ul>

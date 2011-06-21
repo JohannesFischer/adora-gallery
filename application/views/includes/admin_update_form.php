@@ -7,6 +7,8 @@
 		<input type="text" name="Title" placeholder="Title" />
 		<label>Album</label>
 		<select name="Album" size="1">
+				<option value="0">Select a album</option>
+				<option value="0" class="icon new-album">New Album</option>
 			<?php foreach($Albums as $album): ?>
 				<option value="<?=$album['ID'];?>"><?=$album['Title'];?></option>
 			<?php endforeach; ?>

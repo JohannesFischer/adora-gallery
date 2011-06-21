@@ -12,7 +12,6 @@ var addImage = function(els)
 				return;
 			}
 
-			// TODO add indicator
 			el.removeClass('image').addClass('loading');
 
 			var target = new Element('div.new-image').inject(el, 'after');
@@ -25,16 +24,24 @@ var addImage = function(els)
 
 					f.addEvent('submit', function(e){
 						e.stop();
+						
+						loadingOverlay.create(f);
+						
 						var formData = {};
 		
 						f.getElements('input[type=text], input[type=hidden], select, textarea').each(function(el){
-							// TODO use overlay with loader to disable the form
-							el.disabled = true;
 							formData[el.get('name')] = el.get('value').trim();
 						});
+						
+						if (formData.Album == 0)
+						{
+							loadingOverlay.dispose(f);
+							return;
+						}
 
 						new Request({
 							onSuccess: function(){
+								loadingOverlay.dispose(f);
 								new Fx.Tween(target).start('height', 0).chain(function () {
 									target.dispose();
 								});
@@ -101,6 +108,28 @@ var editUser = function(el)
 		}).send('id='+id);
 	}
 };
+
+var loadingOverlay = {
+	
+	create: function (el)
+	{
+		var dimensions = el.getSize();
+		
+		el.setStyle('position', 'relative');
+		
+		new Element('span.loading-overlay', {
+			styles: {
+				height: dimensions.y,
+				width: dimensions.x
+			}
+		}).inject(el);
+	},
+	dispose: function (el)
+	{
+		el.getElement('.loading-overlay').dispose();
+	}
+	
+}
 
 window.addEvent('domready', function(){
 
