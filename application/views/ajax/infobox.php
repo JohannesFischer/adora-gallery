@@ -7,4 +7,4 @@
 <?php endif; ?>
 
 <span class="date meta">Date: <?=$Date;?></span>
-<span class="comments meta">Comments: <?=$Comments;?></span>
+<!--<span class="comments meta">Comments: <?=$Comments;?></span>-->
