@@ -12,7 +12,7 @@ var AdoraGallery = new Class({
 	options: {
 		autoHideNavigation: true,
 		autoHideTime: 5000,
-		disableRightClick: true,
+        disableRightClick: true,
 		enableKeys: true,
 		fxDuration: 1000,
 		fxTransition: 'sine:in',
@@ -20,7 +20,7 @@ var AdoraGallery = new Class({
 		slideShowInterval: 5000
 	},
 	
-	initialize: function(imageContainer, thumbnails, options)
+	initialize: function (imageContainer, thumbnails, options)
 	{
 		this.imageContainer = $(imageContainer);
 		this.thumbnails = $$(thumbnails);
@@ -32,7 +32,7 @@ var AdoraGallery = new Class({
 		this.attach();
 		this.createLoader();
 
-		if(this.options.enableKeys)
+		if (this.options.enableKeys)
 		{
 			this.attachKeyEvents();
 		}
@@ -66,15 +66,15 @@ var AdoraGallery = new Class({
 		}
 	},
 	
-	attach: function()
+	attach: function ()
 	{
 		// Controls TopBar
-		$$('.prev')[0].addEvent('click', function(e){
+		$$('.prev')[0].addEvent('click', function (e){
 			e.stop();
 			this.prev();
 		}.bind(this));
 
-		$$('.next')[0].addEvent('click', function(e){
+		$$('.next')[0].addEvent('click', function (e){
 			e.stop();
 			this.next();
 		}.bind(this));
@@ -90,26 +90,26 @@ var AdoraGallery = new Class({
 		}.bind(this));
 		
 		// Navigation		
-		$('LinkInfo').addEvent('click', function(e){
+		$('LinkInfo').addEvent('click', function (e){
 			e.stop();
 			this.toggleInfo();
 		}.bind(this));
 
-		$('LinkHelp').addEvent('click', function(e){
+		$('LinkHelp').addEvent('click', function (e){
 			e.stop();
 			this.toggleHelp();
 		}.bind(this));
 
 		// Toggle SlideShow
-		$('Play').addEvent('click', function(e){
+		$('Play').addEvent('click', function (e){
 			e.stop();
 			this.toggleSlideShow();
 		}.bind(this));
 
 		// Thumbnails
-		this.thumbnails.each(function(el, i){
+		this.thumbnails.each(function (el, i){
 			el.addEvents({
-				'click': function(e){
+				'click': function (e){
 					e.stop();
 					this.show(i);
 				}.bind(this)
@@ -117,30 +117,30 @@ var AdoraGallery = new Class({
 		}, this);	
 	},
 	
-	attachBoxFunctions: function(el)
+	attachBoxFunctions: function (el)
 	{
-		el.getElement('a.close').addEvent('click', function(e) {
+		el.getElement('a.close').addEvent('click', function (e) {
 			e.stop();
 			this.closeBox(el);
 		}.bind(this));
 	},
 	
-	attachKeyEvents: function()
+	attachKeyEvents: function ()
 	{
-		$(document.body).addEvent('keydown', function(e) {
-			if(e.key == 'left')
+		$(document.body).addEvent('keydown', function (e) {
+			if (e.key === 'left')
 			{
 				this.prev();
 			}
-			else if(e.key == 'right')
+			else if (e.key === 'right')
 			{
 				this.next();
 			}
-			else if(e.key == 'space')
+			else if (e.key === 'space')
 			{
 				this.toggleSlideShow();
 			}
-			else if(e.key == 'up')
+			else if (e.key === 'up')
 			{
 				this.toggleInfo();
 			}
@@ -157,24 +157,24 @@ var AdoraGallery = new Class({
 		var size = el.getSize();
 
 		(target !== undefined ? target : el).setStyles({
-			left: ((this.windowSize.width/2) - (size.x/2)).round().limit(0, this.windowSize.width),
-			top: ((this.windowSize.height/2) - (size.y/2)).round().limit(0, this.windowSize.height)
+			left: ((this.windowSize.width / 2) - (size.x / 2)).round().limit(0, this.windowSize.width),
+			top: ((this.windowSize.height / 2) - (size.y / 2)).round().limit(0, this.windowSize.height)
 		});
 	},
 	
-	closeBox: function(el)
+	closeBox: function (el)
 	{
 		new Fx.Morph(el, {
 			duration: 500
 		}).start({
 			marginTop: 25,
 			opacity: 0
-		}).chain(function(){
+		}).chain(function (){
 			el.dispose();
 		});
 	},
 	
-	createLoader: function()
+	createLoader: function ()
 	{
 		this.Loader = new Element('div#Loader').inject(document.body);
 
@@ -184,7 +184,7 @@ var AdoraGallery = new Class({
 	},
 
 	// TODO extend Element?
-	getElementWidth: function(el)
+	getElementWidth: function (el)
 	{
 		return el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();		
 	},
@@ -195,13 +195,14 @@ var AdoraGallery = new Class({
 		el.tween(styles[0], styles[1]);
 	},
 	
-	initThumbnails: function()
+	initThumbnails: function ()
 	{
 		// TODO use script from cwpGallery
-		var thumbnailHolder = $('Thumbnails');
-		var thumbnailWrapper = thumbnailHolder.getElement('div');
-		var ul = thumbnailHolder.getElement('ul');
-		var thumbnails = ul.getElements('li');
+		var availableWidth,
+            thumbnailHolder = $('Thumbnails'),
+            thumbnailWrapper = thumbnailHolder.getElement('div'),
+            ul = thumbnailHolder.getElement('ul'),
+            thumbnails = ul.getElements('li');
 
 		var availWidth = document.body.getWidth();
 		var playButtonWidth = this.getElementWidth($('Play'));
@@ -214,15 +215,15 @@ var AdoraGallery = new Class({
 		
 		return;
 		
-		thumbnails.each(function(el){
+		thumbnails.each(function (el){
 			width+= el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();
 		});
 		
-		if(width > thumbnailHolder.getWidth())
+		if (width > thumbnailHolder.getWidth())
 		{
 			var buttonSize = $('Play').getWidth() + $('Play').getStyle('margin-left').toInt() + $('Play').getStyle('margin-right').toInt();
 			
-			var availableWidth = thumbnailHolder.getWidth() - ulMargin - (buttonSize * 2);
+			availableWidth = thumbnailHolder.getWidth() - ulMargin - (buttonSize * 2);
 
 			//new Element('div').setStyle('width', availableWidth).wraps(ul);
 
@@ -232,25 +233,25 @@ var AdoraGallery = new Class({
 		}
 	},
     
-    next: function()
+    next: function ()
     {
         var next = this.currentImage + 1 < this.thumbnails.length ? this.currentImage + 1 : 0;
 
         this.show(next);
     },
     
-    prev: function()
+    prev: function ()
     {
         var prev = this.currentImage - 1 > -1 ? this.currentImage - 1 : this.thumbnails.length - 1;
 
         this.show(prev);
     },
 	
-	setCurrentThumbnail: function()
+	setCurrentThumbnail: function ()
 	{
 		var current = $$('ul .current')[0];
 
-		if(current)
+		if (current)
 		{
 			current.removeClass('current');
 		}
@@ -258,7 +259,7 @@ var AdoraGallery = new Class({
 		this.thumbnails[this.currentImage].addClass('current');
 	},
 	
-	show: function(i)
+	show: function (i)
 	{
 		if (this.busy === true)
 		{
@@ -302,11 +303,11 @@ var AdoraGallery = new Class({
 				this.toggleLoader();
 				this.setCurrentThumbnail();
 
-				if(current)
+				if (current)
 				{
 					new Fx.Elements($$(current, target), {
 						duration: this.options.fxDuration,
-						onComplete: function(){
+						onComplete: function (){
 							current.dispose();
 							this.busy = false;
 							target.setStyle('z-index', 20);
@@ -336,9 +337,9 @@ var AdoraGallery = new Class({
 		});
 	},
 
-	toggleHelp: function()
+	toggleHelp: function ()
 	{
-		if($('Help'))
+		if ($('Help'))
 		{
 			this.closeBox($('Help'));
 			return;
@@ -354,7 +355,7 @@ var AdoraGallery = new Class({
 		).inject(document.body);
 
 		new Request.HTML({
-			onSuccess: function(){
+			onSuccess: function (){
 				this.attachBoxFunctions($('Help'));
 				new Fx.Morph(Box, {
 					duration: 500
@@ -368,9 +369,9 @@ var AdoraGallery = new Class({
 		}).send();
 	},
 	
-	toggleInfo: function()
+	toggleInfo: function ()
 	{
-		if($('Info'))
+		if ($('Info'))
 		{
 			this.closeBox($('Info'));
 			return;
@@ -395,16 +396,16 @@ var AdoraGallery = new Class({
 		});
 	},
 	
-	toggleLoader: function()
+	toggleLoader: function ()
 	{
 		var fx = this.Loader.retrieve('fxInstance');
 
 		fx.cancel().start('start', this.Loader.getStyle('opacity') == 0 ? 1 : 0);
 	},
 	
-	toggleSlideShow: function()
+	toggleSlideShow: function ()
 	{
-		if(this.autoPlay)
+		if (this.autoPlay)
 		{
 			$('Play').removeClass('pause');
 			window.clearInterval(this.interval);
@@ -418,9 +419,9 @@ var AdoraGallery = new Class({
 		}
 	},
 	
-	updateInfo: function()
+	updateInfo: function ()
 	{
-		if(!$('Info'))
+		if (!$('Info'))
 		{
 			return;
 		}
@@ -428,7 +429,7 @@ var AdoraGallery = new Class({
 		var src = $('Image').getElement('img').get('src').split('/').getLast();
 
 		new Request.HTML({
-			onSuccess: function(){
+			onSuccess: function (){
 				this.attachBoxFunctions($('Info'));
 			}.bind(this),
 			update: $('Info').getElement('div'),

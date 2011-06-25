@@ -15,6 +15,7 @@ var addImage = function(els)
 			el.removeClass('image').addClass('loading');
 
 			var target = new Element('div.new-image').inject(el, 'after');
+            var li = target.getParent('li');
 
 			new Request.HTML({
 				onSuccess: function(){
@@ -42,8 +43,8 @@ var addImage = function(els)
 						new Request({
 							onSuccess: function(){
 								loadingOverlay.dispose(f);
-								new Fx.Tween(target).start('height', 0).chain(function () {
-									target.dispose();
+								new Fx.Tween(li).start('height', 0).chain(function () {
+									li.dispose();
 								});
 							},
 							url: AjaxURL+'addPhoto'
