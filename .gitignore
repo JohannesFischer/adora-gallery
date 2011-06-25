@@ -1,5 +1,7 @@
-# TODO add database config file
+# ignore application files
 .htaccess
+application/config/config.php
+application/config/database.php
 # ignore images
 photos/*.jpg
 photos/*.JPG
