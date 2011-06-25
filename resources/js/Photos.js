@@ -65,8 +65,6 @@ var AdoraGallery = new Class({
 	
 	attach: function()
 	{
-		// TODO add window Events resize to update windowSize / fire center image function
-		
 		// Controls TopBar
 		$$('.prev')[0].addEvent('click', function(e){
 			e.stop();
@@ -80,6 +78,9 @@ var AdoraGallery = new Class({
 
 		// center image
 		window.addEvent('resize', function () {
+
+            // TODO update thumbnailholder-width
+
 			this.windowSize = $(document.body).getCoordinates();
 
 			this.centerElement(this.imageContainer.getElement('img'), this.imageContainer.getElement('div'));
@@ -146,12 +147,6 @@ var AdoraGallery = new Class({
 	centerElement: function (el, target)
 	{
 		var size = el.getSize();
-
-		console.log(size);
-		console.log({
-			left: ((this.windowSize.width/2) - (size.x/2)).round().limit(0, this.windowSize.width),
-			top: ((this.windowSize.height/2) - (size.y/2)).round().limit(0, this.windowSize.height)	
-		});
 
 		(target !== undefined ? target : el).setStyles({
 			left: ((this.windowSize.width/2) - (size.x/2)).round().limit(0, this.windowSize.width),
