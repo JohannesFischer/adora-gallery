@@ -3,6 +3,7 @@ var AdoraGallery = new Class({
 	Implements: Options,
 
 	autoPlay: false,
+	busy: false,
 	currentImage: null,
 	infoWindowOpen: false,
 	Interval: false,
@@ -94,7 +95,7 @@ var AdoraGallery = new Class({
 
 		$('LinkHelp').addEvent('click', function(e){
 			e.stop();
-			//this.toggleHelp();
+			this.toggleHelp();
 		}.bind(this));
 
 		// Toggle SlideShow
@@ -252,6 +253,13 @@ var AdoraGallery = new Class({
 	
 	show: function(i)
 	{
+		if (this.busy === true)
+		{
+			return;
+		}
+
+		this.busy = true;
+
 		var current,
 			target,
 			thumbnail;
@@ -282,14 +290,7 @@ var AdoraGallery = new Class({
 					});
 				}
 
-				//var imageSize = image.getSize();
 				this.centerElement(image, target);
-
-				// TODO use centerElement()
-				//target.setStyles({
-				//	left: ((this.windowSize.width/2) - (imageSize.x/2)).round().limit(0, this.windowSize.width),
-				//	top: ((this.windowSize.height/2) - (imageSize.y/2)).round().limit(0, this.windowSize.height)
-				//});
 
 				this.toggleLoader();
 				this.setCurrentThumbnail();
@@ -300,6 +301,7 @@ var AdoraGallery = new Class({
 						duration: this.options.fxDuration,
 						onComplete: function(){
 							current.dispose();
+							this.busy = false;
 							target.setStyle('z-index', 20);
 							// update image details in the Info box
 							this.updateInfo();
@@ -319,12 +321,46 @@ var AdoraGallery = new Class({
 					new Fx.Tween(target, {
 						duration: this.options.fxDuration,
 						transition: this.options.fxTransition
-					}).start('opacity', 1);
+					}).start('opacity', 1).chain(function () {
+						this.busy = false;
+					}.bind(this));
 				}
 			}.bind(this)
 		});
 	},
 
+	toggleHelp: function()
+	{
+		if($('Help'))
+		{
+			this.closeBox($('Help'));
+			return;
+		}
+
+		var Box = new Element('div#Help.Box', {
+			styles: {
+				marginTop: -25,
+				opacity: 0
+			}	
+		}).adopt(
+			new Element('div')
+		).inject(document.body);
+
+		new Request.HTML({
+			onSuccess: function(){
+				this.attachBoxFunctions($('Help'));
+				new Fx.Morph(Box, {
+					duration: 500
+				}).start({
+					marginTop: 0,
+					opacity: 1
+				});
+			}.bind(this),
+			update: $('Help').getElement('div'),
+			url: AjaxURL+'getHelp'
+		}).send();
+	},
+	
 	toggleInfo: function()
 	{
 		if($('Info'))
@@ -396,7 +432,7 @@ var AdoraGallery = new Class({
 });
 
 
-// TODO move domraedy function to seperate file
+// TODO move domready function to seperate file
 
 window.addEvent('domready', function(){
 	

@@ -24,8 +24,9 @@ textarea {
     }
     
 select {
-    
+    width: 312px;
 }
+
 textarea {
     height: 100px;
 }

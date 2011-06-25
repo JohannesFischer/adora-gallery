@@ -12,6 +12,10 @@
 .loading {
     background-image: url(../images/indicator-admin.gif);
 }
+.new-album {
+    background-image: url(../images/icons/gui/plus_12x12.png);
+    border-bottom: 1px solid #bbb;
+}
 
 /* Layout
  --------------------------------------------------------*/
@@ -55,6 +59,17 @@ ul.zebra {
     ul.zebra li:nth-child(odd) {
         background: #ccc;
     }
+
+/* Loading Overlay
+ --------------------------------------------------------*/
+
+.loading-overlay {
+    background: rgba(0, 0, 0, .5) url(../images/indicator-admin.gif) no-repeat 50% 50%;
+    display: block;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
 
 /* Tabs
  --------------------------------------------------------*/
