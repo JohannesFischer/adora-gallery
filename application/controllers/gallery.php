@@ -33,7 +33,8 @@ class Gallery extends CI_Controller {
 			$jsFolder.'third-party/mootools-more.js',
 			$jsFolder.'third-party/md5.js',
 			$jsFolder.'infoBubble.js',
-			$jsFolder.'Photos.js'
+			$jsFolder.'Photos.js',
+            $jsFolder.'init.js'
 		);
 
         $this->addData(array(

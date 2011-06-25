@@ -34,7 +34,8 @@ class Admin extends CI_Controller {
 			$jsFolder.'third-party/mootools-more.js',
 			$jsFolder.'third-party/md5.js',
 			$jsFolder.'Photos.js',
-			$jsFolder.'Admin.js'
+			$jsFolder.'Admin.js',
+            $jsFolder.'init.js'
 		);
 
         $this->addData(array(
