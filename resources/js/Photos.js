@@ -94,7 +94,7 @@ var AdoraGallery = new Class({
 
 		$('LinkHelp').addEvent('click', function(e){
 			e.stop();
-			//this.toggleHelp();
+			this.toggleHelp();
 		}.bind(this));
 
 		// Toggle SlideShow
@@ -328,6 +328,38 @@ var AdoraGallery = new Class({
 		});
 	},
 
+	toggleHelp: function()
+	{
+		if($('Help'))
+		{
+			this.closeBox($('Help'));
+			return;
+		}
+
+		var Box = new Element('div#Help.Box', {
+			styles: {
+				marginTop: -25,
+				opacity: 0
+			}	
+		}).adopt(
+			new Element('div')
+		).inject(document.body);
+
+		new Request.HTML({
+			onSuccess: function(){
+				this.attachBoxFunctions($('Help'));
+				new Fx.Morph(Box, {
+					duration: 500
+				}).start({
+					marginTop: 0,
+					opacity: 1
+				});
+			}.bind(this),
+			update: $('Help').getElement('div'),
+			url: AjaxURL+'getHelp'
+		}).send();
+	},
+	
 	toggleInfo: function()
 	{
 		if($('Info'))

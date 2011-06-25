@@ -26,6 +26,11 @@ class Ajax extends CI_Controller {
 	 * Gallery
 	 */
 	
+	public function getHelp()
+	{
+		$this->index(array(), 'ajax/box_help');
+	}
+	
 	public function getInfo()
 	{
 		$this->load->model('photo_model');
@@ -45,7 +50,7 @@ class Ajax extends CI_Controller {
 				'Title' => $info->Title
 			);
 
-			$this->index($data, 'ajax/infobox');
+			$this->index($data, 'ajax/box_info');
 		}
 	}
 	

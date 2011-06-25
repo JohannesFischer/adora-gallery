@@ -26,7 +26,7 @@
 #TopBar {
     background: rgba(0, 0, 0, .75);
 }
-
+.Navigation ul,
 .control {
     background-color: rgba(50, 50, 50, .5);
     border-radius: 4px;
@@ -65,6 +65,7 @@
             top: 0;
             width: 20px;
         }
+        .Box li,
         .Box p,
         .Box span {
             text-shadow: 1px 1px 0 #fff;
@@ -246,10 +247,14 @@
             }
             #TopBar .Navigation li {
                 float: left;
-                height: 30px;
-                line-height: 30px;
                 margin: 0 0 0 10px;
+            }
+            #TopBar .Navigation li:last-of-type {
+                margin-right: 10px;
                 }
                 #TopBar .Navigation a {
+                    display: block;
+                    height: 30px;
+                    line-height: 30px;
                     letter-spacing: 1px;
                 }
