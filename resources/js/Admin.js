@@ -3,7 +3,11 @@ var addImage = function(els)
 	els.each(function(el){
 		el.addEvent('click', function(e){
 
-			var parent = el.getParent();
+			var deleteLink,
+				fileName = el.get('href'),
+				li,
+				parent = el.getParent(),
+				target;
 			
 			e.stop();
 
@@ -14,13 +18,13 @@ var addImage = function(els)
 
 			el.removeClass('image').addClass('loading');
 
-			var target = new Element('div.new-image').inject(el, 'after');
-            var li = target.getParent('li');
+			target = new Element('div.new-image').inject(el, 'after');
+            li = target.getParent('li');
 
 			new Request.HTML({
 				onSuccess: function(){
 					el.removeClass('loading').addClass('image');
-					
+
 					var f = target.getElement('form');
 
 					f.addEvent('submit', function(e){
@@ -50,10 +54,29 @@ var addImage = function(els)
 							url: AjaxURL+'addPhoto'
 						}).send('data='+JSON.encode(formData));
 					});
+					
+					// attach delete
+					
+					deleteLink = target.getElement('a.delete');
+					
+					deleteLink.addEvent('click', function (e) {
+						e.stop();
+						if (confirm('do you really want to delete the file ' + fileName + '?'))
+						{
+							new Request({
+								onSuccess: function () {
+									new Fx.Tween(li).start('height', 0).chain(function () {
+										li.dispose();
+									});
+								},
+								url: AjaxURL + 'deleteImage'
+							}).send('filename=' + fileName);
+						}
+					});
 				},
 				update: target,
 				url: AjaxURL+'getImageForm'	
-			}).send('file='+el.get('href'));
+			}).send('file='+fileName);
 		});
 	});	
 };
@@ -130,7 +153,20 @@ var loadingOverlay = {
 		el.getElement('.loading-overlay').dispose();
 	}
 	
-}
+};
+
+var newAlbum = function ()
+{
+	var layer = new Element('div.layer').inject(document.body);
+	
+	new Request.HTML({
+		onSuccess: function () {
+			
+		},
+		update: layer,
+		url: AjaxURL+'getView/admin_new_album'	
+	}).send();
+};
 
 window.addEvent('domready', function(){
 

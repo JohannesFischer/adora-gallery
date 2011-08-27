@@ -64,7 +64,7 @@ ul.zebra {
  --------------------------------------------------------*/
 
 .loading-overlay {
-    background: rgba(0, 0, 0, .5) url(../images/indicator-admin.gif) no-repeat 50% 50%;
+    background: rgba(0, 0, 0, .25) url(../images/indicator-admin.gif) no-repeat 50% 50%;
     display: block;
     left: 0;
     position: absolute;
@@ -99,6 +99,7 @@ ul.tabs {
  --------------------------------------------------------*/
 
 #AddImages li {
+    overflow: hidden;
     padding-left: 10px;
     }
     #AddImages li > a {

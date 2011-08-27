@@ -22,14 +22,15 @@
                 <li>
                     <a href="#" id="LinkInfo">Show Info</a>
                 </li>
-				<!--
-                <li>
+				<!--<li>
                     <a href="#" id="LinkComments">Comments</a>
-				</li>
-				-->
-                <li>
-                    <a href="#" id="LinkOptions">Options</a>
+				</li>-->
+				<li>
+                    <a href="#" id="LinkGalleries">Galleries</a>
                 </li>
+                <!--<li>
+                    <a href="#" id="LinkOptions">Options</a>
+                </li>-->
                 <li>
                     <a href="#" id="LinkHelp">Help</a>
                 </li>

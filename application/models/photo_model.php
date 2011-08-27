@@ -15,11 +15,12 @@
 			return $this->db->insert_id();
 		}
 
-        public function getAll($order = 'DESC')
+        public function getAll($order_by, $status = 1)
         {
             $this->db->from($this->photo_table);
 			$this->db->select('Created, Filename_Large, Filename_Thumbnail, Title');
-			$this->db->order_by('Created '.$order);
+			$this->db->where('status', $status);
+			$this->db->order_by($order_by);
 
 			$query = $this->db->get();
 	

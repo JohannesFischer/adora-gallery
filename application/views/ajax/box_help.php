@@ -6,12 +6,14 @@
 
 <ul>
 	<li>&larr; Previous image</li>
-	<li>&larr; Next image</li>
+	<li>&rarr; Next image</li>
 	<li>&uarr; Toggle info window</li>
+	<li>&darr; Toggle navigation visibility</li>
 	<li>space Start/stop slide show</li>
 </ul>
 
 <p>
-	Adora Gallery was created by Johannes Fischer.<br/>
-	Feel free to download the source code or report issues on <a href="https://github.com/JohannesFischer/adora-gallery" rel="external">github</a>.
+	<strong>Adora Gallery</strong> is created by <a href="http://www.johannes-fischer.de">Johannes Fischer</a>.<br/>
+	Feel free to download the source code and help to make it better!
+	Please report issues on <a href="https://github.com/JohannesFischer/adora-gallery" rel="external">github</a>.
 </p>

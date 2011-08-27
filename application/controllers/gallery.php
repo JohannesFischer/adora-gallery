@@ -77,7 +77,9 @@ class Gallery extends CI_Controller {
 	{
 		$this->load->model('photo_model');
 
-		$photos = $this->photo_model->getAll('DESC');
+		// get album // get Album order
+		$oder_by = 'FileDateTime ASC';
+		$photos = $this->photo_model->getAll($oder_by, 1);
 
 		return $photos;
 	}

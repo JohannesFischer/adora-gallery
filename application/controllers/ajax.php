@@ -274,7 +274,7 @@ class Ajax extends CI_Controller {
 
 		$this->load->helper('html');
 		$this->load->model('album_model');
-		
+
 		$filename = $this->input->post('file');
 		$fn = explode('.', $filename);
 		$source_image = $this->config->item('image_folder', 'gallery').$filename;
@@ -350,6 +350,25 @@ class Ajax extends CI_Controller {
 		);
 
 		$this->load->view('includes/admin_update_form', $data);
+	}
+	
+	public function deleteImage()
+	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+
+		$file = $this->input->post('filename');
+		
+		if($file)
+		{
+			// delete original image
+			unlink($this->config->item('image_folder', 'gallery').$file);
+			// delete preview thumbnail
+			$file_parts = explode('.', $file);
+			unlink($this->config->item('image_folder_resampled', 'gallery').$file_parts[0].'_preview.'.$file_parts[1]);
+		}
 	}
 	
 	public function updateUser()
