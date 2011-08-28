@@ -24,6 +24,8 @@ var AdoraGallery = new Class({
 	{
 		this.imageContainer = $(imageContainer);
 		this.thumbnails = $$(thumbnails);
+		this.thumbnailHolder = $('Thumbnails');
+		this.thumbnailWrapper = this.thumbnailHolder.getElement('div');
 		
 		this.windowSize = $(document.body).getCoordinates();
 
@@ -199,37 +201,34 @@ var AdoraGallery = new Class({
 	{
 		// TODO use script from cwpGallery
 		var availableWidth,
-            thumbnailHolder = $('Thumbnails'),
-            thumbnailWrapper = thumbnailHolder.getElement('div'),
-            ul = thumbnailHolder.getElement('ul'),
-            thumbnails = ul.getElements('li');
+            ul = this.thumbnailHolder.getElement('ul'),
+            thumbnails = ul.getElements('li'),
+			width;
 
-		var availWidth = document.body.getWidth();
+		var availWidth = this.thumbnailHolder.getWidth();
 		var playButtonWidth = this.getElementWidth($('Play'));
-		var paginationButtonWidth = this.getElementWidth($('Slide'));
-		
+		var paginationButtonWidth = this.getElementWidth($('SlideBack'));
+		paginationButtonWidth+= this.getElementWidth($('SlideForward'));
+
 		availWidth -= (playButtonWidth + paginationButtonWidth);
-		availWidth -= (thumbnailWrapper.getStyle('margin-left').toInt() + thumbnailWrapper.getStyle('margin-right').toInt());
+		availWidth -= (this.thumbnailWrapper.getStyle('margin-left').toInt() + this.thumbnailWrapper.getStyle('margin-right').toInt());
+
+		// TODO check for scrollBars
+
+		this.thumbnailWrapper.setStyle('width', availWidth);
 		
-		thumbnailWrapper.setStyle('width', availWidth);
-		
-		return;
+		width = 0;
 		
 		thumbnails.each(function (el){
-			width+= el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();
-		});
-		
-		if (width > thumbnailHolder.getWidth())
+			width+= this.getElementWidth(el);
+		}.bind(this));
+
+		if (width > availWidth)
 		{
-			var buttonSize = $('Play').getWidth() + $('Play').getStyle('margin-left').toInt() + $('Play').getStyle('margin-right').toInt();
-			
-			availableWidth = thumbnailHolder.getWidth() - ulMargin - (buttonSize * 2);
-
-			//new Element('div').setStyle('width', availableWidth).wraps(ul);
-
-			new Element('a.control.slide', {
-				href: '#'
-			}).inject(thumbnailHolder);
+			ul.setStyles({
+				position: 'absolute',
+				width: width
+			});
 		}
 	},
     
@@ -246,6 +245,41 @@ var AdoraGallery = new Class({
 
         this.show(prev);
     },
+	
+	scroll: function (to)
+	{
+		var center,
+			coordinates = {},
+			left = to,
+			limit,
+			ul = this.thumbnailWrapper.getElement('ul');
+
+		center = (this.thumbnailWrapper.getWidth() / 2).round();
+		limit = (ul.getWidth() - (center * 2));
+
+		if (to === undefined)
+		{
+			coordinates = ul.getElement('.current').getCoordinates(ul);
+			left = (coordinates.left - center + (coordinates.width / 2).round());
+		}
+
+		if (coordinates.left < center || to < 0)
+		{
+			left = 0;
+		}
+		else if (left >= limit)
+		{
+			left = limit;
+		}
+
+		if (left !== ul.getStyle('left').toInt())
+		{
+			new Fx.Tween(ul, {
+				duration: 500,
+				transition: 'quart:out'
+			}).start('left', left * -1);
+		}
+	},
 	
 	setCurrentThumbnail: function ()
 	{
@@ -333,6 +367,8 @@ var AdoraGallery = new Class({
 						this.busy = false;
 					}.bind(this));
 				}
+
+				this.scroll();
 			}.bind(this)
 		});
 	},

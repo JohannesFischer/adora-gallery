@@ -134,7 +134,7 @@
         display: block;
         float: left;
         height: 50px;
-        margin: 10px;
+        margin: 10px 5px;
         width: 50px;
     }
     .play {
@@ -144,17 +144,23 @@
         background-image: url(../images/icons/gui/pause_12x16.png);
     }
     .slide {
-        background-image: url(../images/icons/gui/last_16x16.png);
+        width: 25px;
+    }
+    #SlideBack {
+        background-image: url(../images/icons/gui/first_12x12.png);
+    }
+    #SlideForward {
+        background-image: url(../images/icons/gui/last_12x12.png);
     }
     .thumbnail-wrapper {
         float: left;
         height: 50px; /* thumbnail height + margin */
-        margin: 10px;
+        margin: 10px 5px;
         overflow: hidden;
         position: relative;
     }
     .thumbnail-wrapper Thumbnails ul {
-        overflow: hidden;
+        /*overflow: hidden;*/
         }
         .thumbnail-wrapper li {
             float: left;
@@ -165,6 +171,7 @@
             }
             .thumbnail-wrapper li a {
                 background-position: 50% 50%;
+                /*border-radius: 5px;*/
                 display: block;
                 height: 50px;
                 opacity: .25;
