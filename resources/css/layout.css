@@ -160,7 +160,6 @@
         position: relative;
     }
     .thumbnail-wrapper Thumbnails ul {
-        /*overflow: hidden;*/
         }
         .thumbnail-wrapper li {
             float: left;
