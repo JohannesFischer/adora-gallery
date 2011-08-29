@@ -17,6 +17,9 @@ $config['root_dir'] = '';
 $config['thumbnail_dir'] = '_resampled/';
 $config['user_icon_folder'] = 'resources/images/icons/user-icons/';
 
+$config['requires_login'] = true;
+
+$config['preview_marker']	= '_preview';
 $config['thumb_marker']	= '_thumbnail';
 
 $config['date_format'] = 'd-m-Y';

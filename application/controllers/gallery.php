@@ -46,7 +46,8 @@ class Gallery extends CI_Controller {
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
             'PageTitle' => 'Adora Gallery',
-			'Photos' => $this->getPhotos()
+			'Photos' => $this->getPhotos(),
+			'RequiresLogin' => $this->config->item('requires_login', 'gallery')
         ));
 	}
     
@@ -87,7 +88,7 @@ class Gallery extends CI_Controller {
 	public function index()
 	{
 		$this->load->view('includes/head', $this->data);
-		if($this->data['Loggedin'])
+		if($this->data['Loggedin'] || !$this->data['RequiresLogin'])
 		{
 			$this->load->view('gallery', $this->data);
 		}

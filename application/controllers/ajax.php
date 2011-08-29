@@ -117,6 +117,7 @@ class Ajax extends CI_Controller {
 		$this->load->model(array('album_model', 'photo_model'));
 
 		$data = json_decode($this->input->post('data'), true);
+		$data['Status'] = 1;
 
 		$filename = $data['Filename'];
 		$source_image = $this->config->item('image_folder', 'gallery').$data['Filename'];
@@ -367,7 +368,7 @@ class Ajax extends CI_Controller {
 			unlink($this->config->item('image_folder', 'gallery').$file);
 			// delete preview thumbnail
 			$file_parts = explode('.', $file);
-			unlink($this->config->item('image_folder_resampled', 'gallery').$file_parts[0].'_preview.'.$file_parts[1]);
+			unlink($this->config->item('image_folder_resampled', 'gallery').$file_parts[0].$this->config->item('preview_marker', 'gallery').'.'.$file_parts[1]);
 		}
 	}
 	
