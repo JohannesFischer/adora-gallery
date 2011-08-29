@@ -116,7 +116,24 @@ var AdoraGallery = new Class({
 					this.show(i);
 				}.bind(this)
 			});
-		}, this);	
+		}, this);
+		
+		// Scrolling
+		if ($('SlideBack'))
+		{
+			$('SlideBack').addEvent('click', function (e) {
+				e.stop();
+				this.scrollBack();
+			}.bind(this));
+		}
+
+		if ($('SlideForward'))
+		{
+			$('SlideForward').addEvent('click', function (e) {
+				e.stop();
+				this.scrollForward();
+			}.bind(this));
+		}
 	},
 	
 	attachBoxFunctions: function (el)
@@ -278,6 +295,54 @@ var AdoraGallery = new Class({
 				duration: 500,
 				transition: 'quart:out'
 			}).start('left', left * -1);
+		}
+	},
+	
+	scrollBack: function ()
+	{
+		var coordinates,
+			lastImage,
+			limit,
+			ul = this.thumbnailWrapper.getElement('ul');
+
+		limit = ul.getStyle('left').toInt() * -1;
+
+		for(var i = this.thumbnails.length-1; i >= 0; i--)
+		{
+			el = this.thumbnails[i];
+			coordinates = el.getPosition(ul);
+			elWidth = this.getElementWidth(el);
+
+			if(coordinates.x <= limit || (coordinates.x + elWidth) <= limit)
+			{
+				this.scroll(coordinates.x + elWidth - this.thumbnailWrapper.getWidth());
+				break;
+			}
+		}
+	},
+	
+	scrollForward: function ()
+	{
+		var coordinates,
+			el,
+			lastImage,
+			limit,
+			ul = this.thumbnailWrapper.getElement('ul'),
+			elWidth;
+
+		limit = this.thumbnailWrapper.getWidth() + (ul.getStyle('left').toInt() * -1);
+
+		for(var i = 0; i < this.thumbnails.length; i++)
+		{
+			el = this.thumbnails[i];
+			coordinates = el.getPosition(ul);
+			elWidth = this.getElementWidth(el);
+
+			if(coordinates.x >= limit || (coordinates.x + elWidth) > limit)
+			{
+				this.scroll(coordinates.x);
+				break;
+			}
 		}
 	},
 	
