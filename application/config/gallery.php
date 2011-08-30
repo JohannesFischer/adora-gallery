@@ -24,4 +24,6 @@ $config['thumb_marker']	= '_thumbnail';
 
 $config['date_format'] = 'd-m-Y';
 
+$config['meta_robots']	= 'noindex, nofollow';
+
 ?>

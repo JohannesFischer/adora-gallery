@@ -45,6 +45,7 @@ class Gallery extends CI_Controller {
 			'Language' => $this->Language,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
+			'Meta_robots' => $this->config->item('meta_robots', 'gallery'),
             'PageTitle' => 'Adora Gallery',
 			'Photos' => $this->getPhotos(),
 			'RequiresLogin' => $this->config->item('requires_login', 'gallery')
