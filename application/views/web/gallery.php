@@ -22,7 +22,7 @@
 				<a href="#" id="LinkComments">Comments</a>
 			</li>-->
 			<li>
-				<a href="#" id="LinkGalleries">Galleries</a>
+				<a href="#" id="LinkAlbums">Albums</a>
 			</li>
 			<!--<li>
 				<a href="#" id="LinkOptions">Options</a>

@@ -88,16 +88,35 @@ class Gallery extends CI_Controller {
 	
 	public function index()
 	{
-		$this->load->view('includes/head', $this->data);
+		$this->load->library('user_agent');
+
+		$folder = $this->agent->is_mobile() ? 'mobile/' : 'web/';
+
 		if($this->data['Loggedin'] || !$this->data['RequiresLogin'])
 		{
-			$this->load->view('gallery', $this->data);
+			$view = $folder.'gallery';
 		}
 		else
 		{
-			$this->load->view('includes/login_form', $this->data);
+			$view = $folder.'includes/login_form';
 		}
-        $this->load->view('includes/footer', $this->data);
+		
+		if($this->agent->is_mobile())
+		{
+			$views = array(
+				$view
+			);
+		}
+		else
+		{
+			$views = array(
+				'web/includes/head',
+				$view,
+				'web/includes/footer'
+			);
+		}
+
+		$this->content->view($views, $this->data);
 	}
 
 }

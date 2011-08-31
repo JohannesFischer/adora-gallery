@@ -26,9 +26,17 @@ class Ajax extends CI_Controller {
 	 * Gallery
 	 */
 	
+	public function getAlbums()
+	{
+		$data = array(
+		);
+
+		$this->index('ajax/box_albums', $data);
+	}
+	
 	public function getHelp()
 	{
-		$this->index(array(), 'ajax/box_help');
+		$this->index('ajax/box_help');
 	}
 	
 	public function getInfo()
@@ -50,7 +58,7 @@ class Ajax extends CI_Controller {
 				'Title' => $info->Title
 			);
 
-			$this->index($data, 'ajax/box_info');
+			$this->index('ajax/box_info', $data);
 		}
 	}
 	
@@ -60,39 +68,14 @@ class Ajax extends CI_Controller {
 	
 	public function login()
 	{
-		$this->lang->load('basic', 'english');
-		$this->load->model('user_model');
+		$this->load->library('login_library');
 
 		$password = $this->input->post('password');
 		$username = $this->input->post('username');
 
-		$login = $this->user_model->login($username, $password);
-
-		if($login)
-		{
-			$data = array(
-				'icon' => base_url().$this->config->item('user_icon_folder', 'gallery').$login->Icon,
-				'loggedin' => true,
-				'role' => $login->Role,
-				'username' => $login->Username
-			);
-	
-			$login_text = $login->Login_Text != '' ? $login->Login_Text : $this->lang->line('login_welcome');
-
-			$data['username'] = str_replace('%U', $data['username'], $login_text);
-	
-			$this->session->set_userdata($data);
-
-			$this->user_model->updateLastLogin();
-		}
-		else
-		{
-			$data = array(
-				'error' => 'Invalid login'
-			);
-		}
-
-		$this->index(array(
+		$data = $this->login_library->login($username, $password);	
+		
+		$this->index('ajax', array(
 			'json' => true,
 			'response' => json_encode($data)
 		));
@@ -231,7 +214,7 @@ class Ajax extends CI_Controller {
 		// get photo ID
 		$this->album_model->addPhotoToGallery($album_id, $photo_id);
 
-		$this->index();
+		$this->index('ajax');
 	}
 
 	public function editUser()
@@ -262,7 +245,7 @@ class Ajax extends CI_Controller {
 			$data['Icons'] = $buffer;
 			unset($buffer);
 
-			$this->index($data, 'ajax/admin_form_user');
+			$this->index('ajax/admin_form_user', $data);
 		}
 	}
 	
@@ -350,7 +333,7 @@ class Ajax extends CI_Controller {
 			'source_file' => $filename
 		);
 
-		$this->load->view('includes/admin_update_form', $data);
+		$this->index('includes/admin_update_form', $data);
 	}
 	
 	public function deleteImage()
@@ -386,8 +369,9 @@ class Ajax extends CI_Controller {
 		$this->user_model->update($data, $data['ID']);
 	}
 	
-	public function index($data = array(), $view = 'ajax')
+	public function index($view, $data = array())
 	{
+		$view = 'web/'.$view;
 		$this->load->view($view, $data);
 	}
 

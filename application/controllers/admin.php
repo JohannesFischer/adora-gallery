@@ -46,6 +46,7 @@ class Admin extends CI_Controller {
 			'JS' => $jsFiles,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
+			'Meta_robots' => 'noindex, nofollow',
 			'Tabs' => array(
 				'galleries' => 'Galleries',
 				'update' => 'Add images',
@@ -75,7 +76,7 @@ class Admin extends CI_Controller {
     {
         $this->load->helper(array('file', 'gallery'));
 
-		$exif_availbale = is_exif_available();
+		$exif_availabale = is_exif_available();
 		$files = get_dir_file_info($this->config->item('image_dir', 'gallery'), true);
 		$i = 0;
 		$new_photos = array();
@@ -87,7 +88,7 @@ class Admin extends CI_Controller {
 
             if(!in_array($fn, $photos) && preg_match('/\.jpg/i', $fn))
             {
-				if($exif_availbale)
+				if($exif_availabale)
 				{
 					$new_photos[$i]['exif'] = exif_read_data($this->config->item('image_folder', 'gallery').$fn);
 				}
@@ -107,7 +108,7 @@ class Admin extends CI_Controller {
 			'Text' => $this->lang->line('new_image')
         ));
 
-		$this->content->view(array('admin','includes/admin_update', 'includes/admin_footer'), $this->data);
+		$this->index('includes/admin_update');
 	}
 	
 	public function user()
@@ -121,21 +122,30 @@ class Admin extends CI_Controller {
 			'User' => $this->user_model->getUser()
 		));
 
-		$this->content->view(array('admin','includes/admin_user', 'includes/admin_footer'), $this->data);
+		$this->index('includes/admin_user');
 	}
 	
-	public function index()
+	public function index($view = 'includes/admin_update')
 	{
-		$this->load->view('includes/head', $this->data);
-		if($this->data['Loggedin'])
+		if($this->data['Loggedin'] && $this->session->userdata('role') == 'Admin')
 		{
-			$this->load->view('admin', $this->data);
+			$views = array(
+				'web/includes/head',
+				'web/admin.php',
+				'web/'.$view,
+				'web/includes/admin_footer'
+			);
 		}
 		else
 		{
-			$this->load->view('includes/login_form', $this->data);
+			$views = array(
+				'web/includes/head',
+				'web/includes/login_form',
+				'web/includes/admin_footer'
+			);
 		}
-        $this->load->view('includes/admin_footer', $this->data);
+
+		$this->content->view($views, $this->data);
 	}
 }
 

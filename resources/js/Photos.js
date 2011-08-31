@@ -91,15 +91,20 @@ var AdoraGallery = new Class({
 			this.centerElement(this.imageContainer.getElement('img'), this.imageContainer.getElement('div'));
 		}.bind(this));
 		
-		// Navigation		
-		$('LinkInfo').addEvent('click', function (e){
+		// Navigation
+		$('LinkAlbums').addEvent('click', function (e){
 			e.stop();
-			this.toggleInfo();
+			this.toggleBox($('LinkAlbums'));
 		}.bind(this));
 
 		$('LinkHelp').addEvent('click', function (e){
 			e.stop();
-			this.toggleHelp();
+			this.toggleBox($('LinkHelp'));
+		}.bind(this));
+		
+		$('LinkInfo').addEvent('click', function (e){
+			e.stop();
+			this.toggleBox($('LinkInfo'));
 		}.bind(this));
 
 		// Toggle SlideShow
@@ -138,6 +143,11 @@ var AdoraGallery = new Class({
 	
 	attachBoxFunctions: function (el)
 	{
+		if (!el.getElement('a.close'))
+		{
+			return;
+		}
+
 		el.getElement('a.close').addEvent('click', function (e) {
 			e.stop();
 			this.closeBox(el);
@@ -161,9 +171,41 @@ var AdoraGallery = new Class({
 			}
 			else if (e.key === 'up')
 			{
-				this.toggleInfo();
+				this.toggleBox($('LinkInfo'));
 			}
 		}.bind(this));	
+	},
+	
+	// TODO use Box_ prefix for "Box" function 
+	Box_Create: function (id, fn)
+	{
+		var Box = new Element('div#' + id + '.Box', {
+			styles: {
+				marginTop: -25,
+				opacity: 0
+			}	
+		}).adopt(
+			new Element('div')
+		).inject(document.body);
+
+		if (fn !== false)
+		{
+			fn();
+		}
+
+		new Request.HTML({
+			onSuccess: function (){
+				this.attachBoxFunctions($(id));
+				new Fx.Morph(Box, {
+					duration: 500
+				}).start({
+					marginTop: 0,
+					opacity: 1
+				});
+			}.bind(this),
+			update: $(id).getElement('div'),
+			url: AjaxURL + 'get' + id
+		}).send();
 	},
 
 	centerElement: function (el, target)
@@ -437,64 +479,47 @@ var AdoraGallery = new Class({
 			}.bind(this)
 		});
 	},
-
-	toggleHelp: function ()
-	{
-		if ($('Help'))
-		{
-			this.closeBox($('Help'));
-			return;
-		}
-
-		var Box = new Element('div#Help.Box', {
-			styles: {
-				marginTop: -25,
-				opacity: 0
-			}	
-		}).adopt(
-			new Element('div')
-		).inject(document.body);
-
-		new Request.HTML({
-			onSuccess: function (){
-				this.attachBoxFunctions($('Help'));
-				new Fx.Morph(Box, {
-					duration: 500
-				}).start({
-					marginTop: 0,
-					opacity: 1
-				});
-			}.bind(this),
-			update: $('Help').getElement('div'),
-			url: AjaxURL+'getHelp'
-		}).send();
-	},
 	
-	toggleInfo: function ()
+	showBox: function (el)
 	{
-		if ($('Info'))
+		var id = el.get('id');
+
+		var fn = false;
+
+		if (id === 'LinkInfo')
 		{
-			this.closeBox($('Info'));
+			fn = this.updateInfo;
+		}
+
+		this.Box_Create(el.get('id').substr(4), fn);
+	},
+
+	toggleBox: function (el)
+	{
+		var box = $$('.Box')[0];
+
+		if (box && box.get('id') === el.get('id').substr(4))
+		{
+			this.closeBox(box);
 			return;
 		}
 
-		var Box = new Element('div#Info.Box', {
-			styles: {
-				marginTop: -25,
+		if (box)
+		{
+			new Fx.Morph(box, {
+				duration: 500
+			}).start({
+				marginTop: 25,
 				opacity: 0
-			}	
-		}).adopt(
-			new Element('div')
-		).inject(document.body);
-
-		this.updateInfo();
-		
-		new Fx.Morph(Box, {
-			duration: 500
-		}).start({
-			marginTop: 0,
-			opacity: 1
-		});
+			}).chain(function (){
+				box.dispose();
+				this.showBox(el);
+			}.bind(this));
+		}
+		else
+		{
+			this.showBox(el);
+		}
 	},
 	
 	toggleLoader: function ()
