@@ -28,7 +28,12 @@ class Ajax extends CI_Controller {
 	
 	public function getAlbums()
 	{
+		$this->load->model('album_model');
+
+		$albums = $this->album_model->getAlbumDetails();
+
 		$data = array(
+			'Albums' => $albums
 		);
 
 		$this->index('ajax/box_albums', $data);
