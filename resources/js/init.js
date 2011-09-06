@@ -7,6 +7,8 @@ window.addEvent('domready', function(){
 		var target = $('LoginForm');
 		var f = $('Login');
 
+		f.getElement('input[type=text]').focus();
+
 		Blender.show(target);
 
 		f.addEvent('submit', function(e){

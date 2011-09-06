@@ -8,6 +8,11 @@ class Ajax extends CI_Controller {
 	{
 		parent::__construct();
 
+		if (!$this->input->isAjax())
+		{
+			return;
+		}
+
 		$this->config->load('gallery', true);
 
 		$this->Loggedin = $this->session->userdata('loggedin');
@@ -33,7 +38,8 @@ class Ajax extends CI_Controller {
 		$albums = $this->album_model->getAlbumDetails();
 
 		$data = array(
-			'Albums' => $albums
+			'Albums' => $albums,
+			'ImageFolder' => $this->config->item('image_dir_resampled', 'gallery')
 		);
 
 		$this->index('ajax/box_albums', $data);
@@ -65,6 +71,13 @@ class Ajax extends CI_Controller {
 
 			$this->index('ajax/box_info', $data);
 		}
+	}
+	
+	public function setAlbumID()
+	{
+		$albumID = $this->input->post('id');
+		
+		$this->session->set_userdata(array('albumID', $albumID));
 	}
 	
 	/**

@@ -12,6 +12,7 @@ class Gallery extends CI_Controller {
 		$this->config->load('gallery', true);
         $this->lang->load('basic', 'english');
         $this->load->library('content');
+		$this->load->model('album_model');
 
 		$this->loadLanguageItems(array(
 			'gallery_title_play_button'
@@ -38,6 +39,12 @@ class Gallery extends CI_Controller {
             $jsFolder.'init.js'
 		);
 
+		$albumID = $this->session->userdata('albumID');
+		if(!$albumID)
+		{
+			$albumID = $this->album_model->getLatestAlbum();
+		}
+
         $this->addData(array(
 			'CSS' => $this->content->getCSS(),
             'Date' => $this->content->getDate(),
@@ -48,7 +55,7 @@ class Gallery extends CI_Controller {
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
 			'Meta_robots' => $this->config->item('meta_robots', 'gallery'),
             'PageTitle' => 'Adora Gallery',
-			'Photos' => $this->getPhotos(),
+			'Photos' => $this->getPhotos($albumID),
 			'RequiresLogin' => $this->config->item('requires_login', 'gallery')
         ));
 	}
@@ -76,13 +83,17 @@ class Gallery extends CI_Controller {
 		}
 	}
 	
-	private function getPhotos()
+	private function getPhotos($albumID)
 	{
 		$this->load->model('photo_model');
 
-		// get album // get Album order
-		$oder_by = 'FileDateTime ASC';
-		$photos = $this->photo_model->getAll($oder_by, 1);
+		$order = $this->album_model->getAlbumOrder($albumID);
+		if($order == 'default')
+		{
+			$oder_by = 'FileDateTime ASC';
+		}
+
+		$photos = $this->photo_model->getFromAlbum($albumID, $oder_by, 1);
 
 		return $photos;
 	}

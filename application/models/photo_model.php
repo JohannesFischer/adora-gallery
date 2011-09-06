@@ -5,6 +5,7 @@
         public function __construct()
         {
 			parent::__construct();
+			$this->album_photo_table = 'Album_photos';
 			$this->photo_table = 'Photos';
         }
 
@@ -24,20 +25,7 @@
 
 			$query = $this->db->get();
 	
-			$photos = array();
-
-			foreach ($query->result_array() as $row)
-			{
-				$b = array();
-				foreach($row as $key => $value)
-				{
-					$b[$key] = $value;
-				}
-				$photos[] = $b;
-				unset($b);
-			}
-
-			return $photos;
+			return $query ? $query->result_array() : false;
         }
         
         public function getFilenames()
@@ -48,14 +36,21 @@
 
 			$query = $this->db->get();
 	
-			$files = array();
+			return $query ? $query->result_array() : false;
+        }
+		
+		public function getFromAlbum($albumID, $order_by, $status = 1)
+        {
+            $this->db->from($this->photo_table);
+			$this->db->select('Created, Filename_Large, Filename_Thumbnail, Title');
+			$this->db->join($this->album_photo_table, $this->album_photo_table.'.Photo_ID = '.$this->photo_table.'.ID');
+			$this->db->where($this->album_photo_table.'.Album_ID', $albumID);
+			$this->db->where($this->photo_table.'.status', $status);
+			$this->db->order_by($order_by);
 
-			foreach ($query->result() as $row)
-			{
-				$files[] = $row->Filename;
-			}
-
-			return $files;
+			$query = $this->db->get();
+	
+			return $query ? $query->result_array() : false;
         }
 
 		public function getInfo($src)

@@ -52,12 +52,13 @@ var BlendIn = new Class({
 			top: top,
 			width: size.x
 		}).chain(function () {
+			// fade out and dispose border
 			new Fx.Tween(border, {
 				duration: 200
 			}).start('opacity', 0).chain(function () {
 				border.dispose();
 			});
-			
+			// fade in element
 			new Fx.Tween(this.element, {
 				transition: 'elastic:in'
 			}).start('opacity', 1);

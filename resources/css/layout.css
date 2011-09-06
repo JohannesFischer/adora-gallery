@@ -89,8 +89,17 @@
  --------------------------------------------------------*/
 
 .album {
-    
-}
+    line-height: 50px;
+    }
+    .album span.album-thumbnail {
+        background-position: 50% 50%;
+        display: block;
+        float: left;
+        height: 50px;
+        overflow: hidden;
+        margin: 0 10px 0 0;
+        width: 50px;
+    }
 
 /* Image Holder
  --------------------------------------------------------*/

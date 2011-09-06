@@ -140,7 +140,24 @@ var AdoraGallery = new Class({
 			}.bind(this));
 		}
 	},
-	
+
+	attachAlbumFunctions: function ()
+	{
+		$('Albums').getElements('a.album-link').each(function (el) {
+			var id = el.get('id').split('_')[1];
+			el.addEvent('click', function (e) {
+				e.stop();
+				
+				new Request({
+					onSuccess: function () {
+						location.reload();	
+					},
+					url: AjaxURL + 'setAlbumID'
+				}).send('id=' + id);
+			});
+		});
+	},
+
 	attachBoxFunctions: function (el)
 	{
 		if (!el.getElement('a.close'))
@@ -188,14 +205,13 @@ var AdoraGallery = new Class({
 			new Element('div')
 		).inject(document.body);
 
-		if (fn !== false)
-		{
-			fn();
-		}
-
 		new Request.HTML({
 			onSuccess: function (){
 				this.attachBoxFunctions($(id));
+				if (fn !== false)
+				{
+					fn();
+				}
 				new Fx.Morph(Box, {
 					duration: 500
 				}).start({
@@ -489,6 +505,10 @@ var AdoraGallery = new Class({
 		if (id === 'LinkInfo')
 		{
 			fn = this.updateInfo;
+		}
+		else if (id === 'LinkAlbums')
+		{
+			fn = this.attachAlbumFunctions;
 		}
 
 		this.Box_Create(el.get('id').substr(4), fn);
