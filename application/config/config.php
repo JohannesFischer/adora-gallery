@@ -18,7 +18,7 @@ $config['base_url']	= 'http://'.$_SERVER['SERVER_NAME'].'/';
 
 if($_SERVER['SERVER_NAME'] == 'localhost')
 {
-	$config['base_url'] = $config['base_url'].'scripts/adora-gallery/';
+	$config['base_url'] = $config['base_url'].'adora-gallery/';
 }
 
 /*
