@@ -24,7 +24,7 @@
 #Info,
 #Thumbnails,
 #TopBar {
-    background: rgba(0, 0, 0, .75);
+    background-color: rgba(0, 0, 0, .75);
 }
 .Navigation ul,
 .control {
@@ -50,8 +50,14 @@
     position: absolute;
     right: 10px;
     top: 80px;
+    webkit-transition: background-color 1s ease;
+    -moz-transition: background-color 1s ease;
+    -o-transition: background-color 1s ease;
     width: 300px;
     z-index: 40;
+    }
+    .Box:hover {
+        background-color: #000;
     }
     .Box div {
         margin: 10px;
@@ -68,7 +74,7 @@
         .Box li,
         .Box p,
         .Box span {
-            text-shadow: 1px 1px 0 #fff;
+            font-weight:bold;
         }
         .Box strong {
             text-shadow: none;
@@ -78,6 +84,22 @@
             display: block;
             text-align: right;
         }
+
+/* Box - Albums
+ --------------------------------------------------------*/
+
+.album {
+    line-height: 50px;
+    }
+    .album span.album-thumbnail {
+        background-position: 50% 50%;
+        display: block;
+        float: left;
+        height: 50px;
+        overflow: hidden;
+        margin: 0 10px 0 0;
+        width: 50px;
+    }
 
 /* Image Holder
  --------------------------------------------------------*/
@@ -134,7 +156,7 @@
         display: block;
         float: left;
         height: 50px;
-        margin: 10px;
+        margin: 10px 5px;
         width: 50px;
     }
     .play {
@@ -144,17 +166,22 @@
         background-image: url(../images/icons/gui/pause_12x16.png);
     }
     .slide {
-        background-image: url(../images/icons/gui/last_16x16.png);
+        width: 25px;
+    }
+    #SlideBack {
+        background-image: url(../images/icons/gui/first_12x12.png);
+    }
+    #SlideForward {
+        background-image: url(../images/icons/gui/last_12x12.png);
     }
     .thumbnail-wrapper {
         float: left;
         height: 50px; /* thumbnail height + margin */
-        margin: 10px;
+        margin: 10px 5px;
         overflow: hidden;
         position: relative;
     }
     .thumbnail-wrapper Thumbnails ul {
-        overflow: hidden;
         }
         .thumbnail-wrapper li {
             float: left;
@@ -165,6 +192,7 @@
             }
             .thumbnail-wrapper li a {
                 background-position: 50% 50%;
+                /*border-radius: 5px;*/
                 display: block;
                 height: 50px;
                 opacity: .25;
@@ -259,3 +287,15 @@
                     line-height: 30px;
                     letter-spacing: 1px;
                 }
+
+/* BlendIn Box
+ --------------------------------------------------------*/
+
+.BBorder {
+    border: 2px solid #fff;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    height: 0;
+    position: absolute;
+    width: 0;
+}

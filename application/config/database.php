@@ -43,7 +43,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root";
-$db['default']['password'] = "";
+$db['default']['password'] = "MgRootPw!12";
 $db['default']['database'] = "DB_PHOTOS";
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';

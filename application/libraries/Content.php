@@ -55,7 +55,7 @@
 
 			$form = '<div id="LoginForm">';
 			$form.= '<p>'.$this->CI->lang->line('login_text').'</p>';
-			$form.= form_open('#', array(
+			$form.= form_open(site_url('login'), array(
 				'id' => 'Login'
 			));
 			$form.= form_fieldset();
@@ -80,7 +80,6 @@
 
         public function view($view, $data = array())
         {
-            $this->CI->load->view('includes/head', $data);
 			if(is_array($view))
 			{
 				foreach($view as $v)

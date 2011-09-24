@@ -1,28 +1,16 @@
 window.addEvent('domready', function(){
 	
+	var Blender = new BlendIn();
+	
 	if($('Login'))
 	{
 		var target = $('LoginForm');
 		var f = $('Login');
 
-		var size = target.getSize();
-		var windowSize = document.body.getSize();
+		f.getElement('input[type=text]').focus();
 
-		target.setStyles({
-			left: ((windowSize.x/2)-(size.x/2)).round(),
-			opacity: 0,
-			top: size.y*-1
-		});
+		Blender.show(target);
 
-		new Fx.Morph(target,{
-			duration: 750
-		}).start({
-			opacity: 1,
-			top: ((windowSize.y/2)-(size.y/2)).round()
-		}).chain(function(){
-			f.getElement('input[type=text]').focus();
-		});
-		
 		f.addEvent('submit', function(e){
 			e.stop();
 

@@ -8,6 +8,11 @@ class Ajax extends CI_Controller {
 	{
 		parent::__construct();
 
+		if (!$this->input->isAjax())
+		{
+			return;
+		}
+
 		$this->config->load('gallery', true);
 
 		$this->Loggedin = $this->session->userdata('loggedin');
@@ -26,9 +31,23 @@ class Ajax extends CI_Controller {
 	 * Gallery
 	 */
 	
+	public function getAlbums()
+	{
+		$this->load->model('album_model');
+
+		$albums = $this->album_model->getAlbumDetails();
+
+		$data = array(
+			'Albums' => $albums,
+			'ImageFolder' => $this->config->item('image_dir_resampled', 'gallery')
+		);
+
+		$this->index('ajax/box_albums', $data);
+	}
+	
 	public function getHelp()
 	{
-		$this->index(array(), 'ajax/box_help');
+		$this->index('ajax/box_help');
 	}
 	
 	public function getInfo()
@@ -50,8 +69,15 @@ class Ajax extends CI_Controller {
 				'Title' => $info->Title
 			);
 
-			$this->index($data, 'ajax/box_info');
+			$this->index('ajax/box_info', $data);
 		}
+	}
+	
+	public function setAlbumID()
+	{
+		$albumID = $this->input->post('id');
+		
+		$this->session->set_userdata(array('albumID', $albumID));
 	}
 	
 	/**
@@ -60,39 +86,14 @@ class Ajax extends CI_Controller {
 	
 	public function login()
 	{
-		$this->lang->load('basic', 'english');
-		$this->load->model('user_model');
+		$this->load->library('login_library');
 
 		$password = $this->input->post('password');
 		$username = $this->input->post('username');
 
-		$login = $this->user_model->login($username, $password);
-
-		if($login)
-		{
-			$data = array(
-				'icon' => base_url().$this->config->item('user_icon_folder', 'gallery').$login->Icon,
-				'loggedin' => true,
-				'role' => $login->Role,
-				'username' => $login->Username
-			);
-	
-			$login_text = $login->Login_Text != '' ? $login->Login_Text : $this->lang->line('login_welcome');
-
-			$data['username'] = str_replace('%U', $data['username'], $login_text);
-	
-			$this->session->set_userdata($data);
-
-			$this->user_model->updateLastLogin();
-		}
-		else
-		{
-			$data = array(
-				'error' => 'Invalid login'
-			);
-		}
-
-		$this->index(array(
+		$data = $this->login_library->login($username, $password);	
+		
+		$this->index('ajax', array(
 			'json' => true,
 			'response' => json_encode($data)
 		));
@@ -117,6 +118,7 @@ class Ajax extends CI_Controller {
 		$this->load->model(array('album_model', 'photo_model'));
 
 		$data = json_decode($this->input->post('data'), true);
+		$data['Status'] = 1;
 
 		$filename = $data['Filename'];
 		$source_image = $this->config->item('image_folder', 'gallery').$data['Filename'];
@@ -230,7 +232,7 @@ class Ajax extends CI_Controller {
 		// get photo ID
 		$this->album_model->addPhotoToGallery($album_id, $photo_id);
 
-		$this->index();
+		$this->index('ajax');
 	}
 
 	public function editUser()
@@ -261,7 +263,7 @@ class Ajax extends CI_Controller {
 			$data['Icons'] = $buffer;
 			unset($buffer);
 
-			$this->index($data, 'ajax/admin_form_user');
+			$this->index('ajax/admin_form_user', $data);
 		}
 	}
 	
@@ -274,7 +276,7 @@ class Ajax extends CI_Controller {
 
 		$this->load->helper('html');
 		$this->load->model('album_model');
-		
+
 		$filename = $this->input->post('file');
 		$fn = explode('.', $filename);
 		$source_image = $this->config->item('image_folder', 'gallery').$filename;
@@ -349,7 +351,26 @@ class Ajax extends CI_Controller {
 			'source_file' => $filename
 		);
 
-		$this->load->view('includes/admin_update_form', $data);
+		$this->index('includes/admin_update_form', $data);
+	}
+	
+	public function deleteImage()
+	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+
+		$file = $this->input->post('filename');
+		
+		if($file)
+		{
+			// delete original image
+			unlink($this->config->item('image_folder', 'gallery').$file);
+			// delete preview thumbnail
+			$file_parts = explode('.', $file);
+			unlink($this->config->item('image_folder_resampled', 'gallery').$file_parts[0].$this->config->item('preview_marker', 'gallery').'.'.$file_parts[1]);
+		}
 	}
 	
 	public function updateUser()
@@ -366,8 +387,9 @@ class Ajax extends CI_Controller {
 		$this->user_model->update($data, $data['ID']);
 	}
 	
-	public function index($data = array(), $view = 'ajax')
+	public function index($view, $data = array())
 	{
+		$view = 'web/'.$view;
 		$this->load->view($view, $data);
 	}
 

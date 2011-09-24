@@ -24,6 +24,8 @@ var AdoraGallery = new Class({
 	{
 		this.imageContainer = $(imageContainer);
 		this.thumbnails = $$(thumbnails);
+		this.thumbnailHolder = $('Thumbnails');
+		this.thumbnailWrapper = this.thumbnailHolder.getElement('div');
 		
 		this.windowSize = $(document.body).getCoordinates();
 
@@ -89,15 +91,20 @@ var AdoraGallery = new Class({
 			this.centerElement(this.imageContainer.getElement('img'), this.imageContainer.getElement('div'));
 		}.bind(this));
 		
-		// Navigation		
-		$('LinkInfo').addEvent('click', function (e){
+		// Navigation
+		$('LinkAlbums').addEvent('click', function (e){
 			e.stop();
-			this.toggleInfo();
+			this.toggleBox($('LinkAlbums'));
 		}.bind(this));
 
 		$('LinkHelp').addEvent('click', function (e){
 			e.stop();
-			this.toggleHelp();
+			this.toggleBox($('LinkHelp'));
+		}.bind(this));
+		
+		$('LinkInfo').addEvent('click', function (e){
+			e.stop();
+			this.toggleBox($('LinkInfo'));
 		}.bind(this));
 
 		// Toggle SlideShow
@@ -114,11 +121,50 @@ var AdoraGallery = new Class({
 					this.show(i);
 				}.bind(this)
 			});
-		}, this);	
+		}, this);
+		
+		// Scrolling
+		if ($('SlideBack'))
+		{
+			$('SlideBack').addEvent('click', function (e) {
+				e.stop();
+				this.scrollBack();
+			}.bind(this));
+		}
+
+		if ($('SlideForward'))
+		{
+			$('SlideForward').addEvent('click', function (e) {
+				e.stop();
+				this.scrollForward();
+			}.bind(this));
+		}
 	},
-	
+
+	attachAlbumFunctions: function ()
+	{
+		$('Albums').getElements('a.album-link').each(function (el) {
+			var id = el.get('id').split('_')[1];
+			el.addEvent('click', function (e) {
+				e.stop();
+				
+				new Request({
+					onSuccess: function () {
+						location.reload();	
+					},
+					url: AjaxURL + 'setAlbumID'
+				}).send('id=' + id);
+			});
+		});
+	},
+
 	attachBoxFunctions: function (el)
 	{
+		if (!el.getElement('a.close'))
+		{
+			return;
+		}
+
 		el.getElement('a.close').addEvent('click', function (e) {
 			e.stop();
 			this.closeBox(el);
@@ -142,9 +188,40 @@ var AdoraGallery = new Class({
 			}
 			else if (e.key === 'up')
 			{
-				this.toggleInfo();
+				this.toggleBox($('LinkInfo'));
 			}
 		}.bind(this));	
+	},
+	
+	// TODO use Box_ prefix for "Box" function 
+	Box_Create: function (id, fn)
+	{
+		var Box = new Element('div#' + id + '.Box', {
+			styles: {
+				marginTop: -25,
+				opacity: 0
+			}	
+		}).adopt(
+			new Element('div')
+		).inject(document.body);
+
+		new Request.HTML({
+			onSuccess: function (){
+				this.attachBoxFunctions($(id));
+				if (fn !== false)
+				{
+					fn();
+				}
+				new Fx.Morph(Box, {
+					duration: 500
+				}).start({
+					marginTop: 0,
+					opacity: 1
+				});
+			}.bind(this),
+			update: $(id).getElement('div'),
+			url: AjaxURL + 'get' + id
+		}).send();
 	},
 
 	centerElement: function (el, target)
@@ -199,37 +276,34 @@ var AdoraGallery = new Class({
 	{
 		// TODO use script from cwpGallery
 		var availableWidth,
-            thumbnailHolder = $('Thumbnails'),
-            thumbnailWrapper = thumbnailHolder.getElement('div'),
-            ul = thumbnailHolder.getElement('ul'),
-            thumbnails = ul.getElements('li');
+            ul = this.thumbnailHolder.getElement('ul'),
+            thumbnails = ul.getElements('li'),
+			width;
 
-		var availWidth = document.body.getWidth();
+		var availWidth = this.thumbnailHolder.getWidth();
 		var playButtonWidth = this.getElementWidth($('Play'));
-		var paginationButtonWidth = this.getElementWidth($('Slide'));
-		
+		var paginationButtonWidth = this.getElementWidth($('SlideBack'));
+		paginationButtonWidth+= this.getElementWidth($('SlideForward'));
+
 		availWidth -= (playButtonWidth + paginationButtonWidth);
-		availWidth -= (thumbnailWrapper.getStyle('margin-left').toInt() + thumbnailWrapper.getStyle('margin-right').toInt());
+		availWidth -= (this.thumbnailWrapper.getStyle('margin-left').toInt() + this.thumbnailWrapper.getStyle('margin-right').toInt());
+
+		// TODO check for scrollBars
+
+		this.thumbnailWrapper.setStyle('width', availWidth);
 		
-		thumbnailWrapper.setStyle('width', availWidth);
-		
-		return;
+		width = 0;
 		
 		thumbnails.each(function (el){
-			width+= el.getWidth() + el.getStyle('margin-left').toInt() + el.getStyle('margin-right').toInt();
-		});
-		
-		if (width > thumbnailHolder.getWidth())
+			width+= this.getElementWidth(el);
+		}.bind(this));
+
+		if (width > availWidth)
 		{
-			var buttonSize = $('Play').getWidth() + $('Play').getStyle('margin-left').toInt() + $('Play').getStyle('margin-right').toInt();
-			
-			availableWidth = thumbnailHolder.getWidth() - ulMargin - (buttonSize * 2);
-
-			//new Element('div').setStyle('width', availableWidth).wraps(ul);
-
-			new Element('a.control.slide', {
-				href: '#'
-			}).inject(thumbnailHolder);
+			ul.setStyles({
+				position: 'absolute',
+				width: width
+			});
 		}
 	},
     
@@ -246,6 +320,89 @@ var AdoraGallery = new Class({
 
         this.show(prev);
     },
+	
+	scroll: function (to)
+	{
+		var center,
+			coordinates = {},
+			left = to,
+			limit,
+			ul = this.thumbnailWrapper.getElement('ul');
+
+		center = (this.thumbnailWrapper.getWidth() / 2).round();
+		limit = (ul.getWidth() - (center * 2));
+
+		if (to === undefined)
+		{
+			coordinates = ul.getElement('.current').getCoordinates(ul);
+			left = (coordinates.left - center + (coordinates.width / 2).round());
+		}
+
+		if (coordinates.left < center || to < 0)
+		{
+			left = 0;
+		}
+		else if (left >= limit)
+		{
+			left = limit;
+		}
+
+		if (left !== ul.getStyle('left').toInt())
+		{
+			new Fx.Tween(ul, {
+				duration: 500,
+				transition: 'quart:out'
+			}).start('left', left * -1);
+		}
+	},
+	
+	scrollBack: function ()
+	{
+		var coordinates,
+			lastImage,
+			limit,
+			ul = this.thumbnailWrapper.getElement('ul');
+
+		limit = ul.getStyle('left').toInt() * -1;
+
+		for(var i = this.thumbnails.length-1; i >= 0; i--)
+		{
+			el = this.thumbnails[i];
+			coordinates = el.getPosition(ul);
+			elWidth = this.getElementWidth(el);
+
+			if(coordinates.x <= limit || (coordinates.x + elWidth) <= limit)
+			{
+				this.scroll(coordinates.x + elWidth - this.thumbnailWrapper.getWidth());
+				break;
+			}
+		}
+	},
+	
+	scrollForward: function ()
+	{
+		var coordinates,
+			el,
+			lastImage,
+			limit,
+			ul = this.thumbnailWrapper.getElement('ul'),
+			elWidth;
+
+		limit = this.thumbnailWrapper.getWidth() + (ul.getStyle('left').toInt() * -1);
+
+		for(var i = 0; i < this.thumbnails.length; i++)
+		{
+			el = this.thumbnails[i];
+			coordinates = el.getPosition(ul);
+			elWidth = this.getElementWidth(el);
+
+			if(coordinates.x >= limit || (coordinates.x + elWidth) > limit)
+			{
+				this.scroll(coordinates.x);
+				break;
+			}
+		}
+	},
 	
 	setCurrentThumbnail: function ()
 	{
@@ -333,67 +490,56 @@ var AdoraGallery = new Class({
 						this.busy = false;
 					}.bind(this));
 				}
+
+				this.scroll();
 			}.bind(this)
 		});
 	},
-
-	toggleHelp: function ()
-	{
-		if ($('Help'))
-		{
-			this.closeBox($('Help'));
-			return;
-		}
-
-		var Box = new Element('div#Help.Box', {
-			styles: {
-				marginTop: -25,
-				opacity: 0
-			}	
-		}).adopt(
-			new Element('div')
-		).inject(document.body);
-
-		new Request.HTML({
-			onSuccess: function (){
-				this.attachBoxFunctions($('Help'));
-				new Fx.Morph(Box, {
-					duration: 500
-				}).start({
-					marginTop: 0,
-					opacity: 1
-				});
-			}.bind(this),
-			update: $('Help').getElement('div'),
-			url: AjaxURL+'getHelp'
-		}).send();
-	},
 	
-	toggleInfo: function ()
+	showBox: function (el)
 	{
-		if ($('Info'))
+		var id = el.get('id');
+
+		var fn = false;
+
+		if (id === 'LinkInfo')
 		{
-			this.closeBox($('Info'));
+			fn = this.updateInfo;
+		}
+		else if (id === 'LinkAlbums')
+		{
+			fn = this.attachAlbumFunctions;
+		}
+
+		this.Box_Create(el.get('id').substr(4), fn);
+	},
+
+	toggleBox: function (el)
+	{
+		var box = $$('.Box')[0];
+
+		if (box && box.get('id') === el.get('id').substr(4))
+		{
+			this.closeBox(box);
 			return;
 		}
 
-		var Box = new Element('div#Info.Box', {
-			styles: {
-				marginTop: -25,
+		if (box)
+		{
+			new Fx.Morph(box, {
+				duration: 500
+			}).start({
+				marginTop: 25,
 				opacity: 0
-			}	
-		}).adopt(
-			new Element('div')
-		).inject(document.body);
-
-		this.updateInfo();
-		
-		new Fx.Morph(Box, {
-			duration: 500
-		}).start({
-			marginTop: 0,
-			opacity: 1
-		});
+			}).chain(function (){
+				box.dispose();
+				this.showBox(el);
+			}.bind(this));
+		}
+		else
+		{
+			this.showBox(el);
+		}
 	},
 	
 	toggleLoader: function ()

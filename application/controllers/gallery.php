@@ -12,6 +12,7 @@ class Gallery extends CI_Controller {
 		$this->config->load('gallery', true);
         $this->lang->load('basic', 'english');
         $this->load->library('content');
+		$this->load->model('album_model');
 
 		$this->loadLanguageItems(array(
 			'gallery_title_play_button'
@@ -32,10 +33,17 @@ class Gallery extends CI_Controller {
 			$jsFolder.'third-party/mootools-core-1.3.2-full-nocompat-yc.js',
 			$jsFolder.'third-party/mootools-more.js',
 			$jsFolder.'third-party/md5.js',
+			$jsFolder.'BlendIn.js',
 			$jsFolder.'infoBubble.js',
 			$jsFolder.'Photos.js',
             $jsFolder.'init.js'
 		);
+
+		$albumID = $this->session->userdata('albumID');
+		if(!$albumID)
+		{
+			$albumID = $this->album_model->getLatestAlbum();
+		}
 
         $this->addData(array(
 			'CSS' => $this->content->getCSS(),
@@ -45,8 +53,10 @@ class Gallery extends CI_Controller {
 			'Language' => $this->Language,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
+			'Meta_robots' => $this->config->item('meta_robots', 'gallery'),
             'PageTitle' => 'Adora Gallery',
-			'Photos' => $this->getPhotos()
+			'Photos' => $this->getPhotos($albumID),
+			'RequiresLogin' => $this->config->item('requires_login', 'gallery')
         ));
 	}
     
@@ -73,27 +83,52 @@ class Gallery extends CI_Controller {
 		}
 	}
 	
-	private function getPhotos()
+	private function getPhotos($albumID)
 	{
 		$this->load->model('photo_model');
 
-		$photos = $this->photo_model->getAll('DESC');
+		$order = $this->album_model->getAlbumOrder($albumID);
+		if($order == 'default')
+		{
+			$oder_by = 'FileDateTime ASC';
+		}
+
+		$photos = $this->photo_model->getFromAlbum($albumID, $oder_by, 1);
 
 		return $photos;
 	}
 	
 	public function index()
 	{
-		$this->load->view('includes/head', $this->data);
-		if($this->data['Loggedin'])
+		$this->load->library('user_agent');
+
+		$folder = $this->agent->is_mobile() ? 'mobile/' : 'web/';
+
+		if($this->data['Loggedin'] || !$this->data['RequiresLogin'])
 		{
-			$this->load->view('gallery', $this->data);
+			$view = $folder.'gallery';
 		}
 		else
 		{
-			$this->load->view('includes/login_form', $this->data);
+			$view = $folder.'includes/login_form';
 		}
-        $this->load->view('includes/footer', $this->data);
+		
+		if($this->agent->is_mobile())
+		{
+			$views = array(
+				$view
+			);
+		}
+		else
+		{
+			$views = array(
+				'web/includes/head',
+				$view,
+				'web/includes/footer'
+			);
+		}
+
+		$this->content->view($views, $this->data);
 	}
 
 }
