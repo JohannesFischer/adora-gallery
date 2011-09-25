@@ -108,6 +108,23 @@ class Ajax extends CI_Controller {
 	 * Admin
 	 */
 	
+	public function addGallery()
+	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+		
+		$title = $this->input->post('title');
+		
+		if($title)
+		{
+			$this->load->model('album_model');
+			
+			$this->album_model->createAlbum($title);
+		}
+	}
+	
 	public function addPhoto()
 	{
 		if(!$this->_isAdmin() || !$this->Loggedin)
@@ -265,6 +282,33 @@ class Ajax extends CI_Controller {
 
 			$this->index('ajax/admin_form_user', $data);
 		}
+	}
+	
+	public function getAjaxView()
+	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+		
+		$view = $this->input->post('view');
+
+		if($view)
+		{
+			$this->index('ajax/'.$view);
+		}
+	}
+	
+	public function getGalleries()
+	{
+		if(!$this->_isAdmin() || !$this->Loggedin)
+		{
+			return false;
+		}
+
+		$this->load->model('album_model');
+		
+		$this->index('ajax/admin_galleries', $data = array('Galleries' => $this->album_model->getAlbums()));
 	}
 	
 	public function getImageForm()

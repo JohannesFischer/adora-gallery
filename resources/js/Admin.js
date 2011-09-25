@@ -133,6 +133,14 @@ var editUser = function(el)
 	}
 };
 
+var getGalleries = function ()
+{
+	new Request.HTML({
+		update: $('Galleries'),
+		url: AjaxURL + 'getGalleries'	
+	}).send();
+}
+
 var loadingOverlay = {
 	
 	create: function (el)
@@ -173,6 +181,38 @@ window.addEvent('domready', function(){
 	if($('AddImages'))
 	{
 		addImage($$('#AddImages li a'));
+	}
+	
+	if ($('Galleries'))
+	{
+		getGalleries();
+
+		var link = $('Content').getElement('a');
+
+		link.addEvent('click', function (e) {
+			e.stop();
+			
+			new Element('div#FormTarget').inject(link, 'after');
+
+			new Request.HTML({
+				onSuccess: function (response) {
+					$('CreateGallery').addEvent('submit', function (e) {
+						e.stop();
+						var title = $('CreateGallery').getElement('input').get('value').trim();
+						
+						new Request({
+							onSuccess: function () {
+								$('FormTarget').dispose();
+								getGalleries();
+							},
+							url: AjaxURL + 'addGallery'	
+						}).send('title=' + title)
+					});
+				},
+				update: $('FormTarget'),
+				url: AjaxURL + 'getAjaxView'
+			}).send('view=admin_new_album');
+		});
 	}
 
 	if($('User'))
