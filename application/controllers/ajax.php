@@ -156,7 +156,8 @@ class Ajax extends CI_Controller {
 			}
 
 			$config = array(
-				'image_library' => 'gd2',
+				'image_library' => $this->config->item('image_library', 'gallery'),
+				'library_path' => $this->config->item('library_path', 'gallery'),
 				'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
 				'rotation_angle' => $rotation_angle,
 				'source_image' => $source_image
@@ -190,7 +191,8 @@ class Ajax extends CI_Controller {
 
 		$config = array(
 			'create_thumb' => true,
-			'image_library' => 'gd2',
+			'image_library' => $this->config->item('image_library', 'gallery'),
+			'library_path' => $this->config->item('library_path', 'gallery'),
 			'maintain_ratio' => true,
 			'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
 			'source_image' => $source_image
@@ -334,7 +336,8 @@ class Ajax extends CI_Controller {
 			$this->load->library('image_lib');
 
 			$config = array(
-				'image_library' => 'gd2',
+				'image_library' => $this->config->item('image_library', 'gallery'),
+				'library_path' => $this->config->item('library_path', 'gallery'),
 				'source_image' => $source_image
 			);
 

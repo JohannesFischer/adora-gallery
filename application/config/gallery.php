@@ -26,4 +26,8 @@ $config['date_format'] = 'd-m-Y';
 
 $config['meta_robots']	= 'noindex, nofollow';
 
+// Image Library
+$config['image_library'] = 'gd2';
+$config['library_path'] = false;
+
 ?>
