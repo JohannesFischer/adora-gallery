@@ -1,16 +1,17 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
 | USER AGENT TYPES
 | -------------------------------------------------------------------
-| This file contains four arrays of user agent data.  It is used by the
+| This file contains four arrays of user agent data. It is used by the
 | User Agent Class to help identify browser, platform, robot, and
-| mobile device data.  The array keys are used to identify the device
+| mobile device data. The array keys are used to identify the device
 | and the array values are used to set the actual name of the item.
 |
 */
 
 $platforms = array (
+					'windows nt 6.1'	=> 'Windows 7',
 					'windows nt 6.0'	=> 'Windows Longhorn',
 					'windows nt 5.2'	=> 'Windows 2003',
 					'windows nt 5.0'	=> 'Windows 2000',
@@ -25,9 +26,12 @@ $platforms = array (
 					'win95'				=> 'Windows 95',
 					'windows'			=> 'Unknown Windows OS',
 					'os x'				=> 'Mac OS X',
+					'playstation 3'		=> 'Playstation 3',
+					'nintendo wii'		=> 'Nintendo Wii',
 					'ppc mac'			=> 'Power PC Mac',
 					'freebsd'			=> 'FreeBSD',
 					'ppc'				=> 'Macintosh',
+					'ubuntu'			=> 'Ubuntu',
 					'linux'				=> 'Linux',
 					'debian'			=> 'Debian',
 					'sunos'				=> 'Sun Solaris',
@@ -49,6 +53,7 @@ $platforms = array (
 // multiple browser types so we want to identify the sub-type first.
 $browsers = array(
 					'Flock'				=> 'Flock',
+					'RockMelt'			=> 'RockMelt',
 					'Chrome'			=> 'Chrome',
 					'Opera'				=> 'Opera',
 					'MSIE'				=> 'Internet Explorer',
@@ -93,9 +98,12 @@ $mobiles = array(
 					'motorola'			=> "Motorola",
 					'nokia'				=> "Nokia",
 					'palm'				=> "Palm",
+					'ipod'				=> "Apple iPod Touch",
 					'iphone'			=> "Apple iPhone",
 					'ipad'				=> "iPad",
-					'ipod'				=> "Apple iPod Touch",
+					'kindle'			=> "Amazon Kindle",
+					'android'			=> "Android",
+					'windows'			=> "Windows Phone",
 					'sony'				=> "Sony Ericsson",
 					'ericsson'			=> "Sony Ericsson",
 					'blackberry'		=> "BlackBerry",
@@ -134,6 +142,8 @@ $mobiles = array(
 					'windows ce'			=> "Windows CE",
 
 					// Browsers
+					'fennec'				=> "Firefox Mobile",
+					'minimo'				=> "Minimo",
 					'obigo'					=> "Obigo",
 					'netfront'				=> "Netfront Browser",
 					'openwave'				=> "Openwave Browser",
