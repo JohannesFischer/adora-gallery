@@ -132,6 +132,7 @@ class Ajax extends CI_Controller {
 			return false;
 		}
 
+		$this->load->library('image_library');
 		$this->load->model(array('album_model', 'photo_model'));
 
 		$data = json_decode($this->input->post('data'), true);
@@ -145,36 +146,7 @@ class Ajax extends CI_Controller {
 		// Rotate Image
 		if($data['Orientation'] > 1)
 		{
-			// TODO put this into a helper since its used twice
-			if($exif_data['Orientation'] == 6)
-			{
-				$rotation_angle = 270;
-			}
-			else if($exif_data['Orientation'] == 8)
-			{
-				$rotation_angle = 90;
-			}
-
-			$config = array(
-				'image_library' => $this->config->item('image_library', 'gallery'),
-				'library_path' => $this->config->item('library_path', 'gallery'),
-				'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
-				'rotation_angle' => $rotation_angle,
-				'source_image' => $source_image
-			);
-
-			$this->image_lib->initialize($config); 
-
-			$rotate = $this->image_lib->rotate();
-			
-			if(!$rotate)
-			{
-				echo $this->image_lib->display_errors();
-			}
-			
-			$source_image = $this->config->item('image_folder_resampled', 'gallery').$filename;
-			
-			$this->image_lib->clear();
+			$source_image = $this->image_library->rotateImage($filename, $source_image, $data['Orientation']);
 		}
 
 		// Resize Image
@@ -321,6 +293,7 @@ class Ajax extends CI_Controller {
 		}
 
 		$this->load->helper('html');
+		$this->load->library('image_library');
 		$this->load->model('album_model');
 
 		$filename = $this->input->post('file');
@@ -343,30 +316,7 @@ class Ajax extends CI_Controller {
 
 			if($exif_data['Orientation'] > 1)
 			{
-				if($exif_data['Orientation'] == 6)
-				{
-					$rotation_angle = 270;
-				}
-				else if($exif_data['Orientation'] == 8)
-				{
-					$rotation_angle = 90;
-				}
-				
-				$config_rotate = array(
-					'new_image' => $this->config->item('image_folder_resampled', 'gallery').$filename,
-					'rotation_angle' => $rotation_angle
-				);
-
-				$this->image_lib->initialize(array_merge($config, $config_rotate));
-				
-				if(!$this->image_lib->rotate())
-				{
-					echo $this->image_lib->display_errors();
-				}
-
-				$this->image_lib->clear();
-
-				$source_image = $this->config->item('image_folder_resampled', 'gallery').$filename;
+				$source_image = $this->image_library->rotateImage($filename, $source_image, $exif_data['Orientation']);
 			}
 			
 			$config_thumbnail = array(
