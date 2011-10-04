@@ -11,6 +11,18 @@
 			$this->CI->load->library('image_lib');
         }
 	
+		public function getDateTime($exif_data)
+		{
+			// DateTime YYYY:MM:DD HH:ii:ss
+			if($exif_data['DateTime'])
+			{
+				//preg_match($exif_data['DateTime'], '/[0-9:]*/', $matches);
+				$date_time = explode(' ', $exif_data['DateTime']);
+				return str_replace(':', '-', $date_time[0]).' '.$date_time[1];
+			}
+			return false;
+		}
+	
 		private function getRotationAngle($orientation)
 		{
 			$image_library = strtolower($this->CI->config->item('image_library', 'gallery'));
