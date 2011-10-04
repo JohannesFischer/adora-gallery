@@ -60,11 +60,12 @@ class Ajax extends CI_Controller {
 		{
 			$info = $this->photo_model->getInfo($src);
 
-			$date_format = $this->config->item('date_format', 'gallery');
+			//$date_format = $this->config->item('date_format', 'gallery');
+			$date = explode(' ', $info->FileDateTime);
 
 			$data = array(
 				'Comments' => 0,
-				'Date' => date($date_format, $info->FileDateTime),
+				'Date' => $date[0],
 				'Description' => $info->Description,
 				'Title' => $info->Title
 			);
@@ -135,18 +136,18 @@ class Ajax extends CI_Controller {
 		$this->load->library('image_library');
 		$this->load->model(array('album_model', 'photo_model'));
 
-		$data = json_decode($this->input->post('data'), true);
-		$data['Status'] = 1;
+		$post_data = json_decode($this->input->post('data'), true);
+		$post_data['Status'] = 1;
 
-		$filename = $data['Filename'];
-		$source_image = $this->config->item('image_folder', 'gallery').$data['Filename'];
+		$filename = $post_data['Filename'];
+		$source_image = $this->config->item('image_folder', 'gallery').$post_data['Filename'];
 
 		$this->load->library('image_lib');
 
 		// Rotate Image
-		if($data['Orientation'] > 1)
+		if($post_data['Orientation'] > 1)
 		{
-			$source_image = $this->image_library->rotateImage($filename, $source_image, $data['Orientation']);
+			$source_image = $this->image_library->rotateImage($filename, $source_image, $post_data['Orientation']);
 		}
 
 		// Resize Image
@@ -202,23 +203,23 @@ class Ajax extends CI_Controller {
 			echo $this->image_lib->display_errors();
 		}
 
-		$fn = explode('.', $data['Filename']);
+		$fn = explode('.', $post_data['Filename']);
 
-		$data['Filename_Large'] = $fn[0].$config_large['thumb_marker'].'.'.$fn[1];
-		$data['Filename_Thumbnail'] = $fn[0].$config_thumbnail['thumb_marker'].'.'.$fn[1];
+		$post_data['Filename_Large'] = $fn[0].$config_large['thumb_marker'].'.'.$fn[1];
+		$post_data['Filename_Thumbnail'] = $fn[0].$config_thumbnail['thumb_marker'].'.'.$fn[1];
 
 		$i = -1;
-		$keys = array_keys($data);
+		$keys = array_keys($post_data);
 
-		unset($data['Orientation']);
+		unset($post_data['Orientation']);
 
-		$data['Created'] = date('Y-m-d h:m:i');
+		$post_data['Created'] = date('Y-m-d h:m:i');
 
 		// store Album ID
-		$album_id = $data['Album'];
-		unset($data['Album']);
+		$album_id = $post_data['Album'];
+		unset($post_data['Album']);
 
-		$photo_id = $this->photo_model->addPhoto($data);
+		$photo_id = $this->photo_model->addPhoto($post_data);
 		
 		// get photo ID
 		$this->album_model->addPhotoToGallery($album_id, $photo_id);
@@ -264,7 +265,9 @@ class Ajax extends CI_Controller {
 		{
 			return false;
 		}
-		
+
+		$this->load->library('image_library');
+
 		$view = $this->input->post('view');
 
 		if($view)
@@ -343,8 +346,9 @@ class Ajax extends CI_Controller {
 
 		$data = array(
 			'Albums' => $albums,
-			'exif' => $exif_data,
+			'fileDateTime' => $this->image_library->getDateTime($exif_data),
 			'file' => $this->config->item('image_dir_resampled', 'gallery').$fn[0].$thumb_marker.'.'.$fn[1],
+			'orientation' => $exif_data['Orientation'],
 			'source_file' => $filename
 		);
 

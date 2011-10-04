@@ -1,5 +1,3 @@
-<a href="#" class="close"></a>
-
 <p><strong>Albums</strong></p>
 
 <?php foreach($Albums as $Album): ?>

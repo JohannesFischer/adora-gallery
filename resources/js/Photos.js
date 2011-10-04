@@ -84,8 +84,7 @@ var AdoraGallery = new Class({
 		// center image
 		window.addEvent('resize', function () {
 
-            // TODO update thumbnailholder-width
-
+			// TODO update thumbnailholder-width
 			this.windowSize = $(document.body).getCoordinates();
 
 			this.centerElement(this.imageContainer.getElement('img'), this.imageContainer.getElement('div'));
@@ -114,6 +113,14 @@ var AdoraGallery = new Class({
 		}.bind(this));
 
 		// Thumbnails
+		/*
+		myElement.addEvent('click:relay(a)', function(event, target){
+			event.preventDefault();
+			request.send({
+				url: target.get('href')
+			});
+		});
+		*/
 		this.thumbnails.each(function (el, i){
 			el.addEvents({
 				'click': function (e){
@@ -202,6 +209,9 @@ var AdoraGallery = new Class({
 				opacity: 0
 			}	
 		}).adopt(
+			new Element('a.close', {
+				href: '#'
+			}),
 			new Element('div')
 		).inject(document.body);
 
@@ -575,12 +585,9 @@ var AdoraGallery = new Class({
 		var src = $('Image').getElement('img').get('src').split('/').getLast();
 
 		new Request.HTML({
-			onSuccess: function (){
-				this.attachBoxFunctions($('Info'));
-			}.bind(this),
 			update: $('Info').getElement('div'),
 			url: AjaxURL+'getInfo'
-		}).send('src='+src);
+		}).send('src=' + src);
 	}
 	
 });

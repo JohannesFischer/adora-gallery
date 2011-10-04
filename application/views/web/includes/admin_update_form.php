@@ -16,10 +16,10 @@
 		<label>Description</label>
 		<textarea name="Description" placeholder="Description" cols="45" rows="5"></textarea>
 		<input type="hidden" name="Filename" value="<?=$source_file;?>" />
-		<?php if($exif['DateTimeOrigina']): ?>
-		<input type="hidden" name="FileDateTime" value="<?=$exif['DateTimeOrigina'];?>" />
+		<?php if($fileDateTime): ?>
+		<input type="hidden" name="FileDateTime" value="<?=$fileDateTime;?>" />
 		<?php endif; ?>
-		<input type="hidden" name="Orientation" value="<?=$exif['Orientation'];?>" />
+		<input type="hidden" name="Orientation" value="<?=$orientation;?>" />
 		<input type="submit" name="save_image" value="save" />
 	</fieldset>
 </form>

@@ -22,7 +22,7 @@ $config['requires_login'] = true;
 $config['preview_marker']	= '_preview';
 $config['thumb_marker']	= '_thumbnail';
 
-$config['date_format'] = 'd-m-Y';
+$config['date_format'] = 'd-m-Y'; // currently unused
 
 $config['meta_robots']	= 'noindex, nofollow';
 
