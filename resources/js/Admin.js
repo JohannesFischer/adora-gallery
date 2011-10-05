@@ -19,6 +19,11 @@ var addImage = function(els)
 			el.removeClass('image').addClass('loading');
 
 			target = new Element('div.new-image').inject(el, 'after');
+			
+			target.adopt(new Element('p', {
+				text: 'generating thumbnail'	
+			}));
+			
             li = target.getParent('li');
 
 			new Request.HTML({
