@@ -35,8 +35,15 @@
 			$this->db->order_by('Created, Filename');
 
 			$query = $this->db->get();
+			
+			$files = array();
+			
+			foreach($query->result() as $file)
+			{
+				array_push($files, $file->Filename);
+			}
 	
-			return $query ? $query->result_array() : false;
+			return $files;
         }
 		
 		public function getFromAlbum($albumID, $order_by, $status = 1)

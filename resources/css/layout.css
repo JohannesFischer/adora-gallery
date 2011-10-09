@@ -31,6 +31,10 @@
     background-color: rgba(50, 50, 50, .5);
     border-radius: 4px;
     -moz-border-radius: 4px;
+    transition: background-color 1s ease;
+    -moz-transition: background-color 1s ease;
+    -o-transition: background-color 1s ease;
+    -webkit-transition: background-color 1s ease;
     }
     .control:hover {
         background-color: rgba(50, 50, 50, .75);
@@ -47,12 +51,13 @@
 .Box {
     border-radius: 2px;
     -moz-border-radius: 2px;
-    position: absolute;
+    position: fixed;
     right: 10px;
     top: 80px;
-    webkit-transition: background-color 1s ease;
+    transition: background-color 1s ease;
     -moz-transition: background-color 1s ease;
     -o-transition: background-color 1s ease;
+    -webkit-transition: background-color 1s ease;
     width: 300px;
     z-index: 40;
     }
@@ -61,14 +66,13 @@
     }
     .Box div {
         margin: 10px;
-        position: relative;
         }
         .Box .close {
             background: url(../images/icons/gui/x_14x14.png) no-repeat 50% 50%;
             height: 20px;
             position: absolute;
-            right: 0;
-            top: 0;
+            right: 5px;
+            top: 5px;
             width: 20px;
         }
         .Box li,
@@ -197,9 +201,10 @@
                 height: 50px;
                 opacity: .25;
                 overflow: hidden;
-                webkit-transition: opacity 1s ease;
+                transition: opacity 1s ease;
                 -moz-transition: opacity 1s ease;
                 -o-transition: opacity 1s ease;
+                -webkit-transition: opacity 1s ease;
                 width: 50px;
             }
             .thumbnail-wrapper a:hover,

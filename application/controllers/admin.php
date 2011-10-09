@@ -30,9 +30,10 @@ class Admin extends CI_Controller {
 
 		$jsFolder = base_url().'resources/js/';
 		$jsFiles = array(
-			$jsFolder.'third-party/mootools-core-1.3.2-full-nocompat-yc.js',
-			$jsFolder.'third-party/mootools-more.js',
+			$jsFolder.'third-party/mootools-core-1.4.0-full-nocompat-yc.js',
+			$jsFolder.'third-party/mootools-more-1.4.0.1.js',
 			$jsFolder.'third-party/md5.js',
+			$jsFolder.'BlendIn.js',
 			$jsFolder.'Photos.js',
 			$jsFolder.'Admin.js',
             $jsFolder.'init.js'
@@ -57,6 +58,10 @@ class Admin extends CI_Controller {
         ));
 	}
     
+	/**
+	 * PRIVATE FUNCTIONS
+	 */
+	
     private function addData($key, $value = '')
     {
         if(is_array($key))
@@ -71,6 +76,13 @@ class Admin extends CI_Controller {
             $this->data[$key] = $value;
         }
     }
+	
+	private function getGalleries()
+	{
+		$this->load->model('album_model');
+		
+		return $this->album_model->getAlbums();
+	}
     
     private function getNewPhotos()
     {
@@ -99,6 +111,20 @@ class Admin extends CI_Controller {
 
         return $new_photos;
     }
+	
+	/**
+	 * PUBLIC FUNCTIONS
+	 */
+	
+	public function galleries()
+	{
+	     $this->addData(array(
+			'currentPage' => 'galleries',
+            'Galleries' => $this->getGalleries()
+        ));
+
+		$this->index('includes/admin_galleries');
+	}
 	
 	public function update()
 	{

@@ -1,5 +1,3 @@
-<a href="#" class="close"></a>
-
 <p><strong>Help</strong></p>
 
 <p>Keyboard controls</p>

@@ -1,4 +1,4 @@
-<form method="post" action="#">
+<form method="post" action="#" id="CreateGallery">
 
 	<fieldset>
 		<label>Title</label>

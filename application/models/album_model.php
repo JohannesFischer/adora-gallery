@@ -23,6 +23,11 @@
 			));
 		}
 		
+		public function createAlbum($title)
+		{
+			return $this->db->insert($this->album_table, array('Title' => $title, 'OrderBy' => 'default'));
+		}
+		
 		public function getAlbumDetails()
 		{
 			$this->db->select($this->album_table.'.ID, '.$this->album_table.'.Title, '.$this->photos_table.'.Filename_Thumbnail');

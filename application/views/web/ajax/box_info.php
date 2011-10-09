@@ -1,5 +1,3 @@
-<a href="#" class="close"></a>
-
 <p><strong><?=$Title;?></strong></p>
 
 <?php if($Description): ?>
