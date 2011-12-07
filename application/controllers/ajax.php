@@ -78,7 +78,7 @@ class Ajax extends CI_Controller {
 	{
 		$albumID = $this->input->post('id');
 		
-		$this->session->set_userdata(array('albumID', $albumID));
+		$this->session->set_userdata(array('albumID' => $albumID));
 	}
 	
 	/**

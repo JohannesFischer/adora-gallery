@@ -40,9 +40,11 @@ class Gallery extends CI_Controller {
 		);
 
 		$albumID = $this->session->userdata('albumID');
+        var_dump($albumID);
 		if(!$albumID)
 		{
 			$albumID = $this->album_model->getLatestAlbum();
+            $this->session->set_userdata(array('albumID' => $albumID));
 		}
 
         $this->addData(array(
