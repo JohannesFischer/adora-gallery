@@ -40,7 +40,7 @@ class Gallery extends CI_Controller {
 		);
 
 		$albumID = $this->session->userdata('albumID');
-        var_dump($albumID);
+
 		if(!$albumID)
 		{
 			$albumID = $this->album_model->getLatestAlbum();
@@ -55,6 +55,7 @@ class Gallery extends CI_Controller {
 			'Language' => $this->Language,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
+            'IsAdmin' => $this->session->userdata('role') == 'Admin',
 			'Meta_robots' => $this->config->item('meta_robots', 'gallery'),
             'PageTitle' => 'Adora Gallery',
 			'Photos' => $this->getPhotos($albumID),

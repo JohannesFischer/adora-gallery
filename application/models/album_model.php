@@ -71,7 +71,7 @@
 		{
 			$this->db->select('ID');
 			$this->db->from($this->album_table);
-			$this->db->order_by('Created DESC');
+			$this->db->order_by('Created ASC');
 
 			$query = $this->db->get();
 

@@ -27,6 +27,11 @@
 			<!--<li>
 				<a href="#" id="LinkOptions">Options</a>
 			</li>-->
+            <?php if($IsAdmin): ?>
+            <li>
+				<a href="<?=base_url();?>admin/">Admin</a>
+			</li>
+            <?php endif; ?>
 			<li>
 				<a href="#" id="LinkHelp">Help</a>
 			</li>

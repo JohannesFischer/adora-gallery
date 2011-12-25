@@ -13,9 +13,9 @@
 <form method="post" action="#">
 
 	<fieldset>
-		<input type="text" name="Username" value="<?php if($Username){ echo $Username;} ?>" />
-		<input type="text" name="Email" value="<?=$Email;?>" />
-		<input type="text" name="Role" value="<?=$Role;?>" />
+		<input type="text" name="Username" value="<?php if($Username){ echo $Username;} ?>" placeholder="Username" />
+		<input type="text" name="Email" value="<?=$Email;?>" placeholder="Email" />
+		<input type="text" name="Role" value="<?=$Role;?>" placeholder="Role" />
 		<input type="hidden" name="Icon" value="<?=$Icon;?>" />
 		<input type="submit" name="submit-user" value="save" />
 	</fieldset>
