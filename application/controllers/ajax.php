@@ -49,6 +49,17 @@ class Ajax extends CI_Controller {
 	{
 		$this->index('ajax/box_help');
 	}
+    
+    public function getNewImages()
+    {
+        $this->load->library('image_library');
+
+        $data = array(
+            'Files' => $this->image_library->getNewImages()
+        );
+
+        $this->index('ajax/admin_update_images', $data);
+    }
 	
 	public function getInfo()
 	{

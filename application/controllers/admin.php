@@ -87,34 +87,6 @@ class Admin extends CI_Controller {
 		
 		return $this->album_model->getAlbums();
 	}
-    
-    private function _getNewPhotos()
-    {
-        $this->load->helper(array('file', 'gallery'));
-
-		$exif_availabale = is_exif_available();
-		$files = get_dir_file_info($this->config->item('image_dir', 'gallery'), true);
-		$i = 0;
-		$new_photos = array();
-		$photos = $this->photo_model->getFilenames();
-
-        foreach($files as $file)
-        {
-			$fn = $file['name'];
-
-            if(!in_array($fn, $photos) && preg_match('/\.jpg/i', $fn))
-            {
-				if($exif_availabale)
-				{
-					$new_photos[$i]['exif'] = exif_read_data($this->config->item('image_folder', 'gallery').$fn);
-				}
-                $new_photos[$i]['filename'] = $fn;
-				$i++;
-            }
-        }
-
-        return $new_photos;
-    }
 	
     private function _isAdmin()
     {
@@ -139,7 +111,6 @@ class Admin extends CI_Controller {
 	{
 	     $this->_addData(array(
 			'currentPage' => 'update',
-            'Files' => $this->_getNewPhotos(),
 			'Text' => $this->lang->line('new_image')
         ));
 

@@ -146,6 +146,16 @@ var getGalleries = function ()
 	}).send();
 }
 
+var getNewImages = function () {
+    new Request.HTML({
+        onSuccess: function () {
+            addImage($$('#AddImages li a'));    
+        },
+        update: 'AddImages',
+        url: AjaxURL + 'getNewImages'
+    }).send();
+}
+
 var loadingOverlay = {
 	
 	create: function (el)
@@ -182,11 +192,6 @@ var newAlbum = function ()
 };
 
 window.addEvent('domready', function(){
-
-	if($('AddImages'))
-	{
-		addImage($$('#AddImages li a'));
-	}
 	
 	if ($('Galleries'))
 	{
@@ -228,6 +233,10 @@ window.addEvent('domready', function(){
 		});
 	}
     
+    if($('AddImages')) {
+        getNewImages();
+    }
+    
     if ($('ToggleUploadForm')) {
         $('ToggleUploadForm').addEvent('click', function (e) {
             e.stop();
@@ -244,8 +253,9 @@ window.addEvent('domready', function(){
             new Request.HTML({
 				onSuccess: function (response) {
 					new Form.Upload('url', {
-                        onComplete: function(){ 
-                            alert('Completed uploading the Files'); 
+                        onComplete: function(){
+                            getNewImages();
+                            $('UploadForm').empty();
                         }
                     });
 				},
