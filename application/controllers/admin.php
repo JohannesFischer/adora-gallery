@@ -15,7 +15,7 @@ class Admin extends CI_Controller {
 
 		$Loggedin = $this->session->userdata('loggedin');
 		
-		if($Loggedin && $this->session->userdata('role') != 'Admin')
+		if($Loggedin && !$this->_isAdmin())
 		{
 			redirect('gallery');
 		}
@@ -25,13 +25,17 @@ class Admin extends CI_Controller {
 			'basic.css',
 			'forms.css',
 			'layout.css',
-			'admin.css'
+			'admin.css',
+            'upload.css'
 		));
 
 		$jsFolder = base_url().'resources/js/';
 		$jsFiles = array(
 			$jsFolder.'third-party/mootools-core-1.4.0-full-nocompat-yc.js',
 			$jsFolder.'third-party/mootools-more-1.4.0.1.js',
+            $jsFolder.'third-party/Request.File.js',
+            $jsFolder.'third-party/Form.MultipleFileInput.js',
+            $jsFolder.'third-party/Form.Upload.js', 
 			$jsFolder.'third-party/md5.js',
 			$jsFolder.'BlendIn.js',
 			$jsFolder.'Photos.js',
@@ -39,7 +43,7 @@ class Admin extends CI_Controller {
             $jsFolder.'init.js'
 		);
 
-        $this->addData(array(
+        $this->_addData(array(
 			'CSS' => $this->content->getCSS(),
 			'currentPage' => '',
 			'GalleryLinkText' => $this->lang->line('gallery_link_text'),
@@ -62,7 +66,7 @@ class Admin extends CI_Controller {
 	 * PRIVATE FUNCTIONS
 	 */
 	
-    private function addData($key, $value = '')
+    private function _addData($key, $value = '')
     {
         if(is_array($key))
         {
@@ -77,14 +81,14 @@ class Admin extends CI_Controller {
         }
     }
 	
-	private function getGalleries()
+	private function _getGalleries()
 	{
 		$this->load->model('album_model');
 		
 		return $this->album_model->getAlbums();
 	}
     
-    private function getNewPhotos()
+    private function _getNewPhotos()
     {
         $this->load->helper(array('file', 'gallery'));
 
@@ -112,15 +116,20 @@ class Admin extends CI_Controller {
         return $new_photos;
     }
 	
+    private function _isAdmin()
+    {
+        return $this->session->userdata('role') == 'Admin';
+    }
+    
 	/**
 	 * PUBLIC FUNCTIONS
 	 */
 	
 	public function galleries()
 	{
-	     $this->addData(array(
+	     $this->_addData(array(
 			'currentPage' => 'galleries',
-            'Galleries' => $this->getGalleries()
+            'Galleries' => $this->_getGalleries()
         ));
 
 		$this->index('includes/admin_galleries');
@@ -128,9 +137,9 @@ class Admin extends CI_Controller {
 	
 	public function update()
 	{
-	     $this->addData(array(
+	     $this->_addData(array(
 			'currentPage' => 'update',
-            'Files' => $this->getNewPhotos(),
+            'Files' => $this->_getNewPhotos(),
 			'Text' => $this->lang->line('new_image')
         ));
 
@@ -141,7 +150,7 @@ class Admin extends CI_Controller {
 	{
 		$this->load->model('user_model');
 
-		$this->addData(array(
+		$this->_addData(array(
 			'addUser' => $this->lang->line('add_user'),
 			'currentPage' => 'user',
 			'IconFolder' => $this->config->item('user_icon_folder', 'gallery'),
@@ -151,9 +160,9 @@ class Admin extends CI_Controller {
 		$this->index('includes/admin_user');
 	}
 	
-	public function index($view = 'includes/admin_update')
+	public function index($view = 'includes/admin_galleries')
 	{
-		if($this->data['Loggedin'] && $this->session->userdata('role') == 'Admin')
+		if($this->data['Loggedin'] && $this->_isAdmin())
 		{
 			$views = array(
 				'web/includes/head',

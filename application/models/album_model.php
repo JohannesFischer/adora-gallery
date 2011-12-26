@@ -25,7 +25,7 @@
 		
 		public function createAlbum($title)
 		{
-			return $this->db->insert($this->album_table, array('Title' => $title, 'OrderBy' => 'default'));
+			return $this->db->insert($this->album_table, array('Title' => $title, 'OrderBy' => 'default', 'Created' => date('Y-m-d h:i:s')));
 		}
 		
 		public function getAlbumDetails()
@@ -58,11 +58,9 @@
 		
 		public function getAlbums()
 		{
-			$this->db->select();
-			$this->db->from($this->album_table);
-			$this->db->order_by('Title');
+            $sql = "SELECT ID, Title, Created, DATE_FORMAT(Created, '%m/%d/%Y') AS Date FROM ".$this->album_table." ORDER BY Title";
 
-			$query = $this->db->get();
+			$query = $this->db->query($sql);
 
 			return $query ? $query->result_array() : false;
 		}

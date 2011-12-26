@@ -227,5 +227,32 @@ window.addEvent('domready', function(){
 			editUser(this);
 		});
 	}
+    
+    if ($('ToggleUploadForm')) {
+        $('ToggleUploadForm').addEvent('click', function (e) {
+            e.stop();
+
+            if (!$('UploadForm')) {
+                new Element('div#UploadForm').inject(this, 'after');
+            }
+            
+            if ($('UploadForm').getElement('form')) {
+                $('UploadForm').empty();
+                return;
+            }
+
+            new Request.HTML({
+				onSuccess: function (response) {
+					new Form.Upload('url', {
+                        onComplete: function(){ 
+                            alert('Completed uploading the Files'); 
+                        }
+                    });
+				},
+				update: $('UploadForm'),
+				url: AjaxURL + 'getAjaxView'
+			}).send('view=admin_upload_form');
+        });
+    }
 	
 });

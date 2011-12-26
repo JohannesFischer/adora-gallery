@@ -6,6 +6,8 @@
 	
 		<p><?=$Text;?></p>
 	
+        <a href="#" id="ToggleUploadForm">Upload Images</a>
+    
 		<div id="AddImages">            
 			<?php
 				$i = 0;

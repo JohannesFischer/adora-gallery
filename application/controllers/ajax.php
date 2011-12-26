@@ -266,7 +266,7 @@ class Ajax extends CI_Controller {
 			return false;
 		}
 
-		$this->load->library('image_library');
+		//$this->load->library('image_library');
 
 		$view = $this->input->post('view');
 
@@ -317,10 +317,13 @@ class Ajax extends CI_Controller {
 				'source_image' => $source_image
 			);
 
-			if($exif_data['Orientation'] > 1)
-			{
-				$source_image = $this->image_library->rotateImage($filename, $source_image, $exif_data['Orientation']);
-			}
+            if(isset($exif_data['Orientation']))
+            {
+                if($exif_data['Orientation'] > 1)
+                {
+                    $source_image = $this->image_library->rotateImage($filename, $source_image, $exif_data['Orientation']);
+                }
+            }
 			
 			$config_thumbnail = array(
 				'create_thumb' => true,
