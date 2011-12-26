@@ -1,3 +1,13 @@
+/* Basic Classes
+ --------------------------------------------------------*/
+
+.hidden {
+    display: none;
+}
+.invisible {
+    opacity: 0;
+}
+
 /* Login 
  --------------------------------------------------------*/
 
@@ -103,6 +113,13 @@
         overflow: hidden;
         margin: 0 10px 0 0;
         width: 50px;
+    }
+    .album:hover span.title {
+        display: none;
+    }
+    .album:hover span:last-of-type {
+        display: inline;
+        opacity: 1;
     }
 
 /* Image Holder
