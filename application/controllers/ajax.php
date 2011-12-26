@@ -33,12 +33,32 @@ class Ajax extends CI_Controller {
 	
 	public function getAlbums()
 	{
+		$this->load->library('user_library');
 		$this->load->model('album_model');
 
 		$albums = $this->album_model->getAlbumDetails();
+		$a = array();
+
+		// check permissions
+		foreach($albums as $album)
+		{
+			if($album['IsPublic'] || $this->user_library->isAdmin())
+			{
+				array_push($a, $album);	
+			}
+			else
+			{
+				$permitted = $this->album_model->getAlbumPermission($album['ID'], $this->session->userdata('user_id'));
+
+				if($permitted)
+				{
+					array_push($a, $album);		
+				}
+			}	
+		}	
 
 		$data = array(
-			'Albums' => $albums,
+			'Albums' => $a,
 			'ImageFolder' => $this->config->item('image_dir_resampled', 'gallery')
 		);
 

@@ -4,12 +4,14 @@
 
 		private $album_table;
 		private $album_photos_table;
+		private $permission_table;
 
         public function __construct()
         {
 			parent::__construct();
 			$this->album_table = 'Albums';
 			$this->album_photos_table = 'Album_photos';
+			$this->permission_table = 'Album_permissions';
 			$this->photos_table = 'Photos';
         }
 		
@@ -30,7 +32,7 @@
 		
 		public function getAlbumDetails()
 		{
-			$this->db->select($this->album_table.'.ID, '.$this->album_table.'.Title, '.$this->photos_table.'.Filename_Thumbnail');
+			$this->db->select($this->album_table.'.ID, '.$this->album_table.'.IsPublic, '.$this->album_table.'.Title, '.$this->photos_table.'.Filename_Thumbnail');
 			$this->db->select('COUNT('.$this->album_table.'.ID) AS Photos');
 			$this->db->from($this->album_table);
 			$this->db->join($this->album_photos_table, $this->album_table.'.ID = '.$this->album_photos_table.'.Album_ID');
@@ -56,9 +58,21 @@
 			return $row ? $row->OrderBy : false;
 		}
 		
+		public function getAlbumPermission($album_id, $user_id)
+		{
+			$this->db->select();
+			$this->db->from($this->permission_table);
+			$this->db->where('Album_ID', $album_id);
+			$this->db->where('User_ID', $user_id);
+
+			$query = $this->db->get();
+
+			return $query->num_rows();
+		}
+		
 		public function getAlbums()
 		{
-            $sql = "SELECT ID, Title, Created, DATE_FORMAT(Created, '%m/%d/%Y') AS Date FROM ".$this->album_table." ORDER BY Title";
+            $sql = "SELECT ID, Title, Created, DATE_FORMAT(Created, '%m/%d/%Y') AS Date, IsPublic FROM ".$this->album_table." ORDER BY Title";
 
 			$query = $this->db->query($sql);
 

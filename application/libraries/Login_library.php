@@ -22,11 +22,12 @@
 					'icon' => base_url().$this->CI->config->item('user_icon_folder', 'gallery').$login->Icon,
 					'loggedin' => true,
 					'role' => $login->Role,
+					'user_id' => $login->ID,
 					'username' => $login->Username
 				);
 		
-				$login_text = $login->Login_Text != '' ? $login->Login_Text : $this->lang->line('login_welcome');
-	
+				$login_text = $login->Login_Text != '' ? $login->Login_Text : $this->CI->lang->line('login_welcome');
+
 				$data['username'] = str_replace('%U', $data['username'], $login_text);
 		
 				$this->CI->session->set_userdata($data);

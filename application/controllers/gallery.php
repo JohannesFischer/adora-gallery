@@ -4,6 +4,7 @@ class Gallery extends CI_Controller {
 
     public $data = array();
 	public $Language = array();
+    private $mobile = null;
 
 	public function __construct()
 	{
@@ -11,33 +12,45 @@ class Gallery extends CI_Controller {
 
 		$this->config->load('gallery', true);
         $this->lang->load('basic', 'english');
-        $this->load->library('content');
+        $this->load->library(array('content', 'user_agent'));
 		$this->load->model('album_model');
+        
+        $this->mobile = $this->agent->is_mobile();
 
 		$this->loadLanguageItems(array(
 			'gallery_title_play_button'
 		));
 
 		$Loggedin = $this->session->userdata('loggedin');
+        $jsFiles = array();
+        $jsFolder = base_url().'resources/js/';
 
-		$this->content->addCSSFiles(array(
-			'reset.css',
-			'basic.css',
-			'forms.css',
-			'layout.css',
-			'infoBubble.css'
-		));
-		
-		$jsFolder = base_url().'resources/js/';
-		$jsFiles = array(
-			$jsFolder.'third-party/mootools-core-1.4.0-full-nocompat-yc.js',
-			$jsFolder.'third-party/mootools-more-1.4.0.1.js',
-			$jsFolder.'third-party/md5.js',
-			$jsFolder.'BlendIn.js',
-			$jsFolder.'infoBubble.js',
-			$jsFolder.'Photos.js',
-            $jsFolder.'init.js'
-		);
+        if($this->mobile)
+        { 
+            $this->content->addCSSFiles(array(
+                'mobile.css'
+            ));
+        }
+        else
+        {
+            $this->content->addCSSFiles(array(
+                'reset.css',
+                'basic.css',
+                'forms.css',
+                'layout.css',
+                'infoBubble.css'
+            ));
+
+            $jsFiles = array(
+                $jsFolder.'third-party/mootools-core-1.4.2-full-nocompat-yc.js',
+                $jsFolder.'third-party/mootools-more-1.4.0.1.js',
+                $jsFolder.'third-party/md5.js',
+                $jsFolder.'BlendIn.js',
+                $jsFolder.'infoBubble.js',
+                $jsFolder.'Photos.js',
+                $jsFolder.'init.js'
+            );
+        } 
 
 		$albumID = $this->session->userdata('albumID');
 
@@ -103,9 +116,7 @@ class Gallery extends CI_Controller {
 	
 	public function index()
 	{
-		$this->load->library('user_agent');
-
-		$folder = $this->agent->is_mobile() ? 'mobile/' : 'web/';
+		$folder = $this->mobile ? 'mobile/' : 'web/';
 
 		if($this->data['Loggedin'] || !$this->data['RequiresLogin'])
 		{
@@ -115,12 +126,10 @@ class Gallery extends CI_Controller {
 		{
 			$view = $folder.'includes/login_form';
 		}
-		
-		if($this->agent->is_mobile())
+
+		if($this->mobile)
 		{
-			$views = array(
-				$view
-			);
+			$views = $view;
 		}
 		else
 		{

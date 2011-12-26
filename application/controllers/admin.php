@@ -31,7 +31,7 @@ class Admin extends CI_Controller {
 
 		$jsFolder = base_url().'resources/js/';
 		$jsFiles = array(
-			$jsFolder.'third-party/mootools-core-1.4.0-full-nocompat-yc.js',
+			$jsFolder.'third-party/mootools-core-1.4.2-full-nocompat-yc.js',
 			$jsFolder.'third-party/mootools-more-1.4.0.1.js',
             $jsFolder.'third-party/Request.File.js',
             $jsFolder.'third-party/Form.MultipleFileInput.js',

@@ -1,54 +1,125 @@
-#InlineContent {
-	display: none;
+.nivoo-slider,
+.nivoo-slider-holder {
+    height: 350px;
+    overflow: hidden;
+    position: relative;
+    width: 600px;
+}
+.nivoo-slider.got-control-nav {
+    height: 380px;
+}
+.nivoo-slider.direction-nav-outside {
+    width: 720px;
+}
+.direction-nav-outside .nivoo-slider-holder {
+    margin: 0 60px;
 }
 
-.infoBubble {
-	padding: 5px; /* shadow size */
+.nivoo-slider-holder {
+	background-repeat: no-repeat;
+}
+
+.nivoo-slider img,
+.nivoo-link {
+	left: 0;
 	position: absolute;
-	z-index: 100;
-	}
-	.infoBubble-Bubble {
-		background-color: #fff;
-		border: 1px solid #aaa;
-		border-radius: 4px;
-		-moz-border-radius: 4px;
-		-webkit-border-radius: 4px;
-		box-shadow: 0 0 5px rgba(0, 0, 0, .3);
-		-moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
-		-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
-		position: relative;
-		}	
-		.infoBubble-Bubble:before {
-			border: 11px solid transparent; /* tip height + border width*/
-			border-top-color: #aaa;
-			bottom: -22px; /* value = - border-top-width - border-bottom-width */
-			content:"\00a0";
-			display: block; /* reduce the damage in FF3.0 */
-			height: 0;
-			left: 50%;
-			margin-left: -11px;
-			position: absolute;
-			width: 0;
-		}
-		
-		/* creates the smaller  triangle */
-		.infoBubble-Bubble:after {
-			border: 10px solid transparent; /* tip height */
-			border-top-color: #fff;
-			bottom: -20px; /* value = - border-top-width - border-bottom-width */
-			content:"\00a0";
-			display:block; /* reduce the damage in FF3.0 */
-			height:0;
-			left: 50%;
-			margin-left: -10px;
-			position:absolute;
-			width:0;
-		}
-		.infoBubble-Content {
-			margin: 10px;
-			overflow: hidden;
-		}
-
-.loading {
-	background: url(../images/indicator.gif) no-repeat 50% 50%;
+	top: 0;
+    z-index: 0;
 }
+.nivoo-slider > img:first-child,
+.nivoo-slider > a:first-child img {
+    z-index: 1;
+}
+
+.nivoo-link {
+	border: none;
+	display: none;
+	height: 100%;
+	width: 100%;
+	z-index: 20;	
+}
+
+.direction-nav-left {
+    left: 0;
+}
+.direction-nav-right {
+    right: 0;
+}
+
+/* directioNavPosition inside */
+.direction-nav-left,
+.direction-nav-right {
+    position: absolute;
+    top: 0;
+    z-index: 40;
+    }
+    .direction-nav-left a,
+    .direction-nav-right a {
+        display: block;
+    }
+    .direction-nav-left a:focus,
+    .direction-nav-right a:focus {
+        outline: none;
+    }
+    .direction-nav-left a {
+        background: url(images/icons/arrow-left.png) no-repeat 2% 50%;
+    }
+    .direction-nav-right a {
+        background: url(images/icons/arrow-right.png) no-repeat 98% 50%;
+    }
+    
+/* directioNavPosition oustide */
+.direction-nav-outside .direction-nav-left,
+.direction-nav-outside .direction-nav-right {
+    width: 60px;
+}
+
+.nivoo-slice {
+	display: block;
+	height: 100%;
+	position: absolute;
+	z-index: 10;
+}
+
+/* caption */
+
+.nivoo-slider p {
+    background: #181818;
+	background: rgba(0, 0, 0, .6);
+	bottom: -30px;
+	color: #fff;
+	height: 30px;
+	line-height: 30px;
+	left: 0;
+    margin: 0;
+	text-indent: 10px;
+	position: absolute;
+	width: 100%;
+    z-index: 30;
+}
+
+/* control navigation */
+
+div.control-nav {
+    height: 20px;
+    line-height: 20px;
+    margin: 10px 0 0;
+    text-align: center;
+    }
+    div.control-nav a {
+        color: #aaa;
+        font-size: 40px;
+        outline: none;
+        padding: 2px;
+        text-decoration: none;
+        text-shadow: 0 0 2px #ddd;
+        -moz-transition: color 1s;
+        -ms-transition: color 1s;
+        -o-transition: color 1s;
+        -webkit-transition: color 1s;
+        transition: color 1s;
+        }
+        div.control-nav a.current,
+        div.control-nav a:hover {
+            color: #333;
+        }

@@ -5,7 +5,7 @@
         public function __construct()
         {
 			parent::__construct();
-			$this->user_table = 'Users';
+			$this->user_table = 'User';
         }
 		
 		public function getUser()
@@ -32,7 +32,7 @@
 		
 		public function login($username, $password)
 		{
-			$this->db->select('Email, Icon, Last_Login, Login_Text, Role, Username');
+			$this->db->select('Email, Icon, ID, Last_Login, Login_Text, Role, Username');
 			$this->db->from($this->user_table);
 			$this->db->where('username', $username);
 			$this->db->where('password', $password);

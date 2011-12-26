@@ -41,7 +41,7 @@ var AdoraGallery = new Class({
 
 		if (this.options.showBubble)
 		{
-			new infoBubble(this.thumbnails, {
+			new InfoBubble('#Thumbnails li a', {
 				hideDelay: 1500,
 				imageSource: 'rel',
 				size: {

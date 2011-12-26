@@ -11,11 +11,16 @@
             $this->CI =& get_instance();
         }
 		
+        public function addCSSFile($file)
+        {
+            array_push($this->cssFiles, $file);
+        } 
+        
 		public function addCSSFiles($files)
 		{
 			foreach($files as $file)
 			{
-				array_push($this->cssFiles, $file);
+				$this->addCSSFile($file);
 			}
 		}
 
@@ -30,8 +35,7 @@
 				$html.= link_tag(array(
 					'href' => 'resources/css/'.$file,
 					'rel' => 'stylesheet',
-					'type' => 'text/css',
-					'media' => 'screen'
+					'type' => 'text/css'
 				));
 			}
 

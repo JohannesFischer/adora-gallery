@@ -12,7 +12,7 @@
     $lang['login_button'] = 'Login';
 	$lang['login_placeholder'] = 'login code';
     $lang['login_text'] = 'Please Login';
-    $lang['login_welcome'] = 'やあ %uさん';
+    $lang['login_welcome'] = 'Welcome %U';
 	
 	$lang['new_images'] = 'New Images in the image folder';
 
