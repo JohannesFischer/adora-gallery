@@ -91,6 +91,19 @@
 
 			return $row ? $row->ID : false;
 		}
+		
+		public function getShowInfo($albumID)
+		{
+			$this->db->select('ShowInfo');
+			$this->db->from($this->album_table);
+			$this->db->where('ID', $albumID);
+			
+			$query = $this->db->get();
+
+			$row = $query->row();
+			
+			return $row ? $row->ShowInfo : false;
+		}
 
     }
 

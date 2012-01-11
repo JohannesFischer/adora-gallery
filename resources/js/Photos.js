@@ -101,10 +101,12 @@ var AdoraGallery = new Class({
 			this.toggleBox($('LinkHelp'));
 		}.bind(this));
 		
-		$('LinkInfo').addEvent('click', function (e){
-			e.stop();
-			this.toggleBox($('LinkInfo'));
-		}.bind(this));
+		if ($('LinkInfo')) {
+			$('LinkInfo').addEvent('click', function (e){
+				e.stop();
+				this.toggleBox($('LinkInfo'));
+			}.bind(this));
+		}
 
 		// Toggle SlideShow
 		$('Play').addEvent('click', function (e){
@@ -193,7 +195,7 @@ var AdoraGallery = new Class({
 			{
 				this.toggleSlideShow();
 			}
-			else if (e.key === 'up')
+			else if (e.key === 'up' && $('LinkInfo'))
 			{
 				this.toggleBox($('LinkInfo'));
 			}

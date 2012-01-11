@@ -12,10 +12,10 @@ class Gallery extends CI_Controller {
 
 		$this->config->load('gallery', true);
         $this->lang->load('basic', 'english');
-        $this->load->library(array('content', 'user_agent'));
+        $this->load->library(array('content', 'user_agent', 'user_library'));
 		$this->load->model('album_model');
         
-        $this->mobile = $this->agent->is_mobile();
+        $this->mobile = false;//$this->agent->is_mobile();
 
 		$this->loadLanguageItems(array(
 			'gallery_title_play_button'
@@ -60,6 +60,13 @@ class Gallery extends CI_Controller {
             $this->session->set_userdata(array('albumID' => $albumID));
 		}
 
+		// check if the user is permitted to access the album
+		$allowed = $this->user_library->isAdmin() ? true : $this->album_model->getAlbumPermission($albumID, $this->session->userdata('user_id'));
+		if(!$allowed)
+		{
+			$this->session->set_userdata(array('albumID' => 0));
+		}
+
         $this->addData(array(
 			'CSS' => $this->content->getCSS(),
             'Date' => $this->content->getDate(),
@@ -68,11 +75,12 @@ class Gallery extends CI_Controller {
 			'Language' => $this->Language,
 			'Loggedin' => $Loggedin,
 			'LoginForm' => $Loggedin ? '' : $this->content->getLoginForm(),
-            'IsAdmin' => $this->session->userdata('role') == 'Admin',
+            'IsAdmin' => $this->user_library->isAdmin(),
 			'Meta_robots' => $this->config->item('meta_robots', 'gallery'),
             'PageTitle' => 'Adora Gallery',
-			'Photos' => $this->getPhotos($albumID),
-			'RequiresLogin' => $this->config->item('requires_login', 'gallery')
+			'Photos' => $allowed ? $this->getPhotos($albumID) : array(),
+			'RequiresLogin' => $this->config->item('requires_login', 'gallery'),
+			'ShowInfo' => $this->album_model->getShowInfo($albumID)
         ));
 	}
     
@@ -129,7 +137,11 @@ class Gallery extends CI_Controller {
 
 		if($this->mobile)
 		{
-			$views = $view;
+			$views = array(
+				'mobile/includes/head',
+				$view,
+				'mobile/includes/footer',
+			);
 		}
 		else
 		{

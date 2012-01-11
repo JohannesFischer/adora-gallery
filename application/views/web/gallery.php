@@ -15,9 +15,11 @@
 
 	<div class="Navigation">
 		<ul>
+			<?php if ($ShowInfo): ?>
 			<li>
 				<a href="#" id="LinkInfo">Show Info</a>
 			</li>
+			<?php endif; ?>
 			<!--<li>
 				<a href="#" id="LinkComments">Comments</a>
 			</li>-->
